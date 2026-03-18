@@ -1,0 +1,145 @@
+/* Professional Custom Scrollbar & Scroll Controller */
+
+:root {
+    --scroll-width: 10px;
+    --scroll-track: rgba(255, 255, 255, 0.03);
+    --scroll-thumb: rgba(255, 255, 255, 0.15);
+    --scroll-thumb-hover: rgba(255, 255, 255, 0.25);
+    --scroll-btn-bg: rgba(255, 255, 255, 0.05);
+    --scroll-btn-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Scrollbar for the whole App */
+::-webkit-scrollbar {
+    width: var(--scroll-width);
+    height: var(--scroll-width);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+    border: 1px solid transparent;
+    background-clip: content-box;
+}
+
+/* Integrated Scroll Controller Component */
+.scroll-controller {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    padding: 0.25rem;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    height: 38px;
+    user-select: none;
+}
+
+.scroll-controller:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.scroll-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--scroll-btn-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.scroll-btn:hover {
+    background: var(--scroll-btn-hover);
+    transform: scale(1.1);
+    color: var(--primary-400);
+}
+
+.scroll-btn:active {
+    transform: scale(0.95);
+}
+
+.scroll-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2.5;
+}
+
+.scroll-visualizer {
+    width: 80px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-indicator {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    left: 0;
+    transition: left 0.1s linear;
+}
+
+/* Alignment and Professional Touches */
+.dashboard-header .header-right {
+    gap: 1.25rem !important;
+}
+
+.zoom-controls, .scroll-controller {
+    box-sizing: border-box;
+}
+
+/* Ensure perfect alignment for main sections */
+.section-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem !important;
+}
+
+.section-intro .intro-text {
+    flex: 1;
+}
+
+.section-intro .intro-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Professional Card Consistency */
+.stat-card, .availability-card, .drive-item, .report-card {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(102, 126, 234, 0.3) !important;
+}

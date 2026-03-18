@@ -1,0 +1,113 @@
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(25px);
+    animation: slideUp 0.3s ease;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Test Details Styling */
+.detail-item {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item.correct {
+    border-left-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.detail-item.wrong {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.detail-q {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--gray-900);
+}
+
+.detail-ans {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.detail-status {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    float: right;
+}
+
+.correct .detail-status {
+    color: #059669;
+}
+
+.wrong .detail-status {
+    color: #dc2626;
+}
+
+/* Test Interface specific overrides for dashboard integration */
+#test-interface-container .test-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#test-interface-container .back-link {
+    display: none;
+    /* Hide back link in internal mode */
+}
+
+/* Modal Buttons */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}

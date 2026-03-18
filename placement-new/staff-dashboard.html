@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Dashboard | JMC-Test</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/ai-buddy.css" />
+  <link rel="stylesheet" href="css/custom-scrollbar.css" />
+</head>
+
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo" id="sidebarLogoTop"
+          style="cursor: pointer; display: flex; align-items: center; gap: 0.85rem;">
+          <img src="logo.png" class="brand-logo" alt="JMC-Test Logo"
+            style="width: 52px; height: 52px; transition: all 0.3s ease;" />
+          <span class="logo-text">JMC-TEST</span>
+        </div>
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="create-test">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="16" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+          </svg>
+          <span>Create Assessment</span>
+        </a>
+        <a href="#" class="nav-item" data-section="manage-tests">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14,2 14,8 20,8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          <span>Manage Test</span>
+        </a>
+        <a href="#" class="nav-item" data-section="students">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
+          </svg>
+          <span>Students</span>
+        </a>
+        <a href="#" class="nav-item" data-section="student-lookup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <span>Student Lookup</span>
+        </a>
+        <a href="#" class="nav-item" data-section="ai-generator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+            <path d="M12 8a4 4 0 100 8 4 4 0 000-8z" />
+          </svg>
+          <span>AI Gen (Upload)</span>
+        </a>
+        <button class="nav-item ai-buddy-btn" id="aiBuddyBtn"
+          style="background: none; border: none; font: inherit; cursor: pointer; width: calc(100% - 1.5rem);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+            <path d="M12 7v6M9 10h6" />
+          </svg>
+          <span>Smart Assistant</span>
+        </button>
+        <a href="#" class="nav-item" data-section="ranking">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+            <polyline points="16 7 22 7 22 13"></polyline>
+          </svg>
+          <span>Leaderboard</span>
+        </a>
+
+        <a href="#" class="nav-item" data-section="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>Settings</span>
+        </a>
+
+        <a href="#" class="nav-item" data-section="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span>My Profile</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16,17 21,12 16,7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+    <div class="mobile-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="dashboard-header">
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+          <div class="hamburger-box">
+            <div class="hamburger-inner"></div>
+          </div>
+        </button>
+        <div class="header-left">
+          <h1 id="sectionTitle">Overview</h1>
+        </div>
+        <div class="header-right" style="display: flex; align-items: center; gap: 1.5rem;">
+          <!-- Zoom Controls -->
+          <div class="zoom-controls"
+            style="display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.05); padding: 0.25rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+            <button id="zoomOutBtn" class="btn-zoom" title="Zoom Out"
+              style="background: none; border: none; color: #fff; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="width: 18px; height: 18px;">
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </button>
+            <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.1);"></div>
+            <button id="zoomInBtn" class="btn-zoom" title="Zoom In"
+              style="background: none; border: none; color: #fff; cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="width: 18px; height: 18px;">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Scroll Controller -->
+          <div class="scroll-controller">
+            <button class="scroll-btn" id="scrollUpBtn" title="Scroll to Top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M18 15l-6-6-6 6" />
+              </svg>
+            </button>
+            <div class="scroll-visualizer" title="Drag to Scroll">
+              <div class="scroll-indicator" id="scrollIndicator"></div>
+            </div>
+            <button class="scroll-btn" id="scrollDownBtn" title="Scroll to Bottom">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+
+
+          <div class="user-info">
+            <div class="user-avatar staff" id="userAvatar">AU</div>
+            <div class="user-details" style="justify-content: center;">
+              <span class="user-name" id="userName">User</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <!-- Create Test Section -->
+        <section class="content-section active" id="create-test-section">
+
+          <div class="create-test-scroll-wrapper" id="createTestScrollWrapper">
+            <div class="create-test-container">
+              <form id="createTestForm" class="test-form" autocomplete="off">
+                <!-- Test Details Row -->
+                <!-- Test Details Card -->
+                <div class="form-card test-details-card" style="padding: 2.5rem; margin-bottom: 2rem; border-radius: 20px;">
+                  <h3 style="margin-bottom: 2rem; font-size: 1.4rem; color: var(--primary-400); font-weight: 800; display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 24px; height: 24px;">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    Test Information
+                  </h3>
+                  <div class="details-grid">
+                    <div class="form-group">
+                      <label class="form-label">Test Name *</label>
+                      <input type="text" class="form-input" id="testName" placeholder="e.g., Technical Round 1"
+                        required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Company *</label>
+                      <input type="text" class="form-input" id="testCompany" placeholder="e.g., Google" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Schedule Date *</label>
+                      <input type="date" class="form-input" id="testDate" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Duration (mins) *</label>
+                      <input type="number" class="form-input" id="testDuration" placeholder="60" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Difficulty Level *</label>
+                      <select class="form-input" id="testDifficulty" required>
+                        <option value="" disabled selected>Select Difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Pass Percentage (%) *</label>
+                      <input type="number" class="form-input" id="testPassPercentage" placeholder="e.g., 35" min="0" max="100" required />
+                    </div>
+                    <div class="form-group full-width" style="grid-column: span 3;">
+                      <label class="form-label">Description</label>
+                      <textarea class="form-input" id="testDescription" rows="2" placeholder="Brief description of the test context"></textarea>
+                    </div>
+                    <div class="form-group full-width" style="grid-column: span 3;">
+                      <label class="form-label">Syllabus / Reference Material (Optional)</label>
+                      <input type="file" id="testSyllabus" class="form-input" accept=".pdf,.doc,.docx" style="padding: 10px;" />
+                    </div>
+                  </div>
+                </div>
+                <!-- Target Audience (Shortlisting) -->
+                <!-- Targeting Card -->
+                <div class="form-card target-audience-card" style="padding: 2.5rem; margin-bottom: 2rem; border-radius: 20px;">
+                  <h3 style="margin-bottom: 1rem; font-size: 1.4rem; color: var(--success); font-weight: 800; display: flex; align-items: center; gap: 12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 24px; height: 24px;">
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    Precision Targeting
+                  </h3>
+                  <p style="color: var(--gray-400); font-size: 0.9rem; margin-bottom: 2rem;">Apply selective filters to shortlist your candidates.</p>
+
+                  <div class="targeting-filter-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                    <!-- Departments -->
+                    <div class="filter-item">
+                      <label class="form-label">Department</label>
+                      <div class="custom-multi-select" id="deptMultiSelect" data-type="dept">
+                        <div class="select-trigger">
+                          <span class="trigger-text">Select Departments</span>
+                          <span class="trigger-badge" style="display: none;">0</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5;"><path d="M6 9l6 6 6-6" /></svg>
+                        </div>
+                        <div class="select-dropdown">
+                          <div class="search-wrapper" style="margin-bottom: 0.75rem;">
+                            <input type="text" class="dropdown-search search-input-with-clear" placeholder="Search departments..." style="width: 100%; margin-bottom: 0; padding-left: 1rem;">
+                            <button class="search-clear-btn" title="Clear Search">
+                              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                          </div>
+                          <div class="dropdown-actions">
+                            <span style="font-size: 0.7rem; color: var(--gray-400); font-weight: 600;">MULTI-SELECT</span>
+                            <button type="button" class="select-all-btn" style="padding: 2px 6px; font-size: 0.6rem;">Select All</button>
+                          </div>
+                          <div class="options-list" id="targetDepartmentsGrid">
+                            <label class="option-item"><input type="checkbox" value="Arabic"><span class="option-text">Arabic</span></label>
+                            <label class="option-item"><input type="checkbox" value="Business Administration"><span class="option-text">Business Administration</span></label>
+                            <label class="option-item"><input type="checkbox" value="Bio Technology"><span class="option-text">Bio Technology</span></label>
+                            <label class="option-item"><input type="checkbox" value="Botany"><span class="option-text">Botany</span></label>
+                            <label class="option-item"><input type="checkbox" value="Chemistry"><span class="option-text">Chemistry</span></label>
+                            <label class="option-item"><input type="checkbox" value="Commerce"><span class="option-text">Commerce</span></label>
+                            <label class="option-item"><input type="checkbox" value="Computer Science"><span class="option-text">Computer Science</span></label>
+                            <label class="option-item"><input type="checkbox" value="Economics"><span class="option-text">Economics</span></label>
+                            <label class="option-item"><input type="checkbox" value="English"><span class="option-text">English</span></label>
+                            <label class="option-item"><input type="checkbox" value="Fashion Technology"><span class="option-text">Fashion Technology</span></label>
+                            <label class="option-item"><input type="checkbox" value="French"><span class="option-text">French</span></label>
+                            <label class="option-item"><input type="checkbox" value="Hindi"><span class="option-text">Hindi</span></label>
+                            <label class="option-item"><input type="checkbox" value="History"><span class="option-text">History</span></label>
+                            <label class="option-item"><input type="checkbox" value="Hotel Management"><span class="option-text">Hotel Management</span></label>
+                            <label class="option-item"><input type="checkbox" value="Information Technology"><span class="option-text">Information Technology</span></label>
+                            <label class="option-item"><input type="checkbox" value="Mathematics"><span class="option-text">Mathematics</span></label>
+                            <label class="option-item"><input type="checkbox" value="Microbiology"><span class="option-text">Microbiology</span></label>
+                            <label class="option-item"><input type="checkbox" value="Nutrition & Dietetics"><span class="option-text">Nutrition & Dietetics</span></label>
+                            <label class="option-item"><input type="checkbox" value="Physics"><span class="option-text">Physics</span></label>
+                            <label class="option-item"><input type="checkbox" value="Social Work"><span class="option-text">Social Work</span></label>
+                            <label class="option-item"><input type="checkbox" value="Tamil"><span class="option-text">Tamil</span></label>
+                            <label class="option-item"><input type="checkbox" value="Urdu"><span class="option-text">Urdu</span></label>
+                            <label class="option-item"><input type="checkbox" value="Zoology"><span class="option-text">Zoology</span></label>
+                            <label class="option-item"><input type="checkbox" value="Physical Education"><span class="option-text">Physical Education</span></label>
+                            <label class="option-item"><input type="checkbox" value="Visual Communication"><span class="option-text">Visual Communication</span></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Years -->
+                    <div class="filter-item">
+                      <label class="form-label">Academic Year</label>
+                      <div class="custom-multi-select" id="yearMultiSelect" data-type="year">
+                        <div class="select-trigger">
+                          <span class="trigger-text">Select Years</span>
+                          <span class="trigger-badge" style="display: none;">0</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5;"><path d="M6 9l6 6 6-6" /></svg>
+                        </div>
+                        <div class="select-dropdown">
+                          <div class="dropdown-actions">
+                            <span style="font-size: 0.7rem; color: var(--gray-400); font-weight: 600;">MULTI-SELECT</span>
+                            <button type="button" class="select-all-btn" style="padding: 2px 6px; font-size: 0.6rem;">Select All</button>
+                          </div>
+                          <div class="options-list" id="targetYearsGrid">
+                            <label class="option-item"><input type="checkbox" value="1"><span class="option-text">Year 1</span></label>
+                            <label class="option-item"><input type="checkbox" value="2"><span class="option-text">Year 2</span></label>
+                            <label class="option-item"><input type="checkbox" value="3"><span class="option-text">Year 3</span></label>
+                            <label class="option-item"><input type="checkbox" value="4"><span class="option-text">Year 4</span></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Classes -->
+                    <div class="filter-item">
+                      <label class="form-label">Stream / Class Type</label>
+                      <div class="custom-multi-select" id="classMultiSelect" data-type="class">
+                        <div class="select-trigger">
+                          <span class="trigger-text">Select Classes</span>
+                          <span class="trigger-badge" style="display: none;">0</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5;"><path d="M6 9l6 6 6-6" /></svg>
+                        </div>
+                        <div class="select-dropdown">
+                          <div class="dropdown-actions">
+                            <span style="font-size: 0.7rem; color: var(--gray-400); font-weight: 600;">MULTI-SELECT</span>
+                            <button type="button" class="select-all-btn" style="padding: 2px 6px; font-size: 0.6rem;">Select All</button>
+                          </div>
+                          <div class="options-list" id="targetClassesGrid">
+                            <label class="option-item"><input type="checkbox" value="Aided"><span class="option-text">Aided</span></label>
+                            <label class="option-item"><input type="checkbox" value="Self-Financed"><span class="option-text">Self-Financed</span></label>
+                            <label class="option-item"><input type="checkbox" value="UG"><span class="option-text">Undergraduate</span></label>
+                            <label class="option-item"><input type="checkbox" value="PG"><span class="option-text">Postgraduate</span></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Batches -->
+                    <div class="filter-item">
+                      <label class="form-label">Active Batch</label>
+                      <div class="custom-multi-select" id="batchMultiSelect" data-type="batch">
+                        <div class="select-trigger">
+                          <span class="trigger-text">Select Batches</span>
+                          <span class="trigger-badge" style="display: none;">0</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5;"><path d="M6 9l6 6 6-6" /></svg>
+                        </div>
+                        <div class="select-dropdown">
+                          <div class="search-wrapper" style="margin-bottom: 0.75rem;">
+                            <input type="text" class="dropdown-search search-input-with-clear" placeholder="Search batches..." style="width: 100%; margin-bottom: 0; padding-left: 1rem;">
+                            <button class="search-clear-btn" title="Clear Search">
+                              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                          </div>
+                          <div class="dropdown-actions">
+                            <span style="font-size: 0.7rem; color: var(--gray-400); font-weight: 600;">MULTI-SELECT</span>
+                            <button type="button" class="select-all-btn" style="padding: 2px 6px; font-size: 0.6rem;">Select All</button>
+                          </div>
+                          <div class="options-list" id="targetBatchesGrid"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sections -->
+                    <div class="filter-item">
+                      <label class="form-label">Specific Section</label>
+                      <div class="custom-multi-select" id="sectionMultiSelect" data-type="section">
+                        <div class="select-trigger">
+                          <span class="trigger-text">Select Sections</span>
+                          <span class="trigger-badge" style="display: none;">0</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5;"><path d="M6 9l6 6 6-6" /></svg>
+                        </div>
+                        <div class="select-dropdown">
+                          <div class="dropdown-actions">
+                            <span style="font-size: 0.7rem; color: var(--gray-400); font-weight: 600;">MULTI-SELECT</span>
+                            <button type="button" class="select-all-btn" style="padding: 2px 6px; font-size: 0.6rem;">Select All</button>
+                          </div>
+                          <div class="options-list" id="targetSectionsGrid">
+                            <label class="option-item"><input type="checkbox" value="A"><span class="option-text">Section A</span></label>
+                            <label class="option-item"><input type="checkbox" value="B"><span class="option-text">Section B</span></label>
+                            <label class="option-item"><input type="checkbox" value="C"><span class="option-text">Section C</span></label>
+                            <label class="option-item"><input type="checkbox" value="D"><span class="option-text">Section D</span></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Reg Numbers -->
+                    <div class="filter-item span-full" style="grid-column: span 3;">
+                      <label class="form-label">Target Specific Students (Enter Reg Numbers)</label>
+                      <div class="reg-input-group" style="display: flex; gap: 0.75rem;">
+                        <input type="text" id="targetRegInput" placeholder="e.g., 21UCS001, 21UCS002" style="flex: 1; height: 42px;" class="form-input">
+                        <button type="button" id="addTargetRegBtn" class="btn btn-secondary" style="height: 42px; border-radius: 8px;">Add Student</button>
+                      </div>
+                      <div class="selected-reg-tags" id="targetRegList" style="margin-top: 1rem;"></div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- Questions Card -->
+                <div class="form-card questions-card" style="padding: 2.5rem; border-radius: 20px;">
+
+
+                  <div id="questionsContainer" style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Question items will be standard without inner headers unless polymorphic -->
+                    <div class="question-item bounce-in" data-question="1" style="background: linear-gradient(145deg, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.6) 100%); border: 1px solid rgba(255,255,255,0.06); border-left: 4px solid var(--secondary-400); border-radius: 16px; padding: 2.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.15); position: relative; overflow: hidden;">
+                      
+                      <!-- Decorative background glow -->
+                      <div style="position: absolute; top: 0; left: 0; right: 0; height: 100px; background: linear-gradient(180deg, rgba(102,126,234,0.03) 0%, rgba(255,255,255,0) 100%); pointer-events: none;"></div>
+
+                      <div class="question-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; position: relative;">
+                        <span class="question-number" style="font-weight: 800; color: var(--secondary-400); font-size: 1.15rem; display: flex; align-items: center; gap: 10px;">
+                          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(102,126,234,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(102,126,234,0.3);">
+                             <span style="color: var(--secondary-400); font-size: 0.95rem;">1</span>
+                          </div>
+                          Question
+                        </span>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                          <div style="background: rgba(0,0,0,0.2); padding: 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+                            <select class="form-input type-selector" onchange="toggleQuestionType(this)" style="width: 150px; height: 34px; font-size: 0.85rem; padding: 0 0.75rem; border: none; background: transparent; color: var(--gray-300); font-weight: 600;">
+                              <option value="mcq">MCQ Formulation</option>
+                              <option value="coding">Coding Challenge</option>
+                            </select>
+                          </div>
+                          <button type="button" class="remove-question-btn" style="width: 36px; height: 36px; border-radius: 10px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); color: var(--error); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--error)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(239, 68, 68, 0.08)'; this.style.color='var(--error)';">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div class="question-body" style="position: relative;">
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                          <label class="form-label" style="font-size: 0.85rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Problem Statement *</label>
+                          <textarea class="form-input" rows="3" placeholder="Define the problem clearly and concisely..." style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 0.95rem; line-height: 1.6; padding: 1rem;"></textarea>
+                        </div>
+
+                        <!-- MCQ Options -->
+                        <div class="mcq-options">
+                          <label class="form-label" style="font-size: 0.85rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Answer Choices</label>
+                          <div class="options-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem;">
+                            <div style="position: relative; display: flex; align-items: center;">
+                              <span style="position: absolute; left: 1rem; color: var(--gray-500); font-weight: 700; font-size: 0.85rem;">A</span>
+                              <input type="text" class="form-input" placeholder="First option..." style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding-left: 2.5rem;">
+                            </div>
+                            <div style="position: relative; display: flex; align-items: center;">
+                              <span style="position: absolute; left: 1rem; color: var(--gray-500); font-weight: 700; font-size: 0.85rem;">B</span>
+                              <input type="text" class="form-input" placeholder="Second option..." style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding-left: 2.5rem;">
+                            </div>
+                            <div style="position: relative; display: flex; align-items: center;">
+                              <span style="position: absolute; left: 1rem; color: var(--gray-500); font-weight: 700; font-size: 0.85rem;">C</span>
+                              <input type="text" class="form-input" placeholder="Third option..." style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding-left: 2.5rem;">
+                            </div>
+                            <div style="position: relative; display: flex; align-items: center;">
+                              <span style="position: absolute; left: 1rem; color: var(--gray-500); font-weight: 700; font-size: 0.85rem;">D</span>
+                              <input type="text" class="form-input" placeholder="Fourth option..." style="background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding-left: 2.5rem;">
+                            </div>
+                          </div>
+                          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 1.5rem; padding-top: 1.5rem; margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1);">
+                            <div style="display: flex; align-items: center;">
+                              <span style="color: var(--gray-400); font-size: 0.85rem; display: flex; align-items: center; gap: 8px; font-weight: 500;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; color: var(--success);"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                Definitive Correct Formulation:
+                              </span>
+                            </div>
+                            <div style="width: 260px;">
+                              <select class="form-input mcq-answer" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success); border-radius: 10px; font-weight: 600; font-size: 0.9rem; cursor: pointer; padding: 0.6rem 1rem; width: 100%; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08); transition: all 0.2s;" onmouseover="this.style.background='rgba(16, 185, 129, 0.12)'; this.style.borderColor='rgba(16, 185, 129, 0.5)';" onmouseout="this.style.background='rgba(16, 185, 129, 0.08)'; this.style.borderColor='rgba(16, 185, 129, 0.3)';">
+                                <option value="A" style="color: #fff; background: #0f172a;">Option A is Correct</option>
+                                <option value="B" style="color: #fff; background: #0f172a;">Option B is Correct</option>
+                                <option value="C" style="color: #fff; background: #0f172a;">Option C is Correct</option>
+                                <option value="D" style="color: #fff; background: #0f172a;">Option D is Correct</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Coding Options -->
+                        <div class="coding-options" style="display: none;">
+                          <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label class="form-label" style="font-size: 0.85rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Primary Architecture Language</label>
+                            <div class="languages-checkbox-group" style="display: flex; gap: 1.5rem;">
+                              <label style="display: flex; align-items: center; gap: 8px; color: var(--gray-300); font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'"><input type="radio" name="allowed_language_1" value="c" checked style="accent-color: var(--secondary-400);"> C</label>
+                              <label style="display: flex; align-items: center; gap: 8px; color: var(--gray-300); font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'"><input type="radio" name="allowed_language_1" value="cpp" style="accent-color: var(--secondary-400);"> C++</label>
+                              <label style="display: flex; align-items: center; gap: 8px; color: var(--gray-300); font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'"><input type="radio" name="allowed_language_1" value="python" style="accent-color: var(--secondary-400);"> Python</label>
+                              <label style="display: flex; align-items: center; gap: 8px; color: var(--gray-300); font-weight: 600; cursor: pointer; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'"><input type="radio" name="allowed_language_1" value="java" style="accent-color: var(--secondary-400);"> Java</label>
+                            </div>
+                          </div>
+                          <div class="form-group" style="background: rgba(30,41,59,0.5); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                            <label class="form-label" style="font-size: 0.85rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Expected Execution Output *</label>
+                            <textarea class="form-input expected-output" rows="3" placeholder="Provide exactly what the code should output to successfully pass..." style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-family: monospace;"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button type="button" class="btn btn-secondary add-question-btn" id="addQuestionBtn" style="margin-top: 3rem; width: 100%; border: 2px dashed rgba(102, 126, 234, 0.4); background: rgba(102, 126, 234, 0.05); color: var(--secondary-400); height: 60px; border-radius: 14px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.background='rgba(102, 126, 234, 0.1)'; this.style.borderColor='var(--secondary-400)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(102, 126, 234, 0.05)'; this.style.borderColor='rgba(102, 126, 234, 0.4)'; this.style.transform='translateY(0)';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 22px; height: 22px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                    Add Questions
+                  </button>
+                </div>
+
+
+
+                  <div class="form-actions" style="margin-top: 1rem; padding-bottom: 4rem;">
+                    <button type="submit" class="btn btn-primary btn-lg" id="publishTestBtn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="width: 20px; height: 20px;">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                      Publish Test & Shortlist Students
+                    </button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Publish Review Section -->
+        <section class="content-section" id="publish-review-section">
+          <div class="section-intro">
+            <h2>Review & Publish</h2>
+            <p>Verify test details and target audience before making it live</p>
+          </div>
+
+          <div class="publish-container glass-panel"
+            style="padding: 2rem; border-radius: 1.5rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+            <div id="publishReviewBody">
+              <!-- Content injected by JS -->
+              <div style="text-align: center; padding: 4rem; color: var(--gray-500);">
+                <p>Loading test details...</p>
+              </div>
+            </div>
+
+            <div class="publish-actions"
+              style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: flex-end; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+              <button type="button" class="btn btn-ghost" id="publishBackBtn">
+                Back to Editing
+              </button>
+              <button type="button" class="btn btn-primary" id="confirmPublishBtn"
+                style="padding: 1rem 2.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  style="width: 20px; height: 20px;">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                Confirm & Publish
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Manage Tests Section (STMAI) -->
+        <section class="content-section" id="manage-tests-section">
+          <div id="stmai-list-view">
+
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  </svg></div>
+                <div class="stat-info"><span class="stat-value" id="staffTotalTests">0</span><span
+                    class="stat-label">Total
+                    Tests</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12,6 12,12 16,14" />
+                  </svg></div>
+                <div class="stat-info"><span class="stat-value" id="staffActiveTests">0</span><span
+                    class="stat-label">Active</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                  </svg></div>
+                <div class="stat-info"><span class="stat-value" id="staffParticipants">0</span><span
+                    class="stat-label">Participants</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                  </svg></div>
+                <div class="stat-info"><span class="stat-value" id="staffPassRate">0%</span><span
+                    class="stat-label">Pass
+                    Rate</span></div>
+              </div>
+            </div>
+
+            <div class="tests-table-container">
+              <div class="table-header" style="justify-content: flex-start; gap: 1rem;">
+                <div class="search-wrapper" style="flex: 1; max-width: 450px; position: relative;">
+                  <input type="text" class="form-input search-input search-input-with-clear" id="stmai-test-search"
+                    placeholder="Search by Test Name, ID or Status..." autocomplete="off"
+                    style="width: 100%; max-width: none; cursor: text; padding-left: 1rem;">
+                  <button class="search-clear-btn" id="clearTestSearch" title="Clear Search">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table stmai-tests-table" style="table-layout: fixed;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center; width: 220px;">Test Information</th>
+                      <th style="text-align: center; width: 140px;">Company</th>
+                      <th style="text-align: center; width: 120px;">Date</th>
+                      <th style="text-align: center; width: 120px;">Participants</th>
+                      <th style="text-align: center; width: 120px;">Status</th>
+                      <th style="text-align: center; width: 150px; padding-right: 25px;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="testsTableBody">
+                    <!-- Loaded via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Single Test Detailed Dashboard (STMAI) -->
+          <div id="stmai-detail-view" style="display: none;">
+            <button class="btn" onclick="closeSTMAIDetails()"
+              style="margin-bottom: 2rem; display: inline-flex; align-items: center; gap: 10px; padding: 0.7rem 1.75rem; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35); transition: all 0.3s ease;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="width: 18px; height: 18px;">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              Back to All Tests
+            </button>
+
+            <div class="form-card" style="margin-bottom: 2rem; border-left: 4px solid var(--blue-600);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1;">
+
+                  <h2 id="stmai-test-name" style="margin: 0; font-size: 2.25rem; font-weight: 800; color: #fff;">Test Name</h2>
+                  <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <span style="color: var(--gray-500); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Company</span>
+                    <p id="stmai-test-company" style="margin: 0.25rem 0 0; color: var(--blue-400); font-size: 1.25rem; font-weight: 600;">
+                      Company Name</p>
+                  </div>
+                </div>
+                <div id="stmai-test-status-badge" style="display: flex; gap: 0.75rem; align-items: center;">
+                  <button class="btn btn-ghost btn-sm" id="stmai-delete-test-trigger"
+                    style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 0.5rem 1rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width: 14px; height: 14px; margin-right: 6px;">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                    </svg>
+                    Delete Test
+                  </button>
+                </div>
+              </div>
+
+              <!-- STMAI Tab Navigation -->
+              <div class="stmai-tabs" style="margin-top: 2.5rem;">
+                <button class="stmai-tab active" data-stmai-tab="overview"
+                  onclick="switchSTMAITab('overview')">Overview</button>
+                <button class="stmai-tab" data-stmai-tab="analytics"
+                  onclick="switchSTMAITab('analytics')">Participants</button>
+                <button class="stmai-tab" data-stmai-tab="results" onclick="switchSTMAITab('results')">Detailed
+                  Results</button>
+                <button class="stmai-tab" data-stmai-tab="ranking" onclick="switchSTMAITab('ranking')">Ranking</button>
+              </div>
+
+              <!-- Tab Contents -->
+              <div id="stmai-tab-overview" class="stmai-tab-content active" style="padding: 1.5rem 0;">
+                <div class="details-grid" style="margin-bottom: 2rem;">
+                  <div class="form-group"><label class="form-label">Total Questions</label>
+                    <div class="form-input" id="stmai-ov-questions" style="background: rgba(255,255,255,0.03);">--</div>
+                  </div>
+                  <div class="form-group"><label class="form-label">Time Duration</label>
+                    <div class="form-input" id="stmai-ov-duration" style="background: rgba(255,255,255,0.03);">--</div>
+                  </div>
+                  <div class="form-group"><label class="form-label">Publish Date</label>
+                    <div class="form-input" id="stmai-ov-date" style="background: rgba(255,255,255,0.03);">--</div>
+                  </div>
+                </div>
+
+                <!-- Targeted Audience Card -->
+                <div style="margin-top: 2rem;">
+                  <div onclick="openTargetedAudienceModal()" id="stmai-ov-targeted-audience" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0.02) 100%); border: 1px solid rgba(245, 158, 11, 0.18); border-radius: 16px; padding: 1.5rem 2rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transform: none !important; transition: none !important;">
+                    <div style="display: flex; align-items: center; gap: 1.25rem;">
+                      <div style="width: 52px; height: 52px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 24px; height: 24px;">
+                          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Targeted Audience</div>
+                        <div style="font-size: 0.75rem; color: var(--gray-400); font-weight: 500; margin-bottom: 6px;">View all students assigned to this assessment</div>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 20px; padding: 3px 14px;">
+                          <span style="font-size: 1.1rem; font-weight: 800; color: #f59e0b;" id="stmai-targeted-count">--</span>
+                          <span style="font-size: 0.7rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.04em;">Participants</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.15); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stats-grid" id="stmai-overview-stats" style="margin-top: 2rem; gap: 1.5rem;">
+                  <!-- Essential stats injected here -->
+                </div>
+              </div>
+
+              <div id="stmai-tab-analytics" class="stmai-tab-content" style="padding: 1.5rem 0;">
+                <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                  <h3 style="margin: 0;">Participants</h3>
+                  <div class="badge" id="stmai-attendance-badge"
+                    style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; font-weight: 600;">-- Students</div>
+                </div>
+                <div class="table-scroll">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                        <th>Score</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="stmai-analytics-tbody">
+                      <!-- Injected via JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="stmai-tab-results" class="stmai-tab-content" style="padding: 1.5rem 0;">
+                <div id="stmai-results-placeholder" class="form-card"
+                  style="text-align: center; padding: 4rem 2rem; background: rgba(0,0,0,0.1); border: 2px dashed rgba(255,255,255,0.05);">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.3;">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  <p style="color: var(--gray-400); font-weight: 500;">Select a student from the <strong>Student
+                      Analytics</strong> tab<br>to view their detailed performance breakdown.</p>
+                </div>
+                <div id="stmai-detailed-report-view" style="display: none;">
+                  <!-- Reports injected here -->
+                </div>
+              </div>
+
+              <div id="stmai-tab-ranking" class="stmai-tab-content" style="padding: 1.5rem 0;">
+                <!-- Ranking list injected here -->
+                <div style="text-align: center; padding: 4rem; color: var(--gray-500);">
+                  <p>Select a test to view its ranking data.</p>
+                </div>
+              </div>
+
+              <div id="stmai-tab-settings" class="stmai-tab-content" style="padding: 1.5rem 0;">
+                <div class="danger-zone">
+                  <h3 style="color: #ef4444; margin-top: 0; display: flex; align-items: center; gap: 8px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width: 20px; height: 20px;">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    Critical Actions
+                  </h3>
+                  <p style="color: var(--gray-400); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">
+                    Deleting this test will permanently erase all metadata, associated student assignments, and recorded
+                    scores.
+                    <strong>This operation is irreversible.</strong>
+                  </p>
+                  <button class="btn btn-outline" id="stmai-delete-test-trigger"
+                    style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3); font-weight: 700;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width: 18px; height: 18px; margin-right: 8px;">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                    </svg>
+                    Permanently Delete Test
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Students Management Section -->
+        <section class="content-section" id="students-section">
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="totalStudents">0</span><span class="stat-label">Total Students</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="totalDepartments">0</span><span class="stat-label">Departments</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12,6 12,12 16,14" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="activeStudents">0</span><span class="stat-label">Active</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                </svg>
+              </div>
+              <div class="stat-info">
+                <span class="stat-value" id="placedStudents">0</span><span class="stat-label">Placed</span>
+              </div>
+            </div>
+          </div>
+            <div class="table-header" style="gap: 0.75rem; flex-wrap: wrap; align-items: center; padding: 1.5rem 0;">
+              <div class="search-wrapper" style="width: 280px; flex-shrink: 0; position: relative;">
+                <input type="text" class="form-input search-input search-input-with-clear" id="studentSearch"
+                  placeholder="Search by name, register number..." autocomplete="off" style="width: 100%; padding-left: 1rem; height: 38px; font-size: 0.85rem;" />
+                <button class="search-clear-btn" id="clearStudentSearch" title="Clear Search">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <select class="form-input filter-select styled-select" id="departmentFilter" style="flex: 1; min-width: 160px; height: 38px; font-size: 0.85rem;">
+                <option value="">All Departments</option>
+                <option value="Arabic">Arabic</option>
+                <option value="Business Administration">Bus. Admin</option>
+                <option value="Bio Technology">Bio Tech</option>
+                <option value="Botany">Botany</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Economics">Economics</option>
+                <option value="English">English</option>
+                <option value="Fashion Technology">Fashion Tech</option>
+                <option value="French">French</option>
+                <option value="Hindi">Hindi</option>
+                <option value="History">History</option>
+                <option value="Hotel Management">Hotel Mgt</option>
+                <option value="Information Technology">Info Tech</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Nutrition & Dietetics">Nutrition</option>
+                <option value="Physics">Physics</option>
+                <option value="Social Work">Social Work</option>
+                <option value="Tamil">Tamil</option>
+                <option value="Urdu">Urdu</option>
+                <option value="Zoology">Zoology</option>
+                <option value="Physical Education">Phys. Edu</option>
+                <option value="Visual Communication">Vis. Com</option>
+              </select>
+              <select class="form-input filter-select styled-select" id="classFilter" style="width: 130px; flex-shrink: 0; height: 38px; font-size: 0.85rem;">
+                <option value="">All Classes</option>
+              </select>
+              <select class="form-input filter-select styled-select" id="yearFilter" style="width: 120px; flex-shrink: 0; height: 38px; font-size: 0.85rem;">
+                <option value="">All Years</option>
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+              </select>
+              <select class="form-input filter-select styled-select" id="batchFilter" style="width: 130px; flex-shrink: 0; height: 38px; font-size: 0.85rem;">
+                <option value="">All Batches</option>
+                <option value="2022-2025">Batch 2022-25</option>
+                <option value="2023-2026">Batch 2023-26</option>
+                <option value="2024-2027">Batch 2024-27</option>
+                <option value="2025-2028">Batch 2025-28</option>
+              </select>
+            </div>
+            <div style="background: rgba(13, 14, 28, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden;">
+              <table class="data-table" style="table-layout: fixed; width: 100%; border-collapse: collapse; overflow: hidden;">
+                <thead>
+                  <tr style="background: rgba(255,255,255,0.02);">
+                    <th style="width: 100px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Reg. No</th>
+                    <th style="width: 160px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Student Name</th>
+                    <th style="width: 170px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Department</th>
+                    <th style="width: 60px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Year</th>
+                    <th style="width: 60px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Sec</th>
+                    <th style="width: 85px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Batch</th>
+                    <th style="width: 90px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Stream</th>
+                    <th style="width: 100px; text-align: center; padding: 0.75rem 1rem; font-size: 0.75rem;">Tests</th>
+                    <th style="width: 80px; text-align: center; padding: 0.75rem 1rem; font-size: 0.75rem;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                  <tr>
+                    <td colspan="9">
+                      <div style="
+                            text-align: center;
+                            padding: 3rem;
+                            color: var(--gray-500);
+                          ">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="
+                              width: 48px;
+                              height: 48px;
+                              margin-bottom: 1rem;
+                              opacity: 0.5;
+                            ">
+                          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                          <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                          <path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        <p style="font-size: 1.1rem; font-weight: 500">
+                          No Students Found
+                        </p>
+                        <p style="font-size: 0.9rem; opacity: 0.8">
+                          No students have registered in this category yet.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+
+        <!-- ========== STUDENT LOOKUP SECTION ========== -->
+        <section class="content-section" id="student-lookup-section">
+          <div class="lookup-wrapper" style="width: 100%; padding: 0 1.5rem;">
+            <div class="section-intro" style="margin-bottom: 1.5rem; padding: 0 0.5rem;">
+              <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -0.01em;">Student Explorer</h2>
+              <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Access student profiles and assessment metrics via register number.</p>
+            </div>
+            
+            <div class="lookup-search-simple" style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 2.5rem; max-width: 550px; margin-left: 0.5rem; flex-wrap: wrap;">
+              <div style="position: relative; height: 38px; flex: 1; display: flex; align-items: center; background: rgba(13, 14, 28, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                <input type="text" class="form-input" id="studentLookupInput"
+                  placeholder="Enter the Register No" autocomplete="off" 
+                  style="width: 100%; height: 100%; padding-left: 1rem; padding-right: 2.5rem; border: none; background: transparent; color: #fff; font-size: 0.85rem;" />
+                <button class="search-clear-btn" id="clearLookupInput" title="Clear Search" style="right: 0.5rem; width: 24px; height: 24px;">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3">
+                    <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+              <button type="button" class="btn btn-primary" id="studentLookupBtn"
+                style="height: 38px; padding: 0 1.5rem; background: #6366f1; border: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; transition: background 0.3s; color: #fff; cursor: pointer; white-space: nowrap;">
+                Find Record
+              </button>
+            </div>
+            
+            <div id="studentLookupResult" style="min-height: 400px; transition: all 0.3s;">
+              <div style="text-align: center; padding: 4rem 2rem; background: rgba(26, 27, 46, 0.3); border-radius: 20px; border: 2px dashed rgba(255,255,255,0.05); color: var(--gray-500); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="width: 56px; height: 56px; background: rgba(0,0,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    style="width: 28px; height: 28px; color: var(--gray-400);">
+                    <path d="M12 11c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"></path>
+                    <path d="M18 21v-2a4 4 0 00-4-4H10a4 4 0 00-4 4v2"></path>
+                  </svg>
+                </div>
+                <p style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem;">No Student Selected</p>
+                <p style="font-size: 0.8rem; line-height: 1.4; max-width: 320px; margin: 0 auto; color: var(--gray-500);">Enter a register number above to instantly lookup profile metrics.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Overall Ranking Section -->
+        <section class="content-section" id="ranking-section">
+          <div class="ranking-wrapper" style="width: 100%; padding: 0 1.5rem;">
+
+            <div id="overall-ranking-list" style="transition: all 0.3s;">
+              <!-- Injected via RankingSystem.loadOverallRanking() -->
+              <div style="text-align: center; padding: 3rem 1.5rem; background: rgba(26, 27, 46, 0.4); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.05); color: var(--gray-500); display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(12px);">
+                <div style="width: 56px; height: 56px; background: rgba(0,0,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    style="width: 28px; height: 28px; color: var(--gray-400);">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+                <p style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem;">Leaderboard Inactive</p>
+                <p style="font-size: 0.8rem; line-height: 1.4; max-width: 320px; margin: 0 auto; color: var(--gray-500);">Select the Ranking module to synchronize and view global student metrics.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== FULL-PAGE PUBLISH REVIEW SECTION ========== -->
+        <section class="content-section" id="publish-review-section">
+          <div class="publish-review-page">
+            <!-- Professional Header -->
+            <div class="publish-header">
+              <div class="publish-header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="width: 32px; height: 32px;">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div>
+                <h2 style="margin: 0; font-size: 1.75rem; font-weight: 700;">Ready to Publish</h2>
+                <p style="margin: 0.25rem 0 0; color: var(--gray-400); font-size: 0.9rem;">Review the test configuration
+                  before making it live for students</p>
+              </div>
+            </div>
+
+            <!-- Review Content -->
+            <div id="publishReviewBody" class="publish-review-body">
+              <!-- Dynamically populated by JS -->
+            </div>
+
+            <!-- Action Bar -->
+            <div class="publish-action-bar">
+              <button type="button" class="btn btn-ghost publish-back-btn" id="publishBackBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  style="width: 18px; height: 18px; margin-right: 6px;">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                Back to Editing
+              </button>
+              <button type="button" class="btn btn-primary" id="confirmPublishBtn"
+                style="padding: 0.75rem 2.5rem; font-weight: 600; box-shadow: 0 8px 24px rgba(102,126,234,0.3);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  style="width: 18px; height: 18px; margin-right: 8px;">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+                Confirm &amp; Publish
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI Question Generator Section -->
+        <section class="content-section" id="ai-generator-section">
+          <div class="ai-gen-container">
+            <!-- Professional Header -->
+            <div class="ai-gen-header" style="margin-bottom: 1.5rem;">
+              <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -0.01em;">AEZN Process Engine</h2>
+              <p style="color: #64748b; font-size: 0.85rem; margin-top: 0.25rem;">Upload structured documentation for automated assessment generation.</p>
+            </div>
+
+            <!-- Enhanced Upload Workflow (Two Column) -->
+            <div class="ai-upload-grid" id="uploadZone">
+              <!-- MCQ Integrated Path -->
+              <div class="ai-workflow-card mcq-path">
+                <div class="card-top">
+                  <div class="ai-card-icon mcq">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                      <rect x="9" y="3" width="6" height="4" rx="1" />
+                      <path d="M9 14l2 2 4-4" />
+                    </svg>
+                  </div>
+                  <div class="card-info">
+                    <h3>MCQ Documentation</h3>
+                    <p>Standard multiple choice format</p>
+                  </div>
+                </div>
+
+                <div class="format-sample-box mcq-style">
+                  <div class="format-label">REQUIRED FORMAT</div>
+                  <pre><b>1.</b> Question text goes here?
+<b>A.</b> First Option
+<b>B.</b> Second Option
+<b>C.</b> Third Option
+<b>D.</b> Fourth Option
+<b>Answer:</b> B</pre>
+                </div>
+
+                <div class="ai-button-actions">
+                  <button class="ai-action-btn upload-primary mcq" onclick="triggerAiUpload('mcq')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload MCQ
+                  </button>
+                  <button class="ai-action-btn download-secondary" onclick="downloadSampleMCQ()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Sample Format
+                  </button>
+                </div>
+              </div>
+
+              <!-- Coding Integrated Path -->
+              <div class="ai-workflow-card coding-path">
+                <div class="card-top">
+                  <div class="ai-card-icon coding">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" /><line x1="14" y1="4" x2="10" y2="20" />
+                    </svg>
+                  </div>
+                  <div class="card-info">
+                    <h3>Coding Documentation</h3>
+                    <p>Code logic & expected output</p>
+                  </div>
+                </div>
+
+                <div class="format-sample-box coding-style">
+                  <div class="format-label">REQUIRED FORMAT</div>
+                  <pre><b>Question:</b> Write a program to...
+<b>Language:</b> Python
+<b>Output:</b> Hello World</pre>
+                </div>
+
+                <div class="ai-button-actions">
+                  <button class="ai-action-btn upload-primary coding" onclick="triggerAiUpload('coding')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Coding
+                  </button>
+                  <button class="ai-action-btn download-secondary" onclick="downloadSampleCoding()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Sample Format
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <input type="file" id="aiFileInput" accept=".docx" style="display: none;" />
+
+            <!-- Processing State -->
+            <div class="processing-state" id="processingState" style="display: none; margin-top: 2rem;">
+              <div class="ai-spinner"></div>
+              <h3 id="processingTitle">Processing Document...</h3>
+              <p id="processingSubtitle" style="color: var(--gray-400); font-size: 0.9rem; margin: 0.5rem 0 1.5rem;"></p>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="extractionProgress"></div>
+              </div>
+            </div>
+
+            <!-- Extraction Results (Review Interface) -->
+            <div class="extraction-results" id="extractionResults" style="display: none;">
+              <div class="results-header">
+                <div>
+                  <h3>Extracted Questions (<span id="extractedCount">0</span>)</h3>
+                  <p style="color: var(--gray-500); font-size: 0.85rem; margin-top: 0.25rem;" id="extractionSummary">
+                  </p>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                  <button class="btn btn-ghost" id="reUploadBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width: 16px; height: 16px; margin-right: 4px;">
+                      <polyline points="1 4 1 10 7 10" />
+                      <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
+                    </svg>
+                    Re-upload
+                  </button>
+                  <button class="btn btn-primary" id="finalizeExtractionBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width: 18px; height: 18px; margin-right: 8px;">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Create Quiz
+                  </button>
+                </div>
+              </div>
+              <div class="results-list" id="extractedQuestionsList">
+                <!-- Extracted items will be injected here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section" id="profile-section">
+          <div class="profile-wrapper" style="width: 100%; padding: 0 1.5rem;">
+
+            
+            <div class="profile-card-premium" style="background: rgba(13, 14, 28, 0.45); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 100px rgba(0,0,0,0.5); backdrop-filter: blur(30px); border-radius: 24px; padding: 4rem;">
+              <div class="profile-header-main" style="gap: 3rem; padding-bottom: 3.5rem; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="profile-avatar-container" style="position: relative;">
+                  <div class="profile-avatar-large staff" id="profileAvatarLarge"
+                    style="width: 100px; height: 100px; font-size: 2.5rem; border-radius: 1.5rem; overflow: hidden; position: relative; border: 3px solid rgba(99, 102, 241, 0.3); background: rgba(0,0,0,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <img id="profilePictureDisplay" src=""
+                      style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+                    <span id="profileInitials" style="font-family: 'Space Grotesk', sans-serif; font-weight: 800;">AU</span>
+                  </div>
+                  <label for="profilePhotoInput" class="photo-upload-btn"
+                    style="position: absolute; bottom: -10px; right: -10px; background: var(--primary-500); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 4px solid #0d0e1c; box-shadow: 0 8px 20px rgba(0,0,0,0.5); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                      style="width: 18px; height: 18px; color: white;">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;"
+                      onchange="handleProfilePhotoUpload(event)" />
+                  </label>
+                </div>
+                <div class="profile-identity">
+                  <h1 id="profileUsername" style="margin: 0; font-size: 2.5rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;">---</h1>
+                  <p style="margin: 0.5rem 0 0; color: var(--primary-400); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem;">Verified Staff Institutional Record</p>
+                </div>
+              </div>
+
+              <div class="profile-details-grid">
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03); transition: all 0.3s;">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Full Name</span>
+                  <h1 class="profile-h1" id="profileFullName" style="margin-top: 0.75rem; font-size: 1.25rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03);">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Staff Code / ID</span>
+                  <h1 class="profile-h1" id="profileRegNo" style="margin-top: 0.75rem; font-size: 1.25rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03);">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Official Designation</span>
+                  <h1 class="profile-h1" id="profileStaffRole" style="margin-top: 0.75rem; font-size: 1.25rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03);">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Primary Department</span>
+                  <h1 class="profile-h1" id="profileStaffDeptFull" style="margin-top: 0.75rem; font-size: 1.25rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03);">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Email Address</span>
+                  <h1 class="profile-h1" id="profileEmail" style="margin-top: 0.75rem; font-size: 1.1rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+
+                <div class="profile-info-block" style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03);">
+                  <span class="block-label" style="font-size: 0.75rem; color: #64748b; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Joined Date</span>
+                  <h1 class="profile-h1" id="profileJoined" style="margin-top: 0.75rem; font-size: 1.1rem; color: #fff; font-weight: 800;">---</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Programming Insights Section -->
+        <section class="content-section" id="programming-insights-section">
+          <div class="section-intro">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: -0.01em;">Programming Insights: Compilation</h2>
+            <p style="color: var(--gray-400); font-size: 0.85rem; margin-top: 0.25rem;">A technical guide on source code transformation.</p>
+          </div>
+
+          <div class="glass-panel"
+            style="padding: 1.5rem; border-radius: 16px; line-height: 1.6; color: var(--gray-300);">
+            <h3
+              style="color: #6366f1; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                <path d="M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              </svg>
+              The Compilation Lifecycle
+            </h3>
+
+            <div style="font-size: 0.9rem;">
+              <p style="margin-bottom: 1.5rem;">The common process for compiling and running a program, especially in
+                languages like C or C++, involves several systematic stages that transform human-readable source code
+                into machine-executable instructions. First, the programmer writes the program using a text editor and
+                saves it as a source file, such as <strong>hello.c</strong>. This file contains the program written in a
+                high-level language that humans can understand but the computer cannot execute directly. The first stage
+                in processing this program is called <strong>preprocessing</strong>. During preprocessing, the
+                preprocessor handles special directives such as <code>#include</code>, <code>#define</code>, and
+                conditional compilation statements. For example, <code>#include &lt;stdio.h&gt;</code> tells the
+                preprocessor to include the contents of the standard input-output library file, and any macros defined
+                using <code>#define</code> are expanded. Comments are also removed at this stage, and the result is an
+                expanded version of the source code that is ready for compilation.</p>
+
+              <p style="margin-bottom: 1.5rem;">The next stage is <strong>compilation</strong>, where the compiler
+                checks the program for syntax errors and ensures that the structure of the program follows the language
+                rules. If the code is correct, the compiler translates the preprocessed code into <strong>assembly
+                  language</strong>, which is a low-level representation that is closer to machine language but still
+                somewhat readable. After compilation, the <strong>assembler</strong> converts the assembly code into
+                <strong>object code</strong>, which is machine language in binary form. This object file (for example,
+                <code>hello.o</code>) contains instructions that the computer’s processor can understand, but it may
+                still lack references to external libraries required for execution. Therefore, the next stage is
+                <strong>linking</strong>. During linking, the linker combines the object file with other required
+                library files, such as standard libraries used by functions like <code>printf</code>. The linker
+                resolves these references and produces a final <strong>executable file</strong>, such as
+                <code>hello.exe</code> in Windows or <code>a.out</code> in Linux.
+              </p>
+
+              <p style="margin-bottom: 1.5rem;">Once the executable file is created, the program can be <strong>run or
+                  executed</strong>. When the user runs the program, the operating system loads the executable file into
+                the computer’s memory (RAM). The CPU then begins executing the program starting from the
+                <code>main()</code> function. The processor follows a fundamental cycle called the
+                <strong>fetch–decode–execute cycle</strong>, where it fetches an instruction from memory, decodes what
+                the instruction means, and then executes it. During execution, the program may use different memory
+                areas such as the <strong>stack</strong> for function calls, the <strong>heap</strong> for dynamically
+                allocated memory, the <strong>data segment</strong> for global variables, and the <strong>text
+                  segment</strong> for the compiled instructions. As the CPU processes each instruction sequentially,
+                the program performs its intended tasks, such as displaying output on the screen. In this way, the
+                compilation and execution process converts a human-written program into machine instructions that the
+                computer can run efficiently.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section Container (With Isolation Shield) -->
+        <style>
+          /* Strong isolation for settings to prevent bleeding into other pages */
+          #settings-section:not(.active) {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            max-height: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            z-index: -9999 !important;
+          }
+          /* Hide any rogue settings containers when not in settings section */
+          body:not(:has(#settings-section.active)) .settings-container,
+          body:not(:has(#settings-section.active)) .settings-header,
+          body:not(:has(#settings-section.active)) .settings-bento-grid {
+            display: none !important;
+          }
+        </style>
+        <section class="content-section" id="settings-section"></section>
+      </div>
+    </main>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/scroll-control.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/zoom-control.js"></script>
+  <script src="js/ranking-system.js"></script>
+  <script src="js/dashboard.js?v=3.1"></script>
+  <script src="js/staff-dashboard.js"></script>
+  <script src="js/ai-buddy.js"></script>
+  <script src="js/staff-settings.js"></script>
+  <script>
+    // Dynamically load settings HTML
+    fetch('settings/settings.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('settings-section').innerHTML = html;
+        if(window.StaffSettings && typeof window.StaffSettings.init === 'function') {
+            window.StaffSettings.init();
+        }
+      })
+      .catch(err => console.error('Error loading settings:', err));
+
+    // Hook into tab switching for ranking
+    const originalSwitchTab = window.switchSTMAITab;
+    window.switchSTMAITab = function (tabId) {
+      if (typeof originalSwitchTab === 'function') originalSwitchTab(tabId);
+      if (tabId === 'ranking') {
+        const testId = window.currentSTMAITestId; // Assuming this is set in staff-dashboard.js
+        if (testId) window.RankingSystem.loadTestRanking(testId);
+      }
+    };
+
+    // Hook into nav switching for overall ranking
+    document.querySelector('[data-section="ranking"]')?.addEventListener('click', () => {
+      window.RankingSystem.loadOverallRanking();
+    });
+  </script>
+</body>
+
+</html>

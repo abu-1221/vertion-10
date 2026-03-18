@@ -1,0 +1,1627 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Take Test | JMC-Test</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+
+
+  <script src="js/db.js" defer></script>
+  <style>
+    body {
+      background: linear-gradient(135deg,
+          #0f0f23 0%,
+          #1a1a2e 50%,
+          #16213e 100%);
+      min-height: 100vh;
+    }
+
+    .test-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+
+    .test-header {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .test-header h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .test-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray-400);
+    }
+
+    .info-item svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--primary-400);
+    }
+
+    .timer-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+      transition: width 1s linear;
+    }
+
+    .question-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .question-number {
+      font-family: var(--font-display);
+      color: var(--primary-400);
+      font-weight: 700;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .q-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(102, 126, 234, 0.1);
+      color: #667eea;
+      font-size: 0.7rem;
+      border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .q-type-badge.coding {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .question-text {
+      font-size: 1.35rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    /* MCQ Layout Fix */
+    .options-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.25rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 600;
+      color: var(--gray-300);
+      font-size: 1.1rem;
+    }
+
+    .option-label:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(102, 126, 234, 0.4);
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    .option-item input[type="radio"]:checked+.option-label {
+      background: rgba(102, 126, 234, 0.15);
+      border-color: var(--primary-500);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+      color: #fff;
+    }
+
+    .option-letter {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-right: 1.5rem;
+      font-size: 1rem;
+      transition: all 0.25s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .option-item input[type="radio"]:checked+.option-label .option-letter {
+      background: var(--primary-500);
+      color: #fff;
+      border-color: var(--primary-400);
+    }
+
+    .pulse-animation {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.6;
+      }
+    }
+
+    .btn-dashboard-highlight {
+      background: var(--gradient-primary);
+      color: #fff !important;
+      padding: 0.875rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-dashboard-highlight:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+      filter: brightness(1.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Functional Coding Grid Styles */
+    :root {
+      --grid-border: #333;
+      --grid-bg: #1e1e1e;
+      --code-accent: #3b82f6;
+      --terminal-solid: #000;
+      --success-solid: #10b981;
+      --error-solid: #ef4444;
+    }
+
+    .coding-grid-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .grid-region {
+      border: 2px solid var(--grid-border);
+      border-radius: 8px;
+      background: var(--grid-bg);
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .grid-header {
+      background: #2d2d2d;
+      padding: 10px 20px;
+      border-bottom: 2px solid var(--grid-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #aaa;
+    }
+
+    /* Input Grid Specifics */
+    .input-grid {
+      border-color: var(--code-accent);
+    }
+
+    .input-grid-header {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--code-accent);
+      border-bottom-color: var(--code-accent);
+    }
+
+    .grid-textarea {
+      width: 100%;
+      min-height: 350px;
+      background: transparent;
+      color: #fff;
+      padding: 20px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      border: none;
+      outline: none;
+      resize: vertical;
+      tab-size: 4;
+    }
+
+    /* Output Grid Specifics */
+    .output-grid {
+      background: var(--terminal-solid);
+      border-color: #444;
+    }
+
+    .output-grid-header {
+      background: #1a1a1a;
+      border-bottom-color: #444;
+    }
+
+    .output-grid-body {
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: #eee;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .grid-button-row {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .btn-compile {
+      background: #2d2d2d;
+      border: 1px solid #444;
+      color: #fff;
+    }
+
+    .btn-run {
+      background: var(--code-accent);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+    }
+
+    /* Extreme Premium Coding Workbench Styles */
+    :root {
+      --editor-bg: #11111b;
+      --editor-gutter: #181825;
+      --terminal-bg: #09090e;
+      --accent-green: #a6e3a1;
+      --accent-blue: #89b4fa;
+      --accent-red: #f38ba8;
+      --accent-yellow: #f9e2af;
+      --text-main: #cdd6f4;
+      --text-dim: #7f849c;
+    }
+
+    .premium-workbench {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      animation: workbenchFade 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes workbenchFade {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    .glass-editor-shell {
+      background: rgba(17, 17, 27, 0.7);
+      backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-editor-shell:focus-within {
+      border-color: rgba(137, 180, 250, 0.5);
+      box-shadow: 0 0 40px rgba(137, 180, 250, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .editor-top-bar {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .control-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .control-dot::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .ide-body {
+      display: flex;
+      position: relative;
+    }
+
+    .ide-gutter {
+      padding: 2rem 1rem;
+      background: rgba(24, 24, 37, 0.5);
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      text-align: right;
+      min-width: 60px;
+      user-select: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      line-height: 1.7;
+    }
+
+    .ide-textarea {
+      flex: 1;
+      background: transparent;
+      color: var(--text-main);
+      border: none;
+      outline: none;
+      padding: 2rem;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      min-height: 320px;
+      tab-size: 4;
+      white-space: pre;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    }
+
+    .ide-footer {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Terminal Tab System */
+    .premium-terminal {
+      background: var(--terminal-bg);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      margin-top: 2rem;
+    }
+
+    .terminal-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .t-tab {
+      padding: 0.85rem 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      cursor: pointer;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .t-tab.active {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--accent-blue);
+      position: relative;
+    }
+
+    .t-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-blue);
+      box-shadow: 0 -2px 10px var(--accent-blue);
+    }
+
+    .terminal-content {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      max-height: 280px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .badge-pass {
+      background: rgba(166, 227, 161, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(166, 227, 161, 0.3);
+    }
+
+    .badge-fail {
+      background: rgba(243, 139, 168, 0.15);
+      color: var(--accent-red);
+      border: 1px solid rgba(243, 139, 168, 0.3);
+    }
+
+    .full-screen-mode {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99999;
+      margin: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    /* Split View & Zen Mode Extras */
+    .question-card.split-mode {
+      max-width: 1400px;
+      width: 95%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .split-mode .question-content-area {
+      position: sticky;
+      top: 2rem;
+    }
+
+    .split-mode .premium-workbench {
+      margin-top: 0;
+    }
+
+    .zen-mode .test-header,
+    .zen-mode .back-link,
+    .zen-mode .test-navigation {
+      opacity: 0.1;
+      pointer-events: none;
+      filter: blur(4px);
+    }
+
+    .option-item input[type="radio"]:checked+.option-label {
+      transform: scale(1.02);
+      background: rgba(137, 180, 250, 0.1);
+      border-color: var(--accent-blue);
+      box-shadow: 0 10px 30px rgba(137, 180, 250, 0.15);
+    }
+
+    .option-letter {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .option-item input[type="radio"]:checked+.option-label .option-letter {
+      transform: rotate(360deg) scale(1.1);
+      box-shadow: 0 0 15px var(--accent-blue);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="test-container">
+    <a href="student-dashboard.html" class="back-link" id="backLink">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Back to Dashboard
+    </a>
+
+    <!-- Test Header -->
+    <div class="test-header" id="testHeader">
+      <h1 id="testTitle">Loading Test...</h1>
+      <p id="testDescription" style="color: var(--gray-400); margin-top: 0.5rem"></p>
+      <div class="test-info">
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12,6 12,12 16,14" />
+          </svg>
+          <span id="testDuration">0 minutes</span>
+        </div>
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
+          <span id="testQuestions">0 questions</span>
+        </div>
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span id="testCompany">Company</span>
+        </div>
+        <div class="info-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+          </svg>
+          <span id="testDifficulty" style="font-weight: 700;">--</span>
+        </div>
+      </div>
+      <div class="timer-bar">
+        <div class="timer-fill" id="timerFill" style="width: 100%"></div>
+      </div>
+      <div style="
+            text-align: right;
+            margin-top: 0.5rem;
+            color: var(--gray-400);
+            font-size: 0.875rem;
+          ">
+        <span id="timeRemaining">Time Remaining: --:--</span>
+      </div>
+    </div>
+
+    <!-- Questions Container -->
+    <div id="questionsContainer">
+      <!-- Questions will be loaded here -->
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer" class="results-container hidden"
+      style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 1rem;">
+      <h1 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 2rem; color: #fff;">
+        Submission Successful
+      </h1>
+
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-inner">
+          <div class="score-value" id="scoreValue">0%</div>
+          <div class="score-label">Final Score</div>
+        </div>
+      </div>
+
+      <div class="essential-info-grid"
+        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; width: 100%; max-width: 800px; margin: 3rem 0;">
+        <div class="info-block"
+          style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+          <h4
+            style="color: var(--blue-400); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 1px;">
+            Analytics</h4>
+          <p style="color: #fff; font-weight: 600;">Automated Review</p>
+        </div>
+        <div class="info-block"
+          style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+          <h4
+            style="color: var(--blue-400); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 1px;">
+            Performance</h4>
+          <p style="color: #fff; font-weight: 600;" id="finalPerformance">Passed</p>
+        </div>
+        <div class="info-block"
+          style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+          <h4
+            style="color: var(--blue-400); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 1px;">
+            Certificate</h4>
+          <p style="color: #fff; font-weight: 600;">E-Verified</p>
+        </div>
+        <div class="info-block"
+          style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+          <h4
+            style="color: var(--blue-400); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 1px;">
+            Transcript</h4>
+          <p style="color: #fff; font-weight: 600;">Recorded</p>
+        </div>
+      </div>
+
+      <p style="color: var(--gray-400); margin-bottom: 2rem; font-size: 1.1rem; max-width: 500px;" id="resultMessage">
+      </p>
+
+      <div style="display: flex; gap: 1rem; margin-bottom: 3rem;">
+        <button class="btn btn-primary" onclick="window.location.href = 'student-dashboard.html'"
+          style="padding: 0.85rem 2.5rem; font-size: 1rem; border-radius: 50px;">
+          Go to Dashboard
+        </button>
+        <button class="btn" id="toggleDetailedReport" onclick="renderDetailedReport()"
+          style="padding: 0.85rem 2.5rem; font-size: 1rem; border-radius: 50px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+          View Detailed report
+        </button>
+      </div>
+
+      <div id="detailedReport" class="hidden"
+        style="width: 100%; max-width: 900px; text-align: left; animation: fadeIn 0.5s ease-out;">
+        <h3
+          style="color: #fff; margin-bottom: 1.5rem; font-family: var(--font-display); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">
+          Performance Analysis</h3>
+        <div id="detailedReportList" style="display: flex; flex-direction: column; gap: 1.5rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentTest = null;
+    let currentQuestionIndex = 0;
+    let answers = {};
+    let startTime = null;
+    let timerInterval = null;
+    let cmInstances = {};
+    let actualOutputs = {}; // Track coding results
+
+    // Load test from URL parameter
+    window.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const testId = urlParams.get("testId");
+
+      if (!testId) {
+        alert("No test specified!");
+        window.location.href = "student-dashboard.html";
+        return;
+      }
+
+      loadTest(testId);
+    });
+
+    async function loadTest(testId) {
+      try {
+        // Wait for DB to be initialized
+        if (!window.DB) {
+          await new Promise(r => setTimeout(r, 500));
+        }
+
+        currentTest = await window.DB.getTestById(testId);
+
+        if (!currentTest) {
+          alert("Test not found!");
+          window.location.href = "student-dashboard.html";
+          return;
+        }
+
+        // Display test info
+        document.getElementById("testTitle").textContent = currentTest.name;
+        document.getElementById("testDescription").textContent = currentTest.description || "";
+        document.getElementById("testDuration").textContent = `${currentTest.duration} minutes`;
+
+        const questions = typeof currentTest.questions === 'string' ? JSON.parse(currentTest.questions) : (currentTest.questions || []);
+        currentTest.questions = questions;
+
+        document.getElementById("testQuestions").textContent = `${questions.length} questions`;
+        document.getElementById("testCompany").textContent = currentTest.company;
+
+        // Display difficulty level
+        const diffEl = document.getElementById("testDifficulty");
+        const diff = currentTest.difficulty || 'Medium';
+        diffEl.textContent = diff;
+        const diffColors = { 'Easy': '#10b981', 'Medium': '#f59e0b', 'Hard': '#ef4444' };
+        diffEl.style.color = diffColors[diff] || '#f59e0b';
+
+        // Start timer
+        startTime = Date.now();
+        startTimer(currentTest.duration * 60);
+
+        // Load first question
+        showQuestion(0);
+      } catch (err) {
+        console.error(err);
+        alert("Error loading test data");
+      }
+    }
+
+    function startTimer(durationSeconds) {
+      const endTime = startTime + durationSeconds * 1000;
+
+      timerInterval = setInterval(() => {
+        const now = Date.now();
+        const remaining = Math.max(0, endTime - now);
+        const remainingSeconds = Math.floor(remaining / 1000);
+
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+
+        document.getElementById("timeRemaining").textContent =
+          `Time Remaining: ${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+        const progress = (remaining / (durationSeconds * 1000)) * 100;
+        document.getElementById("timerFill").style.width = progress + "%";
+
+        if (remaining === 0) {
+          clearInterval(timerInterval);
+          submitTest();
+        }
+      }, 1000);
+    }
+
+    function showQuestion(index) {
+      currentQuestionIndex = index;
+      const q = currentTest.questions[index];
+      if (!q) return;
+
+      setTimeout(() => {
+        setupCodingInteractions(index);
+      }, 0);
+
+      const isCoding = q.type === 'coding';
+      const questionTypeLabel = isCoding ? 'Coding Question' : 'Multiple Choice';
+
+      // Control labels
+      const workbenchControls = `
+        <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem; justify-content: flex-end;">
+            <button onclick="toggleLayout(${index})" class="t-tab" style="border-radius: 8px; font-size: 0.65rem; background: rgba(255,255,255,0.03);">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3h7a2 2 0 012 2v14a2 2 0 01-2 2h-7m0-18H5a2 2 0 00-2 2v14a2 2 0 002 2h7m0-18v18"></path></svg>
+                Split View
+            </button>
+            <button onclick="toggleZenMode()" class="t-tab" style="border-radius: 8px; font-size: 0.65rem; background: rgba(255,255,255,0.03);">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                Focus Mode
+            </button>
+        </div>
+      `;
+
+      const mcqHtml = `
+                    <div class="options-list">
+                        ${(q.options || []).map((option, i) => `
+                            <div class="option-item">
+                                <input type="radio" name="question-${index}" id="option-${index}-${i}" 
+                                       value="${String.fromCharCode(65 + i)}" 
+                                       ${answers[index] === String.fromCharCode(65 + i) ? "checked" : ""}
+                                       onchange="saveAnswer(${index}, '${String.fromCharCode(65 + i)}')">
+                                <label class="option-label" for="option-${index}-${i}">
+                                    <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+                                    <span>${option}</span>
+                                </label>
+                            </div>
+                        `).join("")}
+                    </div>`;
+
+      const codingHtml = `
+                    <div class="coding-grid-layout" id="workbench-${index}">
+                        <!-- TOP CONTROL BAR -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: -10px;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="width: 10px; height: 10px; border-radius: 50%; background: #3b82f6;"></div>
+                                <span style="font-weight: 700; font-size: 0.9rem; color: #fff;">CODING GRID</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
+                                <span style="color: #93c5fd; font-weight: 700; font-size: 0.9rem;">
+                                    ${(q.allowed_languages && q.allowed_languages.length > 0 ? q.allowed_languages[0] : 'c') === 'cpp' ? 'C++' :
+          (q.allowed_languages && q.allowed_languages.length > 0 ? q.allowed_languages[0] : 'c').charAt(0).toUpperCase() + (q.allowed_languages && q.allowed_languages.length > 0 ? q.allowed_languages[0] : 'c').slice(1)}
+                                </span>
+                                <input type="hidden" id="langSelect-${index}" value="${q.allowed_languages && q.allowed_languages.length > 0 ? q.allowed_languages[0] : 'c'}" />
+                            </div>
+                        </div>
+
+                        <!-- INPUT GRID: The Answer Textbox -->
+                        <div class="grid-region input-grid">
+                            <div class="grid-header input-grid-header">
+                                <span>STUDENT_ENTRY_WORKSPACE</span>
+                                <span id="fileName-${index}">main.py</span>
+                            </div>
+                            <div style="display: flex;">
+                              <div id="line-numbers-${index}" style="padding: 20px 10px; background: #1a1a1a; color: #555; text-align: right; min-width: 50px; font-family: monospace; border-right: 1px solid #333; line-height: 1.6;">1</div>
+                              <textarea id="codeEditor-${index}" class="grid-textarea" 
+                                        placeholder="Type your code here. Use the buttons below to check for errors."
+                                        spellcheck="false"
+                                        oninput="handleCodeInput(${index}, this)">${answers[index] || ''}</textarea>
+                            </div>
+                            <div style="background: #111; padding: 5px 20px; font-size: 0.75rem; color: #666; border-top: 1px solid #333; display: flex; justify-content: space-between;">
+                              <div>L: <span id="lineNum-${index}">1</span>, C: <span id="colNum-${index}">1</span></div>
+                              <div>TOTAL_CHARS: <span id="charCount-${index}">0</span></div>
+                            </div>
+                        </div>
+
+                        <div class="grid-button-row">
+                            <button class="btn btn-compile" onclick="compileStudentCode(${index})">
+                                COMPILE CODE
+                            </button>
+                            <button class="btn btn-run" onclick="runStudentCode(${index})">
+                                RUN PROGRAM
+                            </button>
+                            <button class="btn btn-compile" onclick="showCompilationTheory()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-left: 10px; font-size: 0.75rem;">
+                                HOW IT WORKS?
+                            </button>
+                            <span id="runStatus-${index}" style="font-size: 0.85rem; font-weight: 700; margin-left: auto;"></span>
+                        </div>
+
+                        <!-- STDIN GRID: Standard Input -->
+                        <div class="grid-region stdin-grid" style="margin-top: 10px; border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 8px;">
+                            <div class="grid-header stdin-grid-header" style="padding: 5px 15px; font-size: 0.65rem; color: #3b82f6; font-weight: 800; background: rgba(59, 130, 246, 0.05); border-bottom: 1px solid rgba(59, 130, 246, 0.2);">
+                                <span>STANDARD_INPUT_STDIN</span>
+                            </div>
+                            <textarea id="stdin-${index}" class="grid-textarea" 
+                                      placeholder="Provide required inputs here (e.g. if code uses input() or cin)..."
+                                      spellcheck="false"
+                                      style="height: 60px; min-height: 60px; font-size: 0.8rem; border: none; background: transparent; padding: 10px; width: 100%; color: #94a3b8; outline: none; font-family: monospace;"></textarea>
+                        </div>
+
+                        <!-- OUTPUT GRID: Separate Box -->
+                        <div id="output-${index}" class="grid-region output-grid" style="margin-bottom: 5px;">
+                            <div class="grid-header output-grid-header">
+                                <span>EXECUTION_OUTPUT_GRID</span>
+                                <button onclick="clearConsole(${index})" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.7rem; font-weight: 700;">[CLEAR]</button>
+                            </div>
+                            <div class="output-grid-body">
+                                <pre id="outputContent-${index}" style="margin: 0; color: #fff;">Ready for execution...</pre>
+                            </div>
+                        </div>
+
+                        <!-- SUBMITTED OUTPUT: Final Output Box -->
+                        <div class="grid-region stdin-grid" style="border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px;">
+                            <div class="grid-header stdin-grid-header" style="padding: 5px 15px; font-size: 0.65rem; color: #10b981; font-weight: 800; background: rgba(16, 185, 129, 0.05); border-bottom: 1px solid rgba(16, 185, 129, 0.2);">
+                                <span>FINAL_SUBMISSION_OUTPUT</span>
+                            </div>
+                            <textarea id="finalOutput-${index}" class="grid-textarea" 
+                                      placeholder="Paste the final output produced by your code here. This is what will be evaluated..."
+                                      spellcheck="false"
+                                      oninput="handleFinalOutputInput(${index}, this)"
+                                      style="height: 60px; min-height: 60px; font-size: 0.8rem; border: none; background: transparent; padding: 10px; width: 100%; color: #94a3b8; outline: none; font-family: monospace;"></textarea>
+                        </div>
+                    </div>`;
+
+      const html = `
+                <div class="question-card" id="question-card-${index}">
+                    <div class="test-workbench-header" style="width: 100%; grid-column: span 2;">
+                        <div class="question-number" style="margin-bottom: 0.5rem;">
+                            <span>Question ${index + 1} of ${currentTest.questions.length}</span>
+                            <span class="q-type-badge ${isCoding ? 'coding' : ''}">${questionTypeLabel}</span>
+                        </div>
+                        ${workbenchControls}
+                    </div>
+
+                    <div class="question-content-area">
+                        <div class="question-text">${q.question}</div>
+                        ${!isCoding ? mcqHtml : ''}
+                    </div>
+                    
+                    ${isCoding ? `<div class="editor-content-area">${codingHtml}</div>` : ''}
+                </div>
+                <div class="navigation" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                        <div style="width: 100%; margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--gray-400); margin-bottom: 0.5rem;">
+                                <span>Completion Progress</span>
+                                <span>${Math.round((Object.keys(answers).filter(k => !isNaN(k) && answers[k]).length / (currentTest.questions ? currentTest.questions.length : 1)) * 100)}%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
+                                <div style="width: ${(Object.keys(answers).filter(k => !isNaN(k) && answers[k]).length / (currentTest.questions ? currentTest.questions.length : 1)) * 100}%; height: 100%; background: linear-gradient(90deg, var(--primary-500), #805ad5); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div class="nav-buttons">
+                            ${index > 0 ? `<button class="btn btn-secondary btn-sm" onclick="showQuestion(${index - 1})" style="border-radius: 8px; font-size: 0.85rem; padding: 0.5rem 1.25rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">Previous</button>` : ""}
+                            ${index < currentTest.questions.length - 1
+          ? `<button class="btn btn-primary" onclick="showQuestion(${index + 1})">Next Question</button>`
+          : `<button class="btn btn-primary" onclick="confirmSubmit()" style="background: linear-gradient(135deg, #10b981, #059669); border: none;">Submit Final Results</button>`
+        }
+                        </div>
+                </div>`;
+
+      document.getElementById("questionsContainer").innerHTML = html;
+    }
+
+
+    function saveAnswer(questionIndex, answer) {
+      answers[questionIndex] = answer;
+    }
+
+    function setupCodingInteractions(index) {
+      const textarea = document.getElementById(`codeEditor-${index}`);
+      const langSelect = document.getElementById(`langSelect-${index}`);
+      if (!textarea || textarea.dataset.initialized === "true") return;
+      textarea.dataset.initialized = "true";
+
+      // Custom Tab handling
+      textarea.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = this.selectionStart;
+          const end = this.selectionEnd;
+          this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+          this.selectionStart = this.selectionEnd = start + 4;
+          handleCodeInput(index, this);
+        }
+      });
+
+      // Cursor tracking
+      ['click', 'keyup', 'focus', 'mouseup'].forEach(evt => {
+        textarea.addEventListener(evt, () => {
+          const textBeforeCursor = textarea.value.substring(0, textarea.selectionStart);
+          const lines = textBeforeCursor.split('\n');
+          const lineNum = lines.length;
+          const colNum = lines[lines.length - 1].length + 1;
+
+          const lineEl = document.getElementById(`lineNum-${index}`);
+          const colEl = document.getElementById(`colNum-${index}`);
+          if (lineEl) lineEl.textContent = lineNum;
+          if (colEl) colEl.textContent = colNum;
+        });
+      });
+
+      // Dynamic filename
+      if (langSelect) {
+        const updateFilename = () => {
+          const lang = langSelect.value;
+          const fileNameEl = document.getElementById(`fileName-${index}`);
+          if (fileNameEl) {
+            const ext = lang === 'javascript' ? 'js' : lang === 'python' ? 'py' : lang === 'cpp' ? 'cpp' : lang === 'java' ? 'java' : 'c';
+            const name = lang === 'java' ? 'Solution' : 'main';
+            fileNameEl.textContent = `${name}.${ext}`;
+          }
+        };
+        langSelect.addEventListener('change', updateFilename);
+        updateFilename();
+      }
+
+      // Insert boilerplate if empty
+      if (!textarea.value.trim()) {
+        const lang = langSelect ? langSelect.value : 'c';
+        textarea.value = getBoilerplate(lang);
+        saveAnswer(index, textarea.value);
+      }
+
+      // Initialize state if returning to question
+      if (textarea.value.trim().length > 0) {
+        handleCodeInput(index, textarea);
+      } else {
+        autoExpandEditor(textarea, index);
+      }
+    }
+
+    function getBoilerplate(lang) {
+      const templates = {
+        'c': '#include <stdio.h>\n\nint main() {\n    printf("Hello World\\n");\n    return 0;\n}',
+        'cpp': '#include <iostream>\n\nint main() {\n    std::cout << "Hello World" <<::endl;\n    return 0;\n}',
+        'java': 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello World");\n    }\n}',
+        'python': 'print("Hello World")',
+        'javascript': 'console.log("Hello World");',
+        'nodejs': 'console.log("Hello World");'
+      };
+      return templates[lang.toLowerCase()] || '';
+    }
+
+    function handleCodeInput(index, textarea) {
+      saveAnswer(index, textarea.value);
+      autoExpandEditor(textarea, index);
+
+      // Reveal buttons panel if logic dictates (e.g. content present)
+      const panel = document.getElementById(`actions-${index}`);
+      if (panel && textarea.value.trim().length > 0) {
+        panel.classList.add('visible');
+      } else if (panel) {
+        panel.classList.remove('visible');
+      }
+
+      // Update stats
+      const charEl = document.getElementById(`charCount-${index}`);
+      if (charEl) charEl.textContent = textarea.value.length;
+    }
+
+    function toggleLayout(index) {
+      const card = document.getElementById(`question-card-${index}`);
+      card.classList.toggle('split-mode');
+      // If split mode active, recalc editor height
+      const editor = document.getElementById(`codeEditor-${index}`);
+      if (editor) autoExpandEditor(editor, index);
+    }
+
+    function toggleZenMode() {
+      document.body.classList.toggle('zen-mode');
+      const container = document.querySelector('.test-container');
+      if (document.body.classList.contains('zen-mode')) {
+        container.style.maxWidth = '100%';
+        showNotification("Focus Mode", "Distractions minimized. Focus on your code.", "success");
+      } else {
+        container.style.maxWidth = '900px';
+      }
+    }
+
+    function autoExpandEditor(textarea, index) {
+      textarea.style.height = 'auto';
+      const newHeight = Math.min(600, Math.max(320, textarea.scrollHeight));
+      textarea.style.height = newHeight + 'px';
+
+      const lineCount = (textarea.value.match(/\n/g) || []).length + 1;
+      const lineNumbers = document.getElementById(`line-numbers-${index}`);
+      if (lineNumbers) {
+        let lineNumbersHtml = '';
+        for (let i = 1; i <= lineCount; i++) {
+          lineNumbersHtml += i + '<br>';
+        }
+        lineNumbers.innerHTML = lineNumbersHtml;
+      }
+    }
+
+    function handleFinalOutputInput(index, textarea) {
+      actualOutputs[index] = textarea.value.trim();
+    }
+
+    function switchTerminalTab(index, tab) {
+      const tabs = document.querySelectorAll(`#output-${index} .t-tab`);
+      tabs.forEach(t => t.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      const content = document.getElementById(`outputContent-${index}`);
+      if (tab === 'debug') {
+        const q = currentTest.questions[index];
+        content.style.color = 'var(--accent-yellow)';
+        content.textContent = `[DEBUG MONITOR INITIALIZED]\n> Language Check: ${document.getElementById(`langSelect-${index}`).value}\n> Expected Length: ${q.expectedOutput?.length || 0} chars\n> Runtime Constraints: 2048ms / 128MB`;
+      } else {
+        content.style.color = 'var(--text-main)';
+        content.textContent = (window.executionHistory && window.executionHistory[index]) || "Run your code to see results here.";
+      }
+    }
+
+    function toggleFullScreen(index) {
+      const workbench = document.getElementById(`workbench-${index}`);
+      const shell = document.getElementById(`editor-shell-${index}`);
+      shell.classList.toggle('full-screen-mode');
+
+      if (shell.classList.contains('full-screen-mode')) {
+        document.body.style.overflow = 'hidden';
+        shell.style.padding = '2rem';
+      } else {
+        document.body.style.overflow = '';
+        shell.style.padding = '0';
+      }
+    }
+
+    function copyTerminalOutput(index) {
+      const content = document.getElementById(`outputContent-${index}`).textContent;
+      navigator.clipboard.writeText(content);
+      showNotification("Copied!", "Terminal output copied to clipboard", "info");
+    }
+
+    function clearConsole(index) {
+      const out = document.getElementById(`outputContent-${index}`);
+      if (out) out.textContent = 'Console cleared.';
+      window.lastOutput = "";
+      const box = document.getElementById(`output-${index}`);
+      if (box) box.style.display = 'none';
+    }
+
+    function clearCodeEditor(index) {
+      const editor = document.getElementById(`codeEditor-${index}`);
+      if (editor) {
+        editor.value = '';
+        editor.style.height = '250px';
+        saveAnswer(index, '');
+        handleCodeInput(index, editor);
+      }
+    }
+
+    async function compileStudentCode(index) {
+      const q = currentTest.questions[index];
+      const code = answers[index];
+      if (!code || !code.trim()) {
+        alert('Please write some code before compiling.');
+        return;
+      }
+
+      const langSelect = document.getElementById(`langSelect-${index}`);
+      const language = langSelect ? langSelect.value : 'python';
+
+      const statusEl = document.getElementById(`runStatus-${index}`);
+      const outputEl = document.getElementById(`output-${index}`);
+      const outputContent = document.getElementById(`outputContent-${index}`);
+
+      statusEl.innerHTML = '<span class="spinner-sm"></span> Compiling...';
+      statusEl.style.color = '#fbbf24';
+      outputEl.style.display = 'block';
+      outputContent.innerHTML = '<span style="color: var(--gray-500);">⏳ Compilation in progress...</span>';
+
+      const stdin = document.getElementById(`stdin-${index}`)?.value || '';
+
+      try {
+        const result = await window.DB.executeCode(code, language, true, stdin);
+
+        window.executionHistory = window.executionHistory || {};
+
+        if (result.success || result.status === 'Success') {
+          statusEl.textContent = '✓ Compiled Successfully';
+          statusEl.style.color = '#10b981';
+          outputContent.textContent = result.output || 'No syntax errors found.';
+          outputContent.style.color = '#10b981';
+          window.executionHistory[index] = result.output || 'No syntax errors found.';
+          actualOutputs[index] = (result.output || 'No syntax errors found.').trim();
+          if (result.timeMs) {
+            statusEl.innerHTML += ` <span style="font-weight: 400; opacity: 0.7;">(${result.timeMs}ms)</span>`;
+          }
+        } else {
+          statusEl.textContent = '✕ Compilation Error';
+          statusEl.style.color = '#ef4444';
+          outputContent.textContent = result.error || 'Syntax Error';
+          outputContent.style.color = '#ef4444';
+          window.executionHistory[index] = outputContent.textContent;
+          actualOutputs[index] = outputContent.textContent.trim();
+        }
+      } catch (err) {
+        statusEl.textContent = '✕ Connection Error';
+        statusEl.style.color = '#ef4444';
+        outputContent.textContent = 'Could not reach the server.';
+      }
+    }
+
+    async function runStudentCode(index) {
+      const q = currentTest.questions[index];
+      const code = answers[index];
+      if (!code || !code.trim()) {
+        alert('Please write some code before running.');
+        return;
+      }
+
+      const langSelect = document.getElementById(`langSelect-${index}`);
+      const language = langSelect ? langSelect.value : 'python';
+
+      const statusEl = document.getElementById(`runStatus-${index}`);
+      const outputEl = document.getElementById(`output-${index}`);
+      const outputContent = document.getElementById(`outputContent-${index}`);
+
+      statusEl.innerHTML = '<span class="spinner-sm"></span> Running...';
+      statusEl.style.color = '#3b82f6';
+      outputEl.style.display = 'block';
+      outputContent.innerHTML = '<span style="color: var(--gray-500);">⏳ Execution in progress...</span>';
+
+      const stdin = document.getElementById(`stdin-${index}`)?.value || '';
+
+      try {
+        const result = await window.DB.executeCode(code, language, false, stdin);
+
+        if (result.success) {
+          statusEl.innerHTML = '<span class="badge-pass" style="padding: 4px 12px; border-radius: 20px; font-size: 0.75rem;">PASSED</span>';
+          if (result.timeMs) {
+            statusEl.innerHTML += ` <span style="font-size: 0.7rem; opacity: 0.8; margin-left: 5px;">${result.timeMs}ms</span>`;
+          }
+          outputContent.textContent = result.output || '(No output)';
+          outputContent.style.color = '#fff';
+
+          window.executionHistory = window.executionHistory || {};
+          window.executionHistory[index] = result.output;
+          actualOutputs[index] = (result.output || '').trim();
+
+          const finalOutEl = document.getElementById(`finalOutput-${index}`);
+          if (finalOutEl) finalOutEl.value = (result.output || '').trim();
+        } else {
+          statusEl.innerHTML = '<span class="badge-fail" style="padding: 4px 12px; border-radius: 20px; font-size: 0.75rem;">' + (result.status || 'ERROR') + '</span>';
+          const errorMsg = (result.status || 'Runtime Error') + (result.error ? ': ' + result.error : '');
+          const combinedOutput = errorMsg + (result.output ? '\n' + result.output : '');
+          outputContent.innerHTML = `<span style="color: #ef4444; font-weight: 700;">${result.status || 'Runtime Error'}</span>\n<span style="color: #fca5a5;">${result.error || ''}</span>\n<span style="color: #fff;">${result.output || ''}</span>`;
+
+          window.executionHistory = window.executionHistory || {};
+          window.executionHistory[index] = outputContent.textContent;
+          actualOutputs[index] = combinedOutput.trim();
+
+          const finalOutEl = document.getElementById(`finalOutput-${index}`);
+          if (finalOutEl) finalOutEl.value = combinedOutput.trim();
+        }
+      } catch (err) {
+        statusEl.textContent = '✕ Connection Error';
+        statusEl.style.color = '#ef4444';
+        outputContent.textContent = 'Could not reach the server.';
+      }
+    }
+
+    function confirmSubmit() {
+      const answeredCount = Object.keys(answers).filter(k => !isNaN(k)).length;
+      const total = currentTest.questions.length;
+
+      if (answeredCount < total) {
+        if (!confirm(`You have only addressed ${answeredCount} out of ${total} items. Do you want to submit anyway?`)) {
+          return;
+        }
+      }
+      submitTest();
+    }
+
+    async function submitTest() {
+      clearInterval(timerInterval);
+      const submitBtn = document.querySelector('button[onclick="confirmSubmit()"]');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing Result...";
+      }
+
+      const questions = currentTest.questions;
+      let totalWeightedScore = 0;
+      let mcqCount = 0;
+      let codingCount = 0;
+      let mcqCorrect = 0;
+      let codingTotalSimilarity = 0;
+
+      const resultsBreakdown = [];
+
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        const studentAns = answers[i] || "";
+        let itemScore = 0;
+        let similarity = 0;
+
+        if (q.type === 'mcq' || !q.type) {
+          mcqCount++;
+          if (studentAns === q.answer) {
+            mcqCorrect++;
+            itemScore = 1;
+          }
+          resultsBreakdown.push({ type: 'mcq', correct: studentAns === q.answer, studentAns, correctAns: q.answer });
+        } else if (q.type === 'coding') {
+          codingCount++;
+          const actualOutput = (actualOutputs && actualOutputs[i]) ? actualOutputs[i].trim() : "";
+          const expectedOutput = (q.expectedOutput || "").trim();
+
+          if (actualOutput === expectedOutput && actualOutput !== "") {
+            similarity = 100;
+            itemScore = 1;
+          } else if (actualOutput === "" && expectedOutput !== "") {
+            similarity = 0;
+            itemScore = 0;
+          } else {
+            similarity = calculateSimilarity(actualOutput, expectedOutput);
+            itemScore = similarity / 100;
+          }
+          codingTotalSimilarity += similarity;
+          resultsBreakdown.push({ type: 'coding', similarity, actualOutput, expectedOutput, code: studentAns });
+        }
+        totalWeightedScore += itemScore;
+      }
+
+      window.lastResultBreakdown = resultsBreakdown;
+
+      const finalPercentage = Math.round((totalWeightedScore / questions.length) * 100);
+      const total = questions.length;
+      const timeTaken = Math.round((Date.now() - startTime) / 1000 / 60);
+
+      const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+      const resultPayload = {
+        testId: currentTest.id,
+        username: user.username,
+        testName: currentTest.name,
+        company: currentTest.company,
+        difficulty: currentTest.difficulty || 'Medium',
+        score: finalPercentage,
+        correctCount: mcqCorrect,
+        totalQuestions: total,
+        timeTaken: timeTaken,
+        status: finalPercentage >= (currentTest.passingPercentage || 50) ? "passed" : "failed",
+        answers: answers,
+        details: resultsBreakdown,
+        questions: questions
+      };
+
+      try {
+        await window.DB.submitTest(resultPayload);
+        showNotification("Test Submitted!", `Final Grade: ${finalPercentage}%`, finalPercentage >= 50 ? "success" : "error");
+        showResults(mcqCorrect, total, finalPercentage);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to submit result to server. Please check your connection.");
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Try Re-submitting";
+        }
+      }
+    }
+
+    function calculateSimilarity(str1, str2) {
+      if (!str1 && !str2) return 100;
+      if (!str1 || !str2) return 0;
+      const s1 = str1.toLowerCase().trim();
+      const s2 = str2.toLowerCase().trim();
+      if (s1 === s2) return 100;
+      const distance = levenshteinDistance(s1, s2);
+      const maxLength = Math.max(s1.length, s2.length);
+      return Math.max(0, Math.round((1 - distance / maxLength) * 100));
+    }
+
+    function levenshteinDistance(a, b) {
+      const matrix = [];
+      for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+      for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+      for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+          if (b.charAt(i - 1) === a.charAt(j - 1)) {
+            matrix[i][j] = matrix[i - 1][j - 1];
+          } else {
+            matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+          }
+        }
+      }
+      return matrix[b.length][a.length];
+    }
+
+    function showResults(correct, total, percentage) {
+      document.getElementById("testHeader").classList.add("hidden");
+      document.getElementById("questionsContainer").classList.add("hidden");
+      document.getElementById("resultsContainer").classList.remove("hidden");
+      document.getElementById("backLink").classList.add("hidden");
+
+      // Animate score circle
+      const degrees = (percentage / 100) * 360;
+      const passColor = percentage >= 50 ? "#10b981" : "#ef4444";
+      document.getElementById("scoreCircle").style.background =
+        `conic-gradient(${passColor} ${degrees}deg, rgba(255,255,255,0.1) ${degrees}deg)`;
+
+      document.getElementById("scoreValue").textContent = percentage + "%";
+
+      const perfEl = document.getElementById("finalPerformance");
+      if (perfEl) {
+        perfEl.textContent = percentage >= 50 ? "PASSED" : "FAILED";
+        perfEl.style.color = passColor;
+      }
+
+      const message =
+        percentage >= 90
+          ? "Excellent! Outstanding performance!"
+          : percentage >= 75
+            ? "Great job! Well done!"
+            : percentage >= 60
+              ? "Good effort! You passed!"
+              : "Keep practicing! You can do better!";
+
+      document.getElementById("resultMessage").textContent = message;
+    }
+
+    function renderDetailedReport() {
+      const reportContainer = document.getElementById("detailedReport");
+      const listContainer = document.getElementById("detailedReportList");
+      const btn = document.getElementById("toggleDetailedReport");
+
+      if (!reportContainer.classList.contains("hidden")) {
+        reportContainer.classList.add("hidden");
+        btn.textContent = "View Detailed Report";
+        return;
+      }
+
+      btn.textContent = "Hide Detailed Report";
+      reportContainer.classList.remove("hidden");
+      listContainer.innerHTML = "";
+
+      // window.currentResultPayload contains everything we need
+      const details = window.lastResultBreakdown || [];
+      const questionsList = currentTest.questions || [];
+
+      questionsList.forEach((q, i) => {
+        const detail = details[i] || {};
+        const isCoding = q.type === 'coding';
+        const isCorrect = isCoding ? detail.similarity === 100 : detail.correct;
+
+        const item = document.createElement("div");
+        item.style.cssText = `
+          background: rgba(255,255,255,0.02);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 12px;
+          padding: 1.5rem;
+        `;
+
+        let content = `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <span style="color: var(--blue-400); font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Question ${i + 1} • ${isCoding ? 'CODING' : 'MCQ'}</span>
+            <span style="color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 800; font-size: 0.75rem; background: ${isCorrect ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)'}; padding: 4px 10px; border-radius: 6px;">
+              ${isCorrect ? 'PASSED' : (isCoding ? detail.similarity + '% MATCH' : 'INCORRECT')}
+            </span>
+          </div>
+          <div style="color: #fff; font-size: 1rem; margin-bottom: 1.5rem;">${q.question}</div>
+        `;
+
+        if (isCoding) {
+          content += `
+            <div style="margin-bottom: 1rem;">
+              <div style="font-size: 0.7rem; color: var(--gray-500); margin-bottom: 5px; font-weight: 700;">SUBMITTED CODE</div>
+              <pre style="background: #000; padding: 1rem; border-radius: 8px; font-size: 0.8rem; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.05); max-height: 150px; overflow: auto;">${detail.code || '// No code submitted'}</pre>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-bottom: 5px; font-weight: 700;">STUDENT SUBMITTED OUTPUT</div>
+                <pre style="background: #000; padding: 0.75rem; border-radius: 6px; font-size: 0.75rem; color: ${isCorrect ? '#10b981' : '#ef4444'}; border: 1px solid rgba(255,255,255,0.05); font-family: monospace; max-height: 120px; overflow: auto; margin:0;">${(detail.actualOutput !== undefined && detail.actualOutput !== null && detail.actualOutput !== "") ? detail.actualOutput : 'No output recorded'}</pre>
+              </div>
+              <div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-bottom: 5px; font-weight: 700;">EXPECTED OUTPUT</div>
+                <pre style="background: #000; padding: 0.75rem; border-radius: 6px; font-size: 0.75rem; color: #10b981; border: 1px solid rgba(255,255,255,0.05); font-family: monospace; max-height: 120px; overflow: auto; margin:0;">${detail.expectedOutput || q.expectedOutput || '--'}</pre>
+              </div>
+            </div>
+          `;
+        } else {
+          content += `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-bottom: 5px; font-weight: 700;">YOUR ANSWER</div>
+                <div style="padding: 0.75rem; background: rgba(255,255,255,0.03); border-radius: 6px; font-size: 0.85rem; color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 700; border: 1px solid rgba(255,255,255,0.05);">Option ${detail.studentAns || 'None'}</div>
+              </div>
+              <div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-bottom: 5px; font-weight: 700;">CORRECT ANSWER</div>
+                <div style="padding: 0.75rem; background: rgba(16,185,129,0.05); border-radius: 6px; font-size: 0.85rem; color: #10b981; font-weight: 700; border: 1px solid rgba(16,185,129,0.1);">Option ${q.answer}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        item.innerHTML = content;
+        listContainer.appendChild(item);
+      });
+
+      reportContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Show notification function
+    function showNotification(title, message, type = "info") {
+      const notification = document.createElement("div");
+      notification.className = `notification notification-${type}`;
+      notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === "success"
+          ? "linear-gradient(135deg, #10b981, #059669)"
+          : type === "error"
+            ? "linear-gradient(135deg, #ef4444, #dc2626)"
+            : "linear-gradient(135deg, #667eea, #764ba2)"
+        };
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 0.75rem;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                max-width: 350px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+
+      notification.innerHTML = `
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="font-size: 1.5rem;">
+                        ${type === "success" ? "✓" : type === "error" ? "✕" : "📧"}
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${title}</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">${message}</div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.25rem; padding: 0; opacity: 0.7;">×</button>
+                </div>
+            `;
+
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.animation = "slideOut 0.3s ease-out";
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
+    }
+
+    function showCompilationTheory() {
+      const theoryHtml = `
+            <div id="theoryModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 100000; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s ease;">
+                <div class="glass-panel" style="max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 2.5rem; position: relative; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                    <button onclick="document.getElementById('theoryModal').remove()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;">✕</button>
+                    <h2 style="font-family: 'Space Grotesk', sans-serif; color: #6366f1; margin-bottom: 1.5rem; font-size: 1.75rem;">Understanding the Compilation Process</h2>
+                    <div style="color: #cbd5e1; line-height: 1.8; font-size: 1.05rem;">
+                        <p style="margin-bottom: 1.5rem;">The common process for compiling and running a program, especially in languages like C or C++, involves several systematic stages that transform human-readable source code into machine-executable instructions. First, the programmer writes the program using a text editor and saves it as a source file, such as <strong>hello.c</strong>. This file contains the program written in a high-level language that humans can understand but the computer cannot execute directly. The first stage in processing this program is called <strong>preprocessing</strong>. During preprocessing, the preprocessor handles special directives such as <code>#include</code>, <code>#define</code>, and conditional compilation statements. For example, <code>#include &lt;stdio.h&gt;</code> tells the preprocessor to include the contents of the standard input-output library file, and any macros defined using <code>#define</code> are expanded. Comments are also removed at this stage, and the result is an expanded version of the source code that is ready for compilation.</p>
+                        
+                        <p style="margin-bottom: 1.5rem;">The next stage is <strong>compilation</strong>, where the compiler checks the program for syntax errors and ensures that the structure of the program follows the language rules. If the code is correct, the compiler translates the preprocessed code into <strong>assembly language</strong>, which is a low-level representation that is closer to machine language but still somewhat readable. After compilation, the <strong>assembler</strong> converts the assembly code into <strong>object code</strong>, which is machine language in binary form. This object file (for example, <code>hello.o</code>) contains instructions that the computer’s processor can understand, but it may still lack references to external libraries required for execution. Therefore, the next stage is <strong>linking</strong>. During linking, the linker combines the object file with other required library files, such as standard libraries used by functions like <code>printf</code>. The linker resolves these references and produces a final <strong>executable file</strong>, such as <code>hello.exe</code> in Windows or <code>a.out</code> in Linux.</p>
+                        
+                        <p style="margin-bottom: 1.5rem;">Once the executable file is created, the program can be <strong>run or executed</strong>. When the user runs the program, the operating system loads the executable file into the computer’s memory (RAM). The CPU then begins executing the program starting from the <code>main()</code> function. The processor follows a fundamental cycle called the <strong>fetch–decode–execute cycle</strong>, where it fetches an instruction from memory, decodes what the instruction means, and then executes it. During execution, the program may use different memory areas such as the <strong>stack</strong> for function calls, the <strong>heap</strong> for dynamically allocated memory, the <strong>data segment</strong> for global variables, and the <strong>text segment</strong> for the compiled instructions. As the CPU processes each instruction sequentially, the program performs its intended tasks, such as displaying output on the screen. In this way, the compilation and execution process converts a human-written program into machine instructions that the computer can run efficiently.</p>
+                    </div>
+                    <button onclick="document.getElementById('theoryModal').remove()" class="btn btn-primary" style="margin-top: 2rem; width: 100%;">Got it!</button>
+                </div>
+            </div>
+        `;
+      document.body.insertAdjacentHTML('beforeend', theoryHtml);
+    }
+
+    // Add animation styles
+    if (!document.getElementById("notificationStyles")) {
+      const style = document.createElement("style");
+      style.id = "notificationStyles";
+      style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+      document.head.appendChild(style);
+    }
+  </script>
+</body>
+
+</html>

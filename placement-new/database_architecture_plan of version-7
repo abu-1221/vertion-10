@@ -1,0 +1,62 @@
+# Database Architecture: Student-Staff Assessment Platform
+
+This document outlines the complete database schema for a robust, secure, and fully traceable assessment platform. The design is optimized for SQL databases like MySQL and SQLite.
+
+## 1. Core Principles
+- **Total Traceability**: Every action is logged in the `activity_logs` table.
+- **Role Isolation**: Clear separation between Staff, Students, and Administrators.
+- **Data Integrity**: Enforced via Foreign Keys and Constraints.
+- **Scalability**: Normalized tables to prevent redundancy and support growth.
+
+## 2. Entity Relationship Overview
+
+```mermaid
+erDiagram
+    USERS ||--|| STAFF : "has profile"
+    USERS ||--|| STUDENTS : "has profile"
+    USERS ||--o{ ACTIVITY_LOGS : "performs"
+    USERS ||--o{ NOTIFICATIONS : "receives"
+    USERS ||--o{ CHAT_HISTORY : "sends/receives"
+    
+    STAFF ||--o{ TESTS : "creates"
+    STUDENTS ||--o{ TEST_ASSIGNMENTS : "assigned to"
+    TESTS ||--o{ TEST_ASSIGNMENTS : "includes"
+    
+    STUDENTS ||--o{ TEST_ATTEMPTS : "makes"
+    TESTS ||--o{ TEST_ATTEMPTS : "subject of"
+    
+    TEST_ATTEMPTS ||--|| RESULTS : "produces"
+    RESULTS ||--o{ CERTIFICATES : "generates"
+    
+    PLACEMENT_DRIVES ||--o{ PLACEMENT_PARTICIPATION : "contains"
+    STUDENTS ||--o{ PLACEMENT_PARTICIPATION : "joins"
+```
+
+## 3. Table Definitions
+
+### 3.1 User Management
+- **`users`**: Base table for authentication and roles.
+- **`staff`**: Extended profile for teachers and administrators.
+- **`students`**: Extended profile for students (roll numbers, batches).
+
+### 3.2 Assessment Module
+- **`tests`**: Metadata for quizzes (name, subject, difficulty, duration).
+- **`test_assignments`**: Pre-registration linking students to specific tests.
+- **`test_attempts`**: Real-time tracking of when a student starts and finishes a test.
+- **`results`**: Quantitative data (scores, grades, analytics).
+
+### 3.3 Post-Assessment & Engagement
+- **`certificates`**: Digital records of achievement with download tracking.
+- **`notifications`**: System-triggered alerts for new tests, results, etc.
+- **`chat_history`**: Direct messaging logs between staff and students.
+
+### 4.4 System & Careers
+- **`placement_drives`**: Information on ongoing career opportunities.
+- **`placement_participation`**: Tracking which students applied to which drive.
+- **`activity_logs`**: The "black box" of the system, logging logins, edits, and deletions.
+
+## 4. Implementation Steps
+1. **Initialize Directory**: Create `database` folder.
+2. **Schema Creation**: Write `schema.sql` with DDL (Data Definition Language).
+3. **Seed Data**: (Optional) Create `seed.sql` for initial roles and demo users.
+4. **Documentation**: Provide clear descriptions of each column and relationship.

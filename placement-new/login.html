@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Login to JMC-Test - India's Premier Student Placement Portal" />
+  <title>Login | JMC-Test</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth-professional.css" />
+
+  <style>
+    @keyframes slide-in-right {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Main Container -->
+  <div class="auth-container">
+    <div class="auth-card">
+      <!-- Header -->
+      <div class="auth-header">
+        <a href="index.html" class="auth-logo">
+          <img src="logo.png" class="brand-logo" alt="JMC-Test Logo" />
+        </a>
+        <h1>Welcome Back</h1>
+      </div>
+
+      <!-- User Type Tabs -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-type="student">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+          </svg>
+          <span>Student</span>
+        </button>
+        <button class="tab-btn" data-type="staff">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span>Staff</span>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" autocomplete="off">
+        <input type="hidden" id="userType" value="student" />
+
+        <div class="form-group">
+          <label class="form-label" for="username">Username / ID</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <input type="text" id="username" class="form-input" placeholder="Enter your ID" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
+            <input type="password" id="password" class="form-input" placeholder="Enter password" required />
+            <button type="button" class="toggle-password" id="togglePassword">
+              <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg class="eye-closed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.75rem 0;">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="rememberMe" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="auth-link" style="font-size: 0.85rem">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" id="loginBtn">
+          <span>Sign In</span>
+          <div class="spinner" style="display: none"></div>
+        </button>
+
+        <div class="alert" id="authAlert"></div>
+      </form>
+
+      <div class="divider"><span>New here?</span></div>
+
+      <a href="register.html" class="btn-secondary">Create Account</a>
+    </div>
+  </div>
+
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+
+
+
+  <script>
+    // Check URL parameters for user type
+    window.addEventListener("DOMContentLoaded", () => {
+      // 1. Auto-redirect if already logged in
+      try {
+        const existingSession =
+          sessionStorage.getItem("user") || localStorage.getItem("user");
+        if (existingSession) {
+          const user = JSON.parse(existingSession);
+          if (user && user.type) {
+            window.location.replace(
+              user.type === "student"
+                ? "student-dashboard.html"
+                : "staff-dashboard.html",
+            );
+            return;
+          }
+        }
+      } catch (e) {
+        sessionStorage.clear();
+        localStorage.removeItem("user");
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const type = urlParams.get("type");
+
+      if (type && (type === "student" || type === "staff")) {
+        // Find the button and click it to trigger logic
+        const tabBtn = document.querySelector(
+          `.tab-btn[data-type="${type}"]`,
+        );
+        if (tabBtn) {
+          tabBtn.click();
+        }
+      }
+    });
+
+    // 2. Initialize from auth.js
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof initLoginForm === 'function') initLoginForm();
+      if (typeof initAuthTabs === 'function') initAuthTabs();
+      if (typeof initPasswordToggle === 'function') initPasswordToggle();
+
+      // 3. Show logout success toast if redirected from logout
+      if (sessionStorage.getItem('loggedOut') === 'true') {
+        sessionStorage.removeItem('loggedOut');
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;top:1.5rem;right:1.5rem;background:#1e293b;border:1px solid rgba(16,185,129,0.3);color:#10b981;padding:0.85rem 1.25rem;border-radius:10px;font-size:0.85rem;font-weight:500;z-index:9999;display:flex;align-items:center;gap:0.5rem;animation:slide-in-right 0.3s ease-out;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+        toast.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Logged out successfully';
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 4000);
+      }
+    });
+  </script>
+</body>
+
+</html>

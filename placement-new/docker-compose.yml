@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: placement_backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=3000
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: placement_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://backend:3000
+    restart: always
+
+networks:
+  default:
+    name: placement_network
