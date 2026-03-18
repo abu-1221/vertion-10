@@ -541,6 +541,81 @@ input:checked + .toggle-slider:before {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Settings Mobile Responsiveness ── */
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 1rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  .settings-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .action-buttons button {
+    flex: 1;
+    min-width: 80px;
+    font-size: 0.8rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .settings-bento-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .settings-group {
+    padding: 1rem !important;
+  }
+
+  .settings-group:last-child {
+    margin-bottom: 3rem !important;
+  }
+
+  .theme-selector-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .typo-controls-wrap {
+    grid-template-columns: 1fr !important;
+  }
+
+  .notif-row {
+    padding: 0.75rem !important;
+  }
+
+  .layout-item {
+    padding: 0.875rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-header-text h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .theme-selector-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}
 </style>
 
 

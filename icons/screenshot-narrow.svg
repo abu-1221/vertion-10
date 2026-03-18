@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f1e"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="1280" fill="url(#bg)"/>
+  <text x="360" y="512" text-anchor="middle" fill="#e0e7ff" font-family="Arial" font-weight="800" font-size="36">JMC Test</text>
+  <text x="360" y="704" text-anchor="middle" fill="#a5b4fc" font-family="Arial" font-weight="400" font-size="18">Career Development Centre</text>
+</svg>

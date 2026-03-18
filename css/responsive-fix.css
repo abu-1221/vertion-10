@@ -1,0 +1,1163 @@
+/* ==========================================================
+   JMC-TEST — COMPREHENSIVE MOBILE RESPONSIVENESS FIX
+   Addresses all alignment, spacing, scroll, visibility issues
+   NO functionality changes — UI-only fixes
+   ========================================================== */
+
+/* ──────────────────────────────────────────────
+   1. GLOBAL BASE FIXES — Prevent zoom/overflow
+   ────────────────────────────────────────────── */
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    zoom: 1 !important; /* Prevent legacy browser zoom issues */
+}
+
+/* ──────────────────────────────────────────────
+   2. CREATE TEST — 2-Column Grid Scaling
+   ────────────────────────────────────────────── */
+#create-test-section .form-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+    #create-test-section .form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   3. MANAGE TEST — Compact & Responsive
+   ────────────────────────────────────────────── */
+.stmai-tests-table {
+    table-layout: auto !important;
+}
+
+.manage-test-table th, .manage-test-table td {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.85rem !important;
+}
+
+.table-scroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.1);
+}
+
+/* ──────────────────────────────────────────────
+   4. STUDENTS SECTION — Scroll & Search
+   ────────────────────────────────────────────── */
+#students-section .table-scroll, 
+#student-lookup-section .table-scroll {
+    overflow-x: auto !important;
+    max-width: 100%;
+}
+
+.data-table {
+    min-width: 800px; /* Force scroll on small screens */
+}
+
+@media (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    .search-box {
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   5. AI JOURNAL — Download Fixes
+   ────────────────────────────────────────────── */
+.ai-action-btn.download-secondary {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease;
+}
+
+.ai-action-btn.download-secondary:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--secondary-400) !important;
+    transform: translateY(-2px);
+}
+
+/* ──────────────────────────────────────────────
+   6. CODING DOCUMENTATION — Grid Visibility
+   ────────────────────────────────────────────── */
+.coding-grid-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 500px;
+    gap: 1rem;
+}
+
+.grid-region {
+    width: 100% !important;
+    min-height: 250px !important;
+}
+
+@media (min-width: 1025px) {
+    .coding-grid-layout.split-view {
+        flex-direction: row !important;
+        height: 600px !important;
+    }
+    .grid-region {
+        flex: 1;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   7. LEADERBOARD — Scrolling & Visibility
+   ────────────────────────────────────────────── */
+#overall-ranking-list, #stmai-tab-ranking {
+    min-height: 400px;
+    padding-bottom: 2rem;
+    overflow-x: hidden;
+}
+
+#overall-ranking-list table, #stmai-tab-ranking table {
+    min-width: 600px;
+}
+
+/* ──────────────────────────────────────────────
+   8. SETTINGS PAGE — Visibility Logic
+   ────────────────────────────────────────────── */
+#settings-section .settings-container {
+    padding-bottom: 5rem !important;
+}
+
+/* Ensure the last setting (usually notifications or alerts) is visible */
+.settings-group:last-child {
+    margin-bottom: 4rem !important;
+}
+
+/* ──────────────────────────────────────────────
+   9. MAIN CONTENT — Global Bottom Spacing
+   ────────────────────────────────────────────── */
+.main-content, .test-container, .settings-container, .auth-container {
+    padding-bottom: 80px !important;
+    min-height: 100vh;
+}
+
+/* Mobile specific main content adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem !important;
+        padding-top: calc(var(--header-height) + 1rem) !important;
+        padding-bottom: 100px !important;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   10. ASSESSMENT INTERFACE — Compact Proportions
+   ────────────────────────────────────────────── */
+.question-card {
+    padding: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.question-text {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+}
+
+.options-list {
+    gap: 0.75rem !important;
+}
+
+.option-label {
+    padding: 0.85rem 1.25rem !important;
+}
+
+/* ──────────────────────────────────────────────
+   11. PERFORMANCE ANALYSIS — Full Visibility
+   ────────────────────────────────────────────── */
+.performance-overlay {
+    overflow-y: auto !important;
+    padding-bottom: 5rem !important;
+}
+
+.stats-summary {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+    gap: 1rem !important;
+}
+
+/* ──────────────────────────────────────────────
+   12. CERTIFICATION — Alignment & Buttons
+   ────────────────────────────────────────────── */
+.certificate-card {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.certificate-name {
+    word-break: break-all;
+    max-width: 100%;
+    font-size: 0.95rem !important;
+}
+
+.btn-certificate {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* ──────────────────────────────────────────────
+   13. LANDING PAGE — Hero & Grid Alignment
+   ────────────────────────────────────────────── */
+.hero-title {
+    font-size: clamp(2.2rem, 8vw, 4.5rem) !important;
+    line-height: 1.1 !important;
+}
+
+.hero-stats {
+    gap: 1rem !important;
+}
+
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .hero-buttons .btn {
+        width: 100%;
+    }
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   14. AUTH PAGES — Form Scaling
+   ────────────────────────────────────────────── */
+.auth-card {
+    width: 95% !important;
+    padding: 1.5rem !important;
+}
+
+.form-row {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+}
+
+@media (max-width: 480px) {
+    .auth-header h1 {
+        font-size: 1.5rem !important;
+    }
+    .btn-primary {
+        padding: 0.85rem !important;
+    }
+}
+
+/* ──────────────────────────────────────────────
+   15. NAVIGATION — Touch Targets
+   ────────────────────────────────────────────── */
+.nav-item {
+    min-height: 48px;
+}
+
+.mobile-menu-btn {
+    min-width: 44px;
+    min-height: 44px;
+}
+/* ──────────────────────────────────────────────
+   17. MOBILE POSITIONING — Edge-to-Edge Shift
+   ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    body {
+        /* Remove flex centering on mobile to allow manual positioning */
+        display: block !important;
+        background: #000 !important;
+    }
+
+    .app-layout {
+        position: fixed !important; 
+        /* Reduced shift for better fit: small negative values to ensure edge-to-edge without gaps */
+        top: -10px !important; 
+        left: -5px !important;
+        
+        /* Balanced dimensions to cover full screen exactly */
+        width: calc(100vw + 10px) !important;
+        height: calc(100vh + 40px) !important;
+        
+        /* Professional edge-to-edge look */
+        border-radius: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        
+        /* Keep on top */
+        z-index: 9999;
+    }
+
+    /* Fine-tuned header padding for the new balanced position */
+    .dashboard-header {
+        padding-top: 20px !important;
+    }
+    
+    .main-content {
+        padding-top: 5px !important;
+    }
+}
+
+*,
+*::before,
+*::after {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure all content-sections have bottom breathing room */
+.content-section {
+    padding-bottom: 3rem !important;
+}
+
+.dashboard-content {
+    padding-bottom: 4rem !important;
+}
+
+/* ──────────────────────────────────────────────
+   2. CREATE TEST — 2-Column Grid Layout
+   ────────────────────────────────────────────── */
+.details-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+    width: 100% !important;
+}
+
+.details-grid .full-width {
+    grid-column: 1 / -1 !important;
+}
+
+/* ──────────────────────────────────────────────
+   3. MANAGE TEST — Compact & Responsive
+   ────────────────────────────────────────────── */
+#manage-tests-section .tests-table-container {
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+#manage-tests-section .table-scroll {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 280px);
+}
+
+#manage-tests-section .data-table {
+    table-layout: auto !important;
+    min-width: 700px;
+}
+
+#manage-tests-section .data-table th,
+#manage-tests-section .data-table td {
+    padding: 0.7rem 0.6rem !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────────
+   4. STUDENTS SECTION — Full Scroll Fix
+   ────────────────────────────────────────────── */
+#students-section .table-scroll {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 280px) !important;
+}
+
+#students-section .data-table {
+    table-layout: auto !important;
+    min-width: 900px !important;
+}
+
+#students-section .data-table th,
+#students-section .data-table td {
+    white-space: nowrap;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+/* ──────────────────────────────────────────────
+   5. AI JOURNAL / UPLOAD — Download Fix
+   ────────────────────────────────────────────── */
+.ai-gen-container a[download],
+.sample-download-link,
+a.download-sample {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--primary-400);
+}
+
+/* ──────────────────────────────────────────────
+   6. CODING DOCUMENTATION — Full Visibility
+   ────────────────────────────────────────────── */
+.coding-grid-layout {
+    overflow: visible !important;
+}
+
+.grid-region {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.input-grid {
+    min-height: 200px;
+}
+
+.editor-workspace {
+    min-height: 200px;
+}
+
+.grid-textarea {
+    min-height: 150px;
+    overflow: auto !important;
+}
+
+.output-grid.visible {
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.terminal-body {
+    max-height: 500px;
+    overflow-y: auto !important;
+}
+
+/* ──────────────────────────────────────────────
+   7. LEADERBOARD — Scroll & Full Details
+   ────────────────────────────────────────────── */
+#ranking-section .table-scroll,
+#stmai-detail-view .table-scroll {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 280px);
+}
+
+#ranking-section .data-table {
+    min-width: 650px;
+    table-layout: auto !important;
+}
+
+/* ──────────────────────────────────────────────
+   8. SETTINGS PAGE — Full Visibility
+   ────────────────────────────────────────────── */
+#settings-section .content-section,
+#settings-section {
+    overflow: visible !important;
+    padding-bottom: 5rem !important;
+}
+
+.settings-grid,
+.settings-card,
+.alert-preferences,
+.dashboard-settings {
+    overflow: visible !important;
+}
+
+/* Ensure all settings items are visible */
+.settings-card:last-child,
+.alert-preferences:last-child {
+    margin-bottom: 3rem !important;
+}
+
+/* ──────────────────────────────────────────────
+   9. STUDENT DASHBOARD — Bottom Spacing
+   ────────────────────────────────────────────── */
+#dashboard-section,
+#tests-section,
+#analytics-section,
+#certifications-section,
+#reports-section {
+    padding-bottom: 4rem !important;
+}
+
+/* All grids get proper bottom spacing */
+.stats-grid:last-child,
+.analytics-overview-strip:last-child,
+.reports-grid:last-child,
+.analytics-charts-grid:last-child {
+    margin-bottom: 3rem;
+}
+
+/* ──────────────────────────────────────────────
+   10. TEST INTERFACE — Compact & Proportional
+   ────────────────────────────────────────────── */
+.test-taking-overlay {
+    overflow-y: auto !important;
+}
+
+.test-main {
+    overflow-y: auto !important;
+    max-height: calc(100vh - 70px);
+}
+
+/* ──────────────────────────────────────────────
+   11. PERFORMANCE ANALYSIS — Full Visibility
+   ────────────────────────────────────────────── */
+.performance-overlay {
+    overflow-y: auto !important;
+}
+
+.score-hero {
+    padding: 2rem 1rem !important;
+}
+
+.review-grid {
+    padding-bottom: 4rem !important;
+}
+
+/* Stats summary rows — ensure Qualified/Not Qualified/Avg Score/Pass Rate visible */
+.stats-summary .stat-row {
+    padding: 0.5rem 0;
+}
+
+/* ──────────────────────────────────────────────
+   12. CERTIFICATION — PDF Button & Long Names
+   ────────────────────────────────────────────── */
+.cert-preview-btn,
+.cert-save-btn,
+.cert-download-btn,
+[id*="certif"] .btn,
+.certification-actions .btn {
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    font-size: 0.85rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    transition: all 0.3s ease !important;
+    white-space: nowrap !important;
+}
+
+/* Certificate name wrapping */
+.cert-name,
+.certificate-name,
+.cert-student-name,
+[class*="cert"] h2,
+[class*="cert"] h3 {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    line-height: 1.3 !important;
+}
+
+
+/* ==========================================================
+   TABLETS & SMALL LAPTOPS (Max 1024px)
+   ========================================================== */
+@media screen and (max-width: 1024px) {
+    /* Create Test 2-col */
+    .details-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Tables scroll horizontally */
+    .table-scroll {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Test interface compact */
+    .test-main {
+        grid-template-columns: 1fr !important;
+        padding: 1rem !important;
+    }
+
+    .test-sidebar {
+        order: -1;
+    }
+
+    /* Score circle smaller */
+    .score-circle {
+        width: 130px;
+        height: 130px;
+    }
+
+    .score-value {
+        font-size: 2.8rem;
+    }
+}
+
+
+/* ==========================================================
+   SMARTPHONES (Max 768px)
+   ========================================================== */
+@media screen and (max-width: 768px) {
+
+    /* ---- Global Mobile Fixes ---- */
+    body {
+        overflow-x: hidden !important;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    .app-layout {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport for mobile browsers */
+        border-radius: 0 !important;
+        border: none !important;
+    }
+
+    .main-content {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ---- Dashboard Content ---- */
+    .dashboard-content {
+        padding: 1rem !important;
+        padding-bottom: 5rem !important;
+    }
+
+    /* ---- Section Intro ---- */
+    .section-intro {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .section-intro h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .section-intro p {
+        font-size: 0.9rem !important;
+    }
+
+    /* ---- Create Test — Single Column on Small ---- */
+    .details-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .form-card {
+        padding: 1rem !important;
+    }
+
+    .targeting-filter-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .filter-item.span-full {
+        grid-column: 1 !important;
+    }
+
+    /* ---- Tables — Horizontal Scroll ---- */
+    .tests-table-container,
+    .table-scroll {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.5rem;
+    }
+
+    .data-table {
+        min-width: 600px !important;
+        table-layout: auto !important;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.6rem 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* ---- Students Table ---- */
+    #students-section .data-table {
+        min-width: 800px !important;
+    }
+
+    #students-section .table-scroll {
+        padding-bottom: 100px !important;
+    }
+
+    /* ---- Manage Test Table ---- */
+    #manage-tests-section .data-table {
+        min-width: 650px !important;
+    }
+
+    /* ---- Stats Grid ---- */
+    .stats-grid {
+        flex-wrap: wrap !important;
+        gap: 0.75rem !important;
+    }
+
+    .stats-grid .stat-card {
+        min-width: 100% !important;
+        flex: none !important;
+    }
+
+    .stat-card {
+        padding: 1rem !important;
+    }
+
+    .stat-value {
+        font-size: 1.4rem !important;
+    }
+
+    .stat-icon {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* ---- Profile ---- */
+    .profile-card-premium {
+        padding: 1.5rem 1rem 1rem !important;
+    }
+
+    .profile-header-main {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 1rem !important;
+    }
+
+    .profile-avatar-large {
+        width: 90px !important;
+        height: 90px !important;
+        font-size: 2.5rem !important;
+    }
+
+    .profile-username-main {
+        font-size: 1.5rem !important;
+    }
+
+    .profile-details-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .qualifications-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .profile-meta-info {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    /* ---- Header ---- */
+    .dashboard-header {
+        padding: 0.75rem 1rem !important;
+        gap: 0.5rem;
+    }
+
+    .header-left h1 {
+        font-size: 1.1rem !important;
+    }
+
+    .user-details {
+        display: none !important;
+    }
+
+    /* ---- AI Upload ---- */
+    .upload-zone {
+        padding: 2rem 1rem !important;
+    }
+
+    .upload-icon {
+        width: 48px !important;
+        height: 48px !important;
+    }
+
+    /* ---- Coding Sections ---- */
+    .coding-grid-layout {
+        gap: 1rem;
+    }
+
+    .grid-header {
+        padding: 0.5rem 0.75rem !important;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .grid-controls {
+        gap: 0.5rem !important;
+    }
+
+    .grid-textarea {
+        font-size: 0.85rem !important;
+        padding: 0.75rem !important;
+    }
+
+    .line-numbers {
+        width: 35px !important;
+        font-size: 0.75rem !important;
+    }
+
+    .grid-button-row {
+        padding: 0.75rem !important;
+        flex-wrap: wrap;
+    }
+
+    .btn-compile,
+    .btn-run {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    .terminal-body {
+        padding: 0.75rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* ---- Leaderboard ---- */
+    #ranking-section .data-table {
+        min-width: 550px !important;
+    }
+
+    /* ---- Settings ---- */
+    #settings-section {
+        padding-bottom: 5rem !important;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* ---- Reports Grid ---- */
+    .reports-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* ---- Analytics ---- */
+    .analytics-overview-strip {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    .analytics-charts-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chart-card-wide {
+        grid-column: span 1 !important;
+    }
+
+    /* ---- Test Interface ---- */
+    .test-taking-overlay .test-header {
+        padding: 0 0.75rem !important;
+        height: 56px !important;
+    }
+
+    .test-title-info h2 {
+        font-size: 0.9rem !important;
+    }
+
+    .test-timer {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 0.75rem !important;
+    }
+
+    .test-main {
+        padding: 0.75rem !important;
+        gap: 0.75rem !important;
+    }
+
+    .test-taking-overlay .question-card,
+    .test-question-container {
+        padding: 1.25rem !important;
+    }
+
+    .question-text {
+        font-size: 0.95rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .test-actions {
+        flex-wrap: wrap;
+    }
+
+    .test-actions .btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+    }
+
+    /* Progress grid */
+    .progress-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 0.35rem !important;
+    }
+
+    .progress-dot {
+        font-size: 0.65rem !important;
+    }
+
+    /* ---- Performance Review ---- */
+    .performance-overlay {
+        padding: 1rem !important;
+    }
+
+    .score-hero {
+        padding: 1.5rem 1rem !important;
+    }
+
+    .score-circle {
+        width: 110px !important;
+        height: 110px !important;
+    }
+
+    .score-value {
+        font-size: 2.2rem !important;
+    }
+
+    .review-item {
+        padding: 1rem !important;
+    }
+
+    .review-question {
+        font-size: 0.9rem !important;
+    }
+
+    .review-option {
+        padding: 0.6rem 0.75rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* ---- Certification ---- */
+    .cert-preview-btn,
+    .cert-save-btn,
+    .cert-download-btn,
+    .certification-actions .btn {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* ---- Publish Review ---- */
+    .publish-info-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .publish-audience-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .publish-action-bar {
+        flex-direction: column-reverse !important;
+    }
+
+    .publish-action-bar .btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* ---- Shortlist / Audience ---- */
+    .shortlist-category {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .shortlist-category-title {
+        min-width: auto !important;
+    }
+
+    /* ---- Options Grid ---- */
+    .options-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ---- Form Actions ---- */
+    .form-actions {
+        flex-direction: column !important;
+    }
+
+    .form-actions .btn {
+        width: 100% !important;
+    }
+
+    /* ---- Search & Filter ---- */
+    .table-header {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        padding: 0.75rem !important;
+    }
+
+    .search-input {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .filter-select,
+    .styled-select {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* ---- Notifications ---- */
+    .realtime-notification {
+        min-width: auto !important;
+        max-width: calc(100vw - 2rem) !important;
+        right: 1rem !important;
+        bottom: 1rem !important;
+    }
+
+    /* ---- Modal fixes ---- */
+    .logout-modal {
+        max-width: calc(100vw - 2rem) !important;
+        margin: 1rem !important;
+    }
+}
+
+
+/* ==========================================================
+   VERY SMALL PHONES (Max 480px)
+   ========================================================== */
+@media screen and (max-width: 480px) {
+
+    .dashboard-header {
+        flex-wrap: wrap !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    .header-left h1 {
+        font-size: 1rem !important;
+    }
+
+    .section-intro h2 {
+        font-size: 1.2rem !important;
+    }
+
+    /* Stats 1 col */
+    .analytics-overview-strip {
+        grid-template-columns: 1fr !important;
+    }
+
+    .analytics-stat-value {
+        font-size: 1.2rem !important;
+    }
+
+    /* Smaller stat cards */
+    .stat-card {
+        padding: 0.75rem !important;
+        gap: 0.75rem !important;
+    }
+
+    .stat-value {
+        font-size: 1.2rem !important;
+    }
+
+    .stat-icon {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .stat-icon svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* Publish info */
+    .publish-info-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Score circle tiny */
+    .score-circle {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    .score-value {
+        font-size: 1.8rem !important;
+    }
+
+    /* Test timer smaller */
+    .test-timer {
+        font-size: 0.75rem !important;
+        padding: 0.3rem 0.5rem !important;
+    }
+
+    /* Coding editor */
+    .line-numbers {
+        width: 28px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .grid-textarea {
+        font-size: 0.8rem !important;
+        padding: 0.5rem !important;
+    }
+
+    /* Certification buttons */
+    .certification-actions {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+}
+
+
+/* ==========================================================
+   LANDSCAPE PHONE FIX
+   ========================================================== */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .app-layout {
+        height: 100vh !important;
+    }
+
+    .test-taking-overlay .test-header {
+        height: 48px !important;
+    }
+
+    .score-hero {
+        padding: 1rem !important;
+    }
+
+    .score-circle {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .score-value {
+        font-size: 1.5rem !important;
+    }
+}
+
+
+/* ==========================================================
+   PRINT MEDIA — Hide sidebar & nav for clean printing
+   ========================================================== */
+@media print {
+    .sidebar,
+    .dashboard-header,
+    .menu-toggle,
+    .sidebar-overlay {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .app-layout {
+        height: auto !important;
+        border: none !important;
+    }
+}
