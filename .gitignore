@@ -1,0 +1,7 @@
+node_modules/
+jmc_placement_portal.sqlite
+.vscode/
+.DS_Store
+*.log
+.vercel
+.env*.local
