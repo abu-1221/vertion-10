@@ -1,10 +1,10 @@
-# JMC-TEST Documentation
-Welcome to the official documentation for **JMC-Test**. This platform is a comprehensive placement assessment and recruitment management system designed for **Jamal Mohamed College (JMC)**.
+# JMC TEST Documentation
+Welcome to the official documentation for **JMC TEST**. This platform is a comprehensive placement assessment and recruitment management system designed for **Jamal Mohamed College (JMC)**.
 
 ---
 
 ## 1. Project Overview
-The JMC-Test system is a full-stack web application that facilitates automated placement assessments. It allows the college staff to create and manage tests, track student performance, and provides students with a seamless interface to take tests and view their results. It also features an advanced AI Smart Assistant to help users navigate and solve questions.
+The JMC TEST system is a full-stack web application that facilitates automated placement assessments. It allows the college staff to create and manage tests, track student performance, and provides students with a seamless interface to take tests and view their results. It also features an advanced AI Smart Assistant to help users navigate and solve questions.
 
 ---
 

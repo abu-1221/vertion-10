@@ -144,11 +144,9 @@ function initNavigation() {
 
       // Reinitialize charts for analytics section (Student only)
       if (item.dataset.section === "analytics") {
-        setTimeout(() => {
-          if (window.AnalyticsEngine) {
-            window.AnalyticsEngine.init();
-          }
-        }, 100);
+        if (window.AnalyticsEngine) {
+          window.AnalyticsEngine.init();
+        }
       }
 
       // Reload tests for availability section
@@ -200,8 +198,8 @@ function initLogout() {
             <line x1="21" y1="12" x2="9" y2="12"/>
           </svg>
         </div>
-        <h3 class="logout-modal-title">Sign Out</h3>
-        <p class="logout-modal-text">Are you sure you want to log out of JMC-Test? Your current session will be ended.</p>
+        <h3 class="logout-modal-title">Confirm Logout</h3>
+        <p class="logout-modal-text">Are you sure you want to log out of JMC TEST? Your current session will be ended.</p>
         <div class="logout-modal-actions">
           <button type="button" class="logout-modal-btn cancel" id="logoutCancelBtn">Cancel</button>
           <button type="button" class="logout-modal-btn confirm" id="logoutConfirmBtn">
@@ -210,8 +208,9 @@ function initLogout() {
               <polyline points="16,17 21,12 16,7"/>
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
-            Sign Out
+            <span>Logout</span>
           </button>
+
         </div>
       </div>
     `;
@@ -251,35 +250,35 @@ function initLogout() {
     performLogout();
   });
 }
-
 function performLogout() {
   const confirmBtn = document.getElementById("logoutConfirmBtn");
+  // Immediate logout as requested by user for speed
   if (confirmBtn) {
     confirmBtn.disabled = true;
-    confirmBtn.textContent = "Signing out...";
+    confirmBtn.textContent = "Logging out...";
   }
 
-  setTimeout(() => {
-    // 1. Clear ALL session data
-    sessionStorage.clear();
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+  // 1. Clear ALL session data
+  sessionStorage.clear();
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
 
-    // 2. Clear cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
+  // 2. Clear cookies
+  document.cookie.split(";").forEach((c) => {
+    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
 
-    // 3. Replace history to prevent back-button re-entry
-    window.history.replaceState(null, "", "index.html");
+  // 3. Replace history to prevent back-button re-entry
+  window.history.replaceState(null, "", "index.html");
 
-    // 4. Set flag for logout awareness (optional)
-    sessionStorage.setItem("loggedOut", "true");
+  // 4. Set flag for logout awareness (optional)
+  sessionStorage.setItem("loggedOut", "true");
 
-    // 5. Redirect to Landing Page (original theme)
-    window.location.replace("index.html");
-  }, 300);
+  // 5. Redirect to Landing Page (original theme)
+  window.location.href = "index.html";
 }
+
+
 
 // Real-time Event Listener for Students
 function initRealtimeUpdates() {
@@ -1628,26 +1627,26 @@ async function viewTestDetails(result) {
   const questionsArr = typeof result.questions === 'string' ? JSON.parse(result.questions) : (result.questions || []);
 
   overlay.innerHTML = `
-        <div style="max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
-                <button class="btn" onclick="closePerformanceReview()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; padding: 0.65rem 1.75rem; border-radius: 10px; display: inline-flex; align-items: center; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.3px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35); cursor: pointer; transition: all 0.3s ease;">
+        <div class="assessment-report-container" style="max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+            <div class="assessment-report-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+                <button class="btn btn-dashboard-back" onclick="closePerformanceReview()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; padding: 0.65rem 1.75rem; border-radius: 10px; display: inline-flex; align-items: center; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.3px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35); cursor: pointer; transition: all 0.3s ease;">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px; height:16px; margin-right:8px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> 
                   Dashboard
                 </button>
-                <div style="text-align: center;">
+                <div class="assessment-report-title" style="text-align: center;">
                     <h1 style="margin:0; font-size: 1.25rem; letter-spacing: 2px; font-weight: 800; color: #fff;">ASSESSMENT REPORT</h1>
                     <div style="height: 2px; width: 40px; background: var(--blue-500); margin: 8px auto 0;"></div>
                 </div>
-                <div style="width: 100px;"></div>
+                <div class="assessment-report-spacer" style="width: 100px;"></div>
             </div>
 
             <div class="score-hero" style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 2rem; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
-                <div style="display: flex; align-items: center; gap: 2rem; justify-content: center;">
-                  <div class="score-circle" style="margin: 0;">
+                <div class="score-hero-flex" style="display: flex; align-items: center; gap: 2rem; justify-content: center;">
+                  <div class="score-circle" style="margin: 0; flex-shrink: 0;">
                       <span class="score-value">${result.score}</span>
                       <span class="score-total">%</span>
                   </div>
-                  <div style="text-align: left;">
+                  <div class="score-hero-text" style="text-align: left;">
                       <h2 style="font-size: 1.75rem; margin: 0 0 0.25rem 0; color: #fff;">${result.testName} ${(() => { const rd = result.difficulty || 'Medium'; const rdc = { 'Easy': '#10b981', 'Medium': '#f59e0b', 'Hard': '#ef4444' }[rd] || '#f59e0b'; return `<span style="display:inline-block; font-size: 0.6rem; font-weight: 800; color: ${rdc}; background: ${rdc}15; border: 1px solid ${rdc}30; padding: 2px 8px; border-radius: 6px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px;">${rd}</span>`; })()}</h2>
                       <p style="color: var(--gray-400); margin: 0 0 1rem 0; font-size: 0.95rem;">${result.company} • Applied Drive</p>
                       <span class="badge" style="background: ${result.status === 'passed' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; color: ${result.status === 'passed' ? '#10b981' : '#ef4444'}; border: 1px solid currentColor; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; font-size: 0.75rem; letter-spacing: 1px;">
@@ -1658,7 +1657,7 @@ async function viewTestDetails(result) {
             </div>
 
             <!-- Attempt Analysis Section -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+            <div class="attempt-analysis-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
               ${(() => {
                 let correct = 0, incorrect = 0, unattempted = 0;
                 questionsArr.forEach((q, i) => {
@@ -1682,19 +1681,19 @@ async function viewTestDetails(result) {
                 });
                 
                 return `
-                  <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                  <div class="analysis-stat-card" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
                     <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;">${correct}</div>
                     <div style="font-size: 0.65rem; color: #10b981; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Correct</div>
                   </div>
-                  <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                  <div class="analysis-stat-card" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
                     <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444;">${incorrect}</div>
                     <div style="font-size: 0.65rem; color: #ef4444; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Incorrect</div>
                   </div>
-                  <div style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                  <div class="analysis-stat-card" style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
                     <div style="font-size: 1.5rem; font-weight: 800; color: #f59e0b;">${unattempted}</div>
                     <div style="font-size: 0.65rem; color: #f59e0b; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Unattempted</div>
                   </div>
-                  <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                  <div class="analysis-stat-card" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
                     <div style="font-size: 1.5rem; font-weight: 800; color: #fff;">${questionsArr.length}</div>
                     <div style="font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Total Questions</div>
                   </div>
@@ -1702,7 +1701,7 @@ async function viewTestDetails(result) {
               })()}
             </div>
 
-            <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <div class="question-analysis-header" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                <h3 style="font-size: 1rem; color: #fff; margin: 0;">Question Analysis</h3>
                <span style="font-size: 0.85rem; color: var(--gray-500);">Deep Dive</span>
             </div>
@@ -1742,13 +1741,13 @@ async function viewTestDetails(result) {
 
     return `
                     <div class="review-item" style="background: ${containerBg}; border: 1px solid ${containerBorder}; border-radius: 12px; padding: 1.75rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+                        <div class="review-item-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
                             <span style="font-size: 0.75rem; font-weight: 700; color: var(--blue-400); text-transform: uppercase; letter-spacing: 1px;">
                                 Question ${i + 1} ${isCoding ? '• CODING_LAB' : '• MCQ'}
                             </span>
-                            <div style="display: flex; gap: 1rem; align-items: center;">
-                              <span style="font-size: 0.75rem; color: var(--gray-500); background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px;">⏱️ ${timeSpent}s</span>
-                              <div class="review-status ${isCorrect ? 'status-correct' : 'status-incorrect'}" style="margin: 0; padding: 4px 12px; font-size: 0.7rem; border-radius: 6px;">
+                            <div class="review-status-wrap" style="display: flex; gap: 1rem; align-items: center;">
+                              <span style="font-size: 0.75rem; color: var(--gray-500); background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; white-space: nowrap;">⏱️ ${timeSpent}s</span>
+                              <div class="review-status ${isCorrect ? 'status-correct' : 'status-incorrect'}" style="margin: 0; padding: 4px 12px; font-size: 0.7rem; border-radius: 6px; white-space: nowrap;">
                                   ${isCorrect ? 'PASS' : (isCoding ? 'FAIL / PARTIAL' : 'INCORRECT')}
                               </div>
                             </div>
@@ -1759,16 +1758,16 @@ async function viewTestDetails(result) {
                             <div class="coding-analysis" style="display: flex; flex-direction: column; gap: 1rem; animation: fadeIn 0.4s ease-out;">
                                 <div style="background: #020617; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
                                     <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; font-size: 0.7rem; color: var(--gray-400); font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05);">Submitted Code</div>
-                                    <pre style="margin:0; padding: 1.25rem; color: #e2e8f0; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; overflow-x: auto; tab-size: 4;">${userAns || '// No code submitted'}</pre>
+                                    <pre class="coding-pre" style="margin:0; padding: 1.25rem; color: #e2e8f0; font-family: 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.5; overflow-x: auto; tab-size: 4;">${userAns || '// No code submitted'}</pre>
                                 </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="coding-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                                     <div style="background: #020617; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
                                         <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; font-size: 0.7rem; color: #10b981; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05);">Expected Output</div>
-                                        <pre style="margin:0; padding: 1rem; color: #10b981; font-family: monospace; font-size: 0.8rem; overflow-x: auto;">${q.expectedOutput || ''}</pre>
+                                        <pre class="coding-pre" style="margin:0; padding: 1rem; color: #10b981; font-family: monospace; font-size: 0.8rem; overflow-x: auto;">${q.expectedOutput || ''}</pre>
                                     </div>
                                     <div style="background: #020617; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
                                         <div style="background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; font-size: 0.7rem; color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05);">Student Submitted Output</div>
-                                        <pre style="margin:0; padding: 1rem; color: ${isCorrect ? '#10b981' : '#ef4444'}; font-family: monospace; font-size: 0.8rem; overflow-x: auto; max-height: 150px;">${(detail.actualOutput !== undefined && detail.actualOutput !== null && detail.actualOutput !== "") ? detail.actualOutput : 'No output recorded'}</pre>
+                                        <pre class="coding-pre" style="margin:0; padding: 1rem; color: ${isCorrect ? '#10b981' : '#ef4444'}; font-family: monospace; font-size: 0.8rem; overflow-x: auto; max-height: 150px;">${(detail.actualOutput !== undefined && detail.actualOutput !== null && detail.actualOutput !== "") ? detail.actualOutput : 'No output recorded'}</pre>
                                     </div>
                                 </div>
                                 ${similarityScore ? `
@@ -1788,8 +1787,8 @@ async function viewTestDetails(result) {
 
       return `
                                     <div class="review-option ${type}" style="padding: 12px 16px; font-size: 0.85rem; border-radius: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
-                                        <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem;">${letter}</div>
-                                        <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${opt}</span>
+                                        <div style="width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; flex-shrink: 0;">${letter}</div>
+                                        <span style="flex: 1; overflow-wrap: anywhere;">${opt}</span>
                                         ${letter === userAns ? `<span style="font-size: 0.65rem; padding: 2px 8px; border-radius: 6px; background: ${isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 800;">YOU</span>` : ''}
                                     </div>
                                     `;
@@ -1808,11 +1807,14 @@ async function viewTestDetails(result) {
     `;
 
   overlay.style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  // Allow full page scroll
+  window.scrollTo(0, 0);
 }
+
 
 function closePerformanceReview() {
   document.getElementById('performance-overlay').style.display = 'none';
+  // Restore scroll is redundant if we never hide it, but harmless to keep set to auto
   document.body.style.overflow = 'auto';
 }
 
@@ -2042,7 +2044,8 @@ async function showPassedTestsForCertificate() {
                 <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--gray-400);">${test.company} • ${test.difficulty} Level</p>
                 <div style="margin-top: 8px; font-size: 0.75rem; color: #10b981; font-weight: 700;">Score: ${test.score}%</div>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="generateMeritCertificate('${test.id}')">Issue certificate</button>
+            <button class="btn btn-primary btn-sm" style="min-width: 180px;" onclick="generateMeritCertificate('${test.id}')">Issue Certificate</button>
+
         </div>
       `).join('')
     : '<div style="padding: 2rem; color: var(--gray-500);">No specialized certificates available yet. Qualify a test to unlock!</div>';
@@ -2498,7 +2501,7 @@ async function generatePerformanceReport(format = 'pdf') {
     // Verified Signature Placeholder
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
-    doc.text('* This is a computer-generated transcript from the JMC-Test system. QR verification available on digital certificates.', 105, 285, { align: 'center' });
+    doc.text('* This is a computer-generated transcript from the JMC TEST system. QR verification available on digital certificates.', 105, 285, { align: 'center' });
 
     doc.save(`Transcript_${user.username}.pdf`);
     showNotification('Success', 'Performance transcript generated.', 'success');

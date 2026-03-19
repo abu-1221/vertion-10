@@ -26,43 +26,55 @@ class AISmartBuddy {
     }
 
     createElements() {
-        // Create AI Panel HTML
+        // Create AI Panel HTML with Minimize feature
         const panelHtml = `
             <div class="ai-panel" id="aiPanel">
                 <div class="ai-header" id="aiHeader">
                     <div class="ai-header-info">
                         <div class="ai-avatar">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
                                 <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                             </svg>
                         </div>
                         <div>
-                            <div class="ai-title">JMC Smart Assistant</div>
+                            <div class="ai-title">Smart Assistant</div>
                             <div class="ai-status">Online</div>
                         </div>
                     </div>
-                    <button class="ai-close" id="aiClose">✕</button>
+                    <div class="ai-header-actions">
+                        <button class="ai-minimize-btn" id="aiMinimize" title="Minimize">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <button class="ai-close" id="aiClose">✕</button>
+                    </div>
                 </div>
                 
-                <div class="ai-model-selector" id="aiModelSelector">
-                    <div class="ai-model-chip active" data-model="flash">Flash 2.5</div>
-                    <div class="ai-model-chip" data-model="flash-2">Flash 2.0</div>
-                    <div class="ai-model-chip" data-model="pro">Pro 2.5</div>
-                    <div class="ai-model-chip" data-model="gemini-2.5">Adaptive</div>
-                </div>
+                <div class="ai-body-wrapper" id="aiBodyWrapper">
+                    <div class="ai-model-selector" id="aiModelSelector">
+                        <div class="ai-model-chip active" data-model="flash">Flash 2.5</div>
+                        <div class="ai-model-chip" data-model="flash-2">Flash 2.0</div>
+                        <div class="ai-model-chip" data-model="pro">Pro 2.5</div>
+                        <div class="ai-model-chip" data-model="gemini-2.5">Adaptive</div>
+                    </div>
 
-                <div class="ai-chat-area" id="aiChatArea"></div>
+                    <div class="ai-chat-area" id="aiChatArea"></div>
+                    
+                    <div class="ai-quick-topics" id="aiQuickTopics" style="padding: 0 1.25rem 0.75rem; display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none;">
+                        <button class="topic-pill" data-q="What's a balanced technical round like?">Tech Round</button>
 
-                <div class="ai-input-area">
-                    <form id="aiChatForm" class="ai-input-wrapper">
-                        <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." autocomplete="off">
-                        <button type="submit" class="ai-send" id="aiSend">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;">
-                                <line x1="22" y1="2" x2="11" y2="13"/>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                            </svg>
-                        </button>
-                    </form>
+                    </div>
+
+                    <div class="ai-input-area">
+                        <form id="aiChatForm" class="ai-input-wrapper">
+                            <input type="text" class="ai-input" id="aiInput" placeholder="Ask me something..." autocomplete="off">
+                            <button type="submit" class="ai-send" id="aiSend">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;">
+                                    <line x1="22" y1="2" x2="11" y2="13"/>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         `;
@@ -76,6 +88,8 @@ class AISmartBuddy {
         this.form = document.getElementById('aiChatForm');
         this.input = document.getElementById('aiInput');
         this.closeBtn = document.getElementById('aiClose');
+        this.minBtn = document.getElementById('aiMinimize');
+        this.bodyWrapper = document.getElementById('aiBodyWrapper');
         this.modelChips = document.querySelectorAll('.ai-model-chip');
     }
 
@@ -95,7 +109,31 @@ class AISmartBuddy {
         });
 
         // Close button
-        this.closeBtn.addEventListener('click', () => this.togglePanel(false));
+        this.closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.togglePanel(false);
+        });
+
+        // Minimize switch
+        this.minBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isMin = this.panel.classList.toggle('minimized');
+            this.minBtn.innerHTML = isMin ? 
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' : 
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+            this.minBtn.title = isMin ? 'Maximize' : 'Minimize';
+        });
+
+        // Quick topic buttons
+        document.querySelectorAll('.topic-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const query = btn.dataset.q;
+                if (query) {
+                    this.input.value = query;
+                    this.handleUserQuery();
+                }
+            });
+        });
 
         // Model selection
         this.modelChips.forEach(chip => {
@@ -110,25 +148,40 @@ class AISmartBuddy {
     makeDraggable() {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-        this.header.onmousedown = (e) => {
+        const onStart = (e) => {
+            // Disable dragging on mobile if panel is likely fullscreen
+            if (window.innerWidth <= 768) return;
+
             e = e || window.event;
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
+            const isTouch = e.type === 'touchstart';
+            const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+            const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+            pos3 = clientX;
+            pos4 = clientY;
+            
+            if (isTouch) {
+                document.ontouchend = closeDragElement;
+                document.ontouchmove = elementDrag;
+            } else {
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
         };
+
+        this.header.onmousedown = onStart;
+        this.header.ontouchstart = onStart;
 
         const elementDrag = (e) => {
             e = e || window.event;
-            e.preventDefault();
-            // calculate the new cursor position:
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
+            const isTouch = e.type === 'touchmove';
+            const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+            const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+            pos1 = pos3 - clientX;
+            pos2 = pos4 - clientY;
+            pos3 = clientX;
+            pos4 = clientY;
 
             // Set the element's new position:
             this.panel.style.top = (this.panel.offsetTop - pos2) + "px";
@@ -138,9 +191,10 @@ class AISmartBuddy {
         };
 
         function closeDragElement() {
-            // stop moving when mouse button is released:
             document.onmouseup = null;
             document.onmousemove = null;
+            document.ontouchend = null;
+            document.ontouchmove = null;
         }
     }
 
@@ -278,7 +332,7 @@ class AISmartBuddy {
         }
 
         return `
-            You are JMC Smart Assistant, a highly capable AI assistant built for JMC-Test.
+            You are JMC Smart Assistant, a highly capable AI assistant built for JMC TEST.
             User Context: ${roleContext}
             Current Logged-In Portal Sections (if applicable):
             ${sections}

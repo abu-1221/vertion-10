@@ -1,5 +1,5 @@
 /**
- * Ranking System for JMC-Test
+ * Ranking System for JMC TEST
  * Handles per-test and overall student rankings.
  */
 
@@ -8,7 +8,7 @@ window.RankingSystem = {
      * Load and display ranking for a specific test
      */
     async loadTestRanking(testId) {
-        const container = document.getElementById('stmai-tab-ranking');
+        const container = document.getElementById('stmai-ranking-content');
         if (!container) return;
 
         container.innerHTML = `<div style="text-align:center; padding:3rem;"><span class="spinner"></span> <span style="margin-left: 10px; color: var(--gray-400);">Calibrating Rankings...</span></div>`;
@@ -71,7 +71,7 @@ window.RankingSystem = {
                 else if (rank === 3) rankColor = "#f59e0b";
 
                 html += `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                    <tr onclick="if(window.lookupStudent) window.lookupStudent('${item.username}')" style="border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.08)'" onmouseout="this.style.background='transparent'">
                         <td style="padding: 0.6rem 1.5rem; text-align: center;">
                             <div style="width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; background: rgba(255,255,255,0.05); color: ${rankColor};">
                                 ${rank}

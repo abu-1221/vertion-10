@@ -1,6 +1,6 @@
 @echo off
 echo ===========================================
-echo   JMC-TEST PROFESSIONAL PORTAL - LAUNCHER
+echo   JMC TEST PROFESSIONAL PORTAL - LAUNCHER
 echo ===========================================
 echo.
 echo [1/3] Checking dependencies...
@@ -14,7 +14,7 @@ if not exist "node_modules" (
 
 echo.
 echo [2/3] Starting Database Server...
-start "JMC-TEST Backend" /min cmd /k "npm start"
+start "JMC TEST Backend" /min cmd /k "npm start"
 timeout /t 5 >nul
 
 echo.

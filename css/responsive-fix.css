@@ -1,5 +1,5 @@
 /* ==========================================================
-   JMC-TEST — COMPREHENSIVE MOBILE RESPONSIVENESS FIX
+   JMC TEST — COMPREHENSIVE MOBILE RESPONSIVENESS FIX
    Addresses all alignment, spacing, scroll, visibility issues
    NO functionality changes — UI-only fixes
    ========================================================== */
@@ -192,7 +192,6 @@ body {
    11. PERFORMANCE ANALYSIS — Full Visibility
    ────────────────────────────────────────────── */
 .performance-overlay {
-    overflow-y: auto !important;
     padding-bottom: 5rem !important;
 }
 
@@ -362,7 +361,7 @@ body {
     overflow-x: auto !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
-    max-height: calc(100vh - 280px);
+    max-height: 850px !important; /* increased from calc(100vh - 280px) to show 8-10 tests */
 }
 
 #manage-tests-section .data-table {
@@ -388,8 +387,9 @@ body {
 }
 
 #students-section .data-table {
-    table-layout: auto !important;
-    min-width: 900px !important;
+    table-layout: fixed !important;
+    min-width: 100% !important;
+    width: 100% !important;
 }
 
 #students-section .data-table th,
@@ -1159,5 +1159,765 @@ a.download-sample {
     .app-layout {
         height: auto !important;
         border: none !important;
+    }
+}
+
+/* ==========================================================
+   ASSESSMENT REPORT MOBILE RESPONSIVENESS FIX
+   ========================================================== */
+@media screen and (max-width: 768px) {
+    .assessment-report-container {
+        padding: 1.5rem 1rem !important;
+        width: 100% !important;
+        border-radius: 12px !important;
+    }
+    .assessment-report-header {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    .assessment-report-spacer {
+        display: none !important;
+    }
+    .btn-dashboard-back {
+        width: 100% !important;
+        justify-content: center !important;
+        order: 2 !important;
+    }
+    .assessment-report-title {
+        order: 1 !important;
+        width: 100% !important;
+    }
+    .assessment-report-title h1 {
+        font-size: 1.1rem !important;
+    }
+    .score-hero {
+        padding: 1.5rem 1rem !important;
+    }
+    .score-hero-flex {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        text-align: center !important;
+    }
+    .score-hero-text {
+        text-align: center !important;
+    }
+    .score-hero-text h2 {
+        font-size: 1.4rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    .attempt-analysis-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+    .analysis-stat-card {
+        padding: 1rem 0.5rem !important;
+    }
+    .question-analysis-header {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        align-items: flex-start !important;
+    }
+    .review-item {
+        padding: 1.25rem 1rem !important;
+    }
+    .review-item-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+    }
+    .review-status-wrap {
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+    .review-options {
+        grid-template-columns: 1fr !important;
+    }
+    .coding-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .coding-pre {
+        padding: 0.75rem !important;
+        font-size: 0.75rem !important;
+    }
+    .review-footer .btn-primary {
+        max-width: 100% !important;
+    }
+}
+
+/* ==========================================================
+   MOBILE SIDEBAR & HAMBURGER FIX (STUDENT & STAFF)
+   ========================================================== */
+@media screen and (max-width: 768px) {
+    /* Ensure the hamburger button is ALWAYS shown on mobile */
+    .menu-toggle, #menuToggle {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 44px !important;
+        height: 44px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 10px !important;
+        cursor: pointer !important;
+        z-index: 9990 !important;
+        padding: 0 !important;
+        margin-right: 15px !important;
+    }
+    
+    /* Ensure hamburger inner lines are visible */
+    .menu-toggle .hamburger-box {
+        width: 24px !important;
+        height: 16px !important;
+        position: relative !important;
+    }
+    .menu-toggle .hamburger-inner,
+    .menu-toggle .hamburger-inner::before,
+    .menu-toggle .hamburger-inner::after {
+        width: 24px !important;
+        height: 2px !important;
+        background-color: #ffffff !important;
+        position: absolute !important;
+        border-radius: 4px !important;
+        transition: all 0.3s ease !important;
+    }
+    .menu-toggle .hamburger-inner {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+    .menu-toggle .hamburger-inner::before {
+        content: "" !important;
+        top: -7px !important;
+    }
+    .menu-toggle .hamburger-inner::after {
+        content: "" !important;
+        top: 7px !important;
+    }
+    
+    /* Animation for active menu toggle */
+    .menu-toggle.active .hamburger-inner {
+        background-color: transparent !important;
+    }
+    .menu-toggle.active .hamburger-inner::before {
+        top: 0 !important;
+        transform: rotate(45deg) !important;
+    }
+    .menu-toggle.active .hamburger-inner::after {
+        top: 0 !important;
+        transform: rotate(-45deg) !important;
+    }
+
+    /* Fixed, off-canvas Sidebar */
+    .sidebar, #sidebar {
+        position: fixed !important;
+        left: 0 !important; 
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 10000 !important; /* Above overlay */
+        background: var(--bg-sidebar, #0f172a) !important;
+        transform: translateX(-105%) !important; /* Hide off screen */
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 4px 0 25px rgba(0,0,0,0.5) !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Slide in when active */
+    .sidebar.active, #sidebar.active {
+        transform: translateX(0) !important;
+    }
+
+    /* Background Overlay for Sidebar */
+    .sidebar-overlay, .mobile-overlay, #sidebarOverlay {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(4px) !important;
+        z-index: 9995 !important; /* Below sidebar, above content */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transition: opacity 0.3s ease, visibility 0.3s ease !important;
+        display: block !important; 
+    }
+    
+    /* Show overlay when active */
+    .sidebar-overlay.active, .mobile-overlay.active, #sidebarOverlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* ==========================================================
+   STAFF DASHBOARD — VIEW DETAILS (OVERVIEW) RESPONSIVE FIX
+   ========================================================== */
+
+/* Ensure the detail view container does not overflow */
+#stmai-detail-view {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+#stmai-detail-view .form-card {
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* Participants table in View Details — prevent overflow */
+#stmai-tab-analytics .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#stmai-tab-analytics .data-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 100%;
+}
+
+/* Ranking section contained */
+#stmai-tab-ranking .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 768px) {
+    /* View Details header — stack on mobile */
+    #stmai-detail-view .form-card > div:first-child {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    #stmai-detail-view .form-card h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .info-divider {
+        display: none !important;
+    }
+
+    /* Keep the top info section wrapping nicely */
+    .test-info-alignment {
+        gap: 0.8rem !important;
+        padding: 1rem !important;
+    }
+
+    /* ===== METRICS GRID – keep 3 cols but shrink padding ===== */
+    .stmai-metrics-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    .stmai-metrics-grid .stat-card {
+        padding: 0.75rem 0.35rem !important;
+        border-radius: 10px !important;
+    }
+
+    .stmai-metrics-grid .stat-value {
+        font-size: 1.2rem !important;
+    }
+
+    .stmai-metrics-grid .stat-label {
+        font-size: 0.6rem !important;
+        word-break: break-word !important;
+        line-height: 1.3 !important;
+        margin-top: 4px !important;
+    }
+
+    /* ===== ACTION BUTTONS – stay in 3 cols, compact ===== */
+    .stmai-actions-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    .stmai-actions-grid .stmai-action-btn {
+        padding: 0.6rem 0.4rem !important;
+        gap: 0.4rem !important;
+        border-radius: 10px !important;
+        flex-direction: column !important;
+    }
+
+    .stmai-actions-grid .stmai-action-btn div {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    .stmai-actions-grid .stmai-action-btn span {
+        font-size: 0.65rem !important;
+        white-space: normal !important;
+        text-align: center !important;
+        line-height: 1.2 !important;
+    }
+
+    /* ===== TAB HEADER CONTROLS – wrap Back + pills on mobile ===== */
+    .stmai-tab-header-controls {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.75rem !important;
+    }
+
+    .stmai-tab-header-controls > button:first-child {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .stmai-tab-header-controls > div {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* Participants table on mobile */
+    #stmai-tab-analytics .data-table {
+        min-width: 500px !important;
+    }
+
+    /* ===== DETAILED RESULT REPORT – stack profile + score ===== */
+    #stmai-detailed-report-view > div {
+        padding: 1.25rem !important;
+    }
+
+    #stmai-detailed-report-view > div > div:first-child {
+        flex-direction: column !important;
+        gap: 1.25rem !important;
+    }
+
+    #stmai-detailed-report-view h3 {
+        font-size: 1.3rem !important;
+    }
+
+    /* ===== CREATE QUIZ – Extraction Results ===== */
+    .extraction-results .results-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1rem !important;
+    }
+
+    .extraction-results .results-header > div:last-child {
+        flex-wrap: wrap !important;
+        width: 100% !important;
+    }
+
+    .extraction-results .results-header .btn {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        font-size: 0.8rem !important;
+    }
+
+    .extraction-results .results-list {
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .extracted-item {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .extracted-q-header {
+        flex-wrap: wrap !important;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Ultra-small: stack metrics to 1 col */
+    .stmai-metrics-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.5rem !important;
+    }
+
+    .stmai-metrics-grid .stat-card {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .stmai-metrics-grid .stat-value {
+        font-size: 1.4rem !important;
+        order: 2 !important;
+    }
+
+    .stmai-metrics-grid .stat-label {
+        font-size: 0.75rem !important;
+        margin-top: 0 !important;
+        order: 1 !important;
+    }
+
+    /* Action buttons go single column */
+    .stmai-actions-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .stmai-actions-grid .stmai-action-btn {
+        flex-direction: row !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .stmai-actions-grid .stmai-action-btn span {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* ==========================================================
+   STAFF DASHBOARD — STUDENT SECTION TABLE FIX
+   ========================================================== */
+
+/* Student section table — ensure proper sizing */
+#students-section .table-scroll,
+#students-section > div:last-child {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+#students-section .data-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Table cell text handling */
+#students-section .data-table td,
+#students-section .data-table th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* Name and Department columns — allow wrapping */
+#students-section .data-table td:nth-child(2),
+#students-section .data-table td:nth-child(3) {
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.3 !important;
+}
+
+/* Filter bar responsive */
+@media screen and (max-width: 1024px) {
+    #students-section .table-header {
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+
+    #students-section .search-wrapper {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    #students-section .filter-select {
+        flex: 1 !important;
+        min-width: 120px !important;
+        width: auto !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* On mobile, allow the table to scroll horizontally */
+    #students-section .data-table {
+        min-width: 800px !important;
+    }
+
+    /* Filter selects stack */
+    #students-section .table-header {
+        flex-direction: column !important;
+    }
+
+    #students-section .filter-select {
+        width: 100% !important;
+    }
+
+    /* Stats grid */
+    #students-section .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #students-section .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ==========================================================
+   SMART ASSISTANT (AI BUDDY) — UI, WORKFLOW & RESPONSIVE FIX
+   ========================================================== */
+
+/* Panel base improvements — more professional */
+.ai-panel {
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+.ai-panel.active {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Header refinement */
+.ai-header {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05)) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.ai-title {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.ai-avatar {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Model chips — more compact */
+.ai-model-selector {
+    padding: 0.4rem 1rem !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    gap: 0.35rem !important;
+}
+
+.ai-model-chip {
+    padding: 0.2rem 0.6rem !important;
+    font-size: 0.7rem !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+
+/* Chat area — cleaner layout */
+.ai-chat-area {
+    padding: 1rem !important;
+    gap: 0.75rem !important;
+    scrollbar-width: thin !important;
+}
+
+.ai-message {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    padding: 0.7rem 0.9rem !important;
+    border-radius: 12px !important;
+    max-width: 88% !important;
+}
+
+.ai-message.bot {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.ai-message.user {
+    background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25) !important;
+}
+
+.ai-message pre {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    overflow-x: auto !important;
+    margin: 0.5rem 0 !important;
+    font-size: 0.8rem !important;
+}
+
+/* Input area — tighter */
+.ai-input-area {
+    padding: 0.75rem 1rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.ai-input-wrapper {
+    border-radius: 10px !important;
+    padding: 0.35rem 0.5rem !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ai-input {
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.5rem !important;
+}
+
+.ai-send {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Close button */
+.ai-close {
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    transition: background 0.2s !important;
+}
+
+.ai-close:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+}
+
+/* Smart Assistant — mobile responsive */
+@media screen and (max-width: 768px) {
+    .ai-panel {
+        bottom: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        z-index: 12000 !important;
+    }
+
+    .ai-header {
+        padding: 0.75rem 1rem !important;
+    }
+
+    .ai-model-selector {
+        padding: 0.35rem 0.75rem !important;
+        overflow-x: auto !important;
+    }
+
+    .ai-model-chip {
+        font-size: 0.65rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .ai-chat-area {
+        padding: 0.75rem !important;
+    }
+    
+    .ai-message {
+        max-width: 92% !important;
+        font-size: 0.82rem !important;
+    }
+    
+    .ai-input-area {
+        padding: 0.5rem 0.75rem 0.75rem !important;
+    }
+}
+
+/* Smart Assistant — tablet */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .ai-panel {
+        width: 340px !important;
+        height: 520px !important;
+    }
+}
+
+/* ==========================================================
+   LOGOUT BUTTON — ENSURE VISIBILITY & PROPER STYLING
+   ========================================================== */
+
+/* Ensure the logout button is always red with white text + icon */
+.logout-btn {
+    background: rgba(239, 68, 68, 0.08) !important;
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+.logout-btn svg {
+    color: #ef4444 !important;
+    stroke: #ef4444 !important;
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+}
+
+.logout-btn span {
+    color: #ef4444 !important;
+    font-weight: 600 !important;
+}
+
+/* Ensure mobile sidebar is tall enough but leaves space for footer */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom)) !important;
+    }
+    
+    .sidebar-footer {
+        margin-top: auto !important;
+        padding-bottom: 2rem !important; /* Forces it up */
+        z-index: 100 !important;
+        background: var(--bg-sidebar) !important;
+    }
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.18) !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+}
+
+/* Logout modal — ensure it's responsive */
+@media screen and (max-width: 768px) {
+    .logout-modal {
+        max-width: 90% !important;
+        padding: 2rem 1.5rem 1.5rem !important;
+    }
+
+    .logout-modal-actions {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .logout-modal-btn {
+        width: 100% !important;
+    }
+}
+
+/* ==========================================================
+   MANAGE TEST TABLE — RESPONSIVE FIX
+   ========================================================== */
+@media screen and (max-width: 768px) {
+    .stmai-tests-table {
+        min-width: 700px !important;
+    }
+
+    #stmai-list-view .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.75rem !important;
+    }
+
+    #stmai-list-view .search-wrapper {
+        max-width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #stmai-list-view .stats-grid {
+        grid-template-columns: 1fr !important;
     }
 }

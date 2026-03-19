@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  JMC-Test — Professional DB Initialization Script
+ *  JMC TEST — Professional DB Initialization Script
  *  Jamal Mohamed College (Autonomous), Tiruchirappalli
  * ═══════════════════════════════════════════════════════════════════
  */
@@ -34,7 +34,7 @@ Certificate.belongsTo(User, { foreignKey: 'studentUsername', targetKey: 'usernam
 async function init() {
     try {
         console.log('╔══════════════════════════════════════════════════╗');
-        console.log('║   JMC-Test — Professional DB Init             ║');
+        console.log('║   JMC TEST — Professional DB Init             ║');
         console.log('╚══════════════════════════════════════════════════╝');
 
         // 1. Force sync — drops and recreates all tables

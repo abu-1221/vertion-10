@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Dashboard | JMC-Test</title>
+  <title>Student Dashboard | JMC TEST</title>
   <link rel="icon" type="image/png" href="logo.png" />
 
   <!-- PWA Manifest & Meta -->
@@ -21,13 +21,14 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />\r
+  <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/responsive-fix.css" />
   <link rel="stylesheet" href="css/modal.css" />
   <link rel="stylesheet" href="css/analytics.css" />
   <link rel="stylesheet" href="css/test-interface.css" />
   <link rel="stylesheet" href="css/ai-buddy.css" />
   <link rel="stylesheet" href="css/custom-scrollbar.css" />
+
 </head>
 
 <body>
@@ -37,9 +38,9 @@
       <div class="sidebar-header">
         <div class="logo" id="sidebarLogoTop"
           style="cursor: pointer; display: flex; align-items: center; gap: 0.85rem;">
-          <img src="logo.png" class="brand-logo" alt="JMC-Test Logo"
+          <img src="logo.png" class="brand-logo" alt="JMC TEST Logo"
             style="width: 52px; height: 52px; transition: all 0.3s ease;" />
-          <span class="logo-text">JMC-TEST</span>
+          <span class="logo-text">JMC TEST</span>
         </div>
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -483,11 +484,12 @@
               </div>
               <h3>Performance Transcript</h3>
               <p>A detailed breakdown of all your test attempts including individual question analysis.</p>
-              <div style="margin-top: auto;">
-                <button class="btn btn-primary btn-sm" onclick="generatePerformanceReport('pdf')">
+              <div style="margin-top: auto; display: flex; justify-content: center;">
+                <button class="btn btn-primary btn-sm" style="min-width: 180px;" onclick="generatePerformanceReport('pdf')">
                   Download PDF Report
                 </button>
               </div>
+
             </div>
 
             <!-- 2. Certificate Download (Managed by JS) -->
@@ -500,11 +502,12 @@
               </div>
               <h3>Merit Certificate</h3>
               <p>Generate a verified completion certificate for the tests you have qualified.</p>
-              <div style="margin-top: auto;">
-                <button class="btn btn-primary btn-sm" onclick="showPassedTestsForCertificate()">
+              <div style="margin-top: auto; display: flex; justify-content: center;">
+                <button class="btn btn-primary btn-sm" style="min-width: 180px;" onclick="showPassedTestsForCertificate()">
                   Issue Certificate
                 </button>
               </div>
+
             </div>
           </div>
         </section>

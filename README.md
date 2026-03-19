@@ -1,6 +1,6 @@
-# JMC-TEST - Full Stack Build
+# JMC TEST - Full Stack Build
 
-This folder contains the complete, fully functional source code for JMC-Test, now running on a Node.js backend with SQL Database.
+This folder contains the complete, fully functional source code for JMC TEST, now running on a Node.js backend with SQL Database.
 
 ## Tech Stack
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)

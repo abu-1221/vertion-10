@@ -1,4 +1,4 @@
-/* JMC-TEST - Global Styles */
+/* JMC TEST - Global Styles */
 :root {
   /* Premium Palette - Deep Midnight & Electric Lavender */
   --primary-400: #818cf8;
@@ -40,7 +40,7 @@
   --bg-surface: #0d1117;
   --bg-card: rgba(13, 17, 23, 0.8);
   --bg-header: #0f172a;
-  --bg-sidebar: rgba(15, 23, 42, 0.7);
+  --bg-sidebar: #0f172a;
 
   --text-main: #ffffff;
   --text-muted: #94a3b8;

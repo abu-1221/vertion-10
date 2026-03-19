@@ -1,5 +1,5 @@
 /**
- * Zoom Control Functionality for JMC-Test Dashboards
+ * Zoom Control Functionality for JMC TEST Dashboards
  * Restricted to Dashboard Content area only.
  */
 

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Staff Dashboard | JMC-Test</title>
+  <title>Staff Dashboard | JMC TEST</title>
   <link rel="icon" type="image/png" href="logo.png" />
 
   <!-- PWA Manifest & Meta -->
@@ -25,6 +25,20 @@
   <link rel="stylesheet" href="css/responsive-fix.css" />
   <link rel="stylesheet" href="css/ai-buddy.css" />
   <link rel="stylesheet" href="css/custom-scrollbar.css" />
+    <style>
+        /* STMAI Task Navigation Styles */
+        .stmai-tab-content { display: none; }
+        .stmai-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .stmai-action-card-premium {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .stmai-action-card-premium:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2) !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,9 +48,9 @@
       <div class="sidebar-header">
         <div class="logo" id="sidebarLogoTop"
           style="cursor: pointer; display: flex; align-items: center; gap: 0.85rem;">
-          <img src="logo.png" class="brand-logo" alt="JMC-Test Logo"
+          <img src="logo.png" class="brand-logo" alt="JMC TEST Logo"
             style="width: 52px; height: 52px; transition: all 0.3s ease;" />
-          <span class="logo-text">JMC-TEST</span>
+          <span class="logo-text">JMC TEST</span>
         </div>
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -677,89 +691,63 @@
                       Company Name</p>
                   </div>
                 </div>
-                <div id="stmai-test-status-badge" style="display: flex; gap: 0.75rem; align-items: center;">
-                  <button class="btn btn-ghost btn-sm" id="stmai-delete-test-trigger"
-                    style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 0.5rem 1rem;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                      style="width: 14px; height: 14px; margin-right: 6px;">
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                    </svg>
-                    Delete Test
+                <div id="stmai-test-status-badge" style="display: flex; gap: 0.75rem; align-items: center;"></div>
+              </div>
+
+              <!-- Combined STMAI Sections (Overview, Participants, Results, Ranking) -->
+              <div id="stmai-tab-overview" class="stmai-tab-content active" style="padding: 1rem 0;">
+                <div class="test-info-alignment" style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: rgba(255,255,255,0.02); padding: 1.25rem 2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;">
+                  <div style="display: flex; align-items: center; gap: 8px;"><label style="color: var(--gray-500); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Questions:</label>
+                    <span id="stmai-ov-questions" style="font-weight: 700; color: #fff;">--</span>
+                  </div>
+                  <div class="info-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.1);"></div>
+                  <div style="display: flex; align-items: center; gap: 8px;"><label style="color: var(--gray-500); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Duration:</label>
+                    <span id="stmai-ov-duration" style="font-weight: 700; color: #fff;">--</span>
+                  </div>
+                  <div class="info-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.1);"></div>
+                  <div style="display: flex; align-items: center; gap: 8px;"><label style="color: var(--gray-500); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Published:</label>
+                    <span id="stmai-ov-date" style="font-weight: 700; color: #fff;">--</span>
+                  </div>
+                  <div class="info-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.1);"></div>
+                  <button onclick="openTargetedAudienceModal()" class="btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.15); color: #f59e0b; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15); outline: none;" onmouseover="this.style.background='rgba(245, 158, 11, 0.25)'; this.style.boxShadow='0 6px 16px rgba(245, 158, 11, 0.25)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.15)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.15)'; this.style.transform='translateY(0)';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 16px; height: 16px;"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                    Targeted Audience (<span id="stmai-targeted-count">--</span>)
                   </button>
                 </div>
-              </div>
 
-              <!-- STMAI Tab Navigation -->
-              <div class="stmai-tabs" style="margin-top: 2.5rem;">
-                <button class="stmai-tab active" data-stmai-tab="overview"
-                  onclick="switchSTMAITab('overview')">Overview</button>
-                <button class="stmai-tab" data-stmai-tab="analytics"
-                  onclick="switchSTMAITab('analytics')">Participants</button>
-                <button class="stmai-tab" data-stmai-tab="results" onclick="switchSTMAITab('results')">Detailed
-                  Results</button>
-                <button class="stmai-tab" data-stmai-tab="ranking" onclick="switchSTMAITab('ranking')">Ranking</button>
-              </div>
-
-              <!-- Tab Contents -->
-              <div id="stmai-tab-overview" class="stmai-tab-content active" style="padding: 1.5rem 0;">
-                <div class="details-grid" style="margin-bottom: 2rem;">
-                  <div class="form-group"><label class="form-label">Total Questions</label>
-                    <div class="form-input" id="stmai-ov-questions" style="background: rgba(255,255,255,0.03);">--</div>
-                  </div>
-                  <div class="form-group"><label class="form-label">Time Duration</label>
-                    <div class="form-input" id="stmai-ov-duration" style="background: rgba(255,255,255,0.03);">--</div>
-                  </div>
-                  <div class="form-group"><label class="form-label">Publish Date</label>
-                    <div class="form-input" id="stmai-ov-date" style="background: rgba(255,255,255,0.03);">--</div>
-                  </div>
-                </div>
-
-                <!-- Targeted Audience Card -->
-                <div style="margin-top: 2rem;">
-                  <div onclick="openTargetedAudienceModal()" id="stmai-ov-targeted-audience" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(245, 158, 11, 0.02) 100%); border: 1px solid rgba(245, 158, 11, 0.18); border-radius: 16px; padding: 1.5rem 2rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transform: none !important; transition: none !important;">
-                    <div style="display: flex; align-items: center; gap: 1.25rem;">
-                      <div style="width: 52px; height: 52px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 24px; height: 24px;">
-                          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Targeted Audience</div>
-                        <div style="font-size: 0.75rem; color: var(--gray-400); font-weight: 500; margin-bottom: 6px;">View all students assigned to this assessment</div>
-                        <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 20px; padding: 3px 14px;">
-                          <span style="font-size: 1.1rem; font-weight: 800; color: #f59e0b;" id="stmai-targeted-count">--</span>
-                          <span style="font-size: 0.7rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.04em;">Participants</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.15); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="stats-grid" id="stmai-overview-stats" style="margin-top: 2rem; gap: 1.5rem;">
+                <div id="stmai-overview-stats" style="margin-top: 1rem;">
                   <!-- Essential stats injected here -->
                 </div>
               </div>
 
-              <div id="stmai-tab-analytics" class="stmai-tab-content" style="padding: 1.5rem 0;">
-                <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                  <h3 style="margin: 0;">Participants</h3>
-                  <div class="badge" id="stmai-attendance-badge"
-                    style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; font-weight: 600;">-- Students</div>
+              <div id="stmai-tab-analytics" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back to Overview
+                    </button>
+                    <!-- Internal Navigation -->
+                    <div style="display: flex; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 4px; gap: 4px; overflow-x: auto;">
+                        <button onclick="switchSTMAITab('analytics')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;">Participants</button>
+                        <button onclick="switchSTMAITab('results')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Detailed Result</button>
+                        <button onclick="switchSTMAITab('ranking')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Ranking</button>
+                    </div>
+                  </div>
+                  <!-- Title -->
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 1.25rem;">Participants</h3>
+                    <div class="badge" id="stmai-attendance-badge" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; font-weight: 600;">-- Students</div>
+                  </div>
                 </div>
                 <div class="table-scroll">
-                  <table class="data-table">
+                  <table class="data-table" style="table-layout: fixed; width: 100%; min-width: 100%;">
                     <thead>
                       <tr>
                         <th>Student Name</th>
                         <th>Status</th>
-                        <th>Score</th>
-                        <th>Action</th>
+                        <th style="text-align: center;">Score</th>
+                        <th style="text-align: right;">Action</th>
                       </tr>
                     </thead>
                     <tbody id="stmai-analytics-tbody">
@@ -769,7 +757,25 @@
                 </div>
               </div>
 
-              <div id="stmai-tab-results" class="stmai-tab-content" style="padding: 1.5rem 0;">
+              <div id="stmai-tab-results" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back to Overview
+                    </button>
+                    <!-- Internal Navigation -->
+                    <div style="display: flex; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 4px; gap: 4px; overflow-x: auto;">
+                        <button onclick="switchSTMAITab('analytics')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Participants</button>
+                        <button onclick="switchSTMAITab('results')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;">Detailed Result</button>
+                        <button onclick="switchSTMAITab('ranking')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Ranking</button>
+                    </div>
+                  </div>
+                  <!-- Title -->
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 1.25rem;">Detailed Results</h3>
+                  </div>
+                </div>
                 <div id="stmai-results-placeholder" class="form-card"
                   style="text-align: center; padding: 4rem 2rem; background: rgba(0,0,0,0.1); border: 2px dashed rgba(255,255,255,0.05);">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -777,48 +783,41 @@
                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
                     <polyline points="14 2 14 8 20 8" />
                   </svg>
-                  <p style="color: var(--gray-400); font-weight: 500;">Select a student from the <strong>Student
-                      Analytics</strong> tab<br>to view their detailed performance breakdown.</p>
+                  <p style="color: var(--gray-400); font-weight: 500;">Select a student from the <strong>Participants</strong> list<br>to view their detailed performance breakdown.</p>
                 </div>
                 <div id="stmai-detailed-report-view" style="display: none;">
                   <!-- Reports injected here -->
                 </div>
               </div>
 
-              <div id="stmai-tab-ranking" class="stmai-tab-content" style="padding: 1.5rem 0;">
-                <!-- Ranking list injected here -->
-                <div style="text-align: center; padding: 4rem; color: var(--gray-500);">
-                  <p>Select a test to view its ranking data.</p>
+              <div id="stmai-tab-ranking" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                  <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        Back to Overview
+                    </button>
+                    <!-- Internal Navigation -->
+                    <div style="display: flex; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 4px; gap: 4px; overflow-x: auto;">
+                        <button onclick="switchSTMAITab('analytics')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Participants</button>
+                        <button onclick="switchSTMAITab('results')" class="btn" style="background: transparent; color: var(--gray-400); border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--gray-400)'">Detailed Result</button>
+                        <button onclick="switchSTMAITab('ranking')" class="btn" style="background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;">Ranking</button>
+                    </div>
+                  </div>
+                  <!-- Title -->
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0; font-size: 1.25rem;">Ranking</h3>
+                  </div>
+                </div>
+                <div class="table-scroll" id="stmai-ranking-content">
+                  <!-- Ranking list injected here -->
+                  <div style="text-align: center; padding: 4rem; color: var(--gray-500);">
+                    <p>Select a test to view its ranking data.</p>
+                  </div>
                 </div>
               </div>
 
-              <div id="stmai-tab-settings" class="stmai-tab-content" style="padding: 1.5rem 0;">
-                <div class="danger-zone">
-                  <h3 style="color: #ef4444; margin-top: 0; display: flex; align-items: center; gap: 8px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                      style="width: 20px; height: 20px;">
-                      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-                      <line x1="12" y1="9" x2="12" y2="13" />
-                      <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
-                    Critical Actions
-                  </h3>
-                  <p style="color: var(--gray-400); font-size: 0.95rem; line-height: 1.6; margin-bottom: 2rem;">
-                    Deleting this test will permanently erase all metadata, associated student assignments, and recorded
-                    scores.
-                    <strong>This operation is irreversible.</strong>
-                  </p>
-                  <button class="btn btn-outline" id="stmai-delete-test-trigger"
-                    style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3); font-weight: 700;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                      style="width: 18px; height: 18px; margin-right: 8px;">
-                      <polyline points="3 6 5 6 21 6" />
-                      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-                    </svg>
-                    Permanently Delete Test
-                  </button>
-                </div>
-              </div>
+              <!-- Settings tab removed -->
             </div>
           </div>
         </section>
@@ -927,19 +926,19 @@
                 <option value="2025-2028">Batch 2025-28</option>
               </select>
             </div>
-            <div style="background: rgba(13, 14, 28, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden;">
-              <table class="data-table" style="table-layout: fixed; width: 100%; border-collapse: collapse; overflow: hidden;">
+            <div class="table-scroll" style="background: rgba(13, 14, 28, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); overflow-x: auto; -webkit-overflow-scrolling: touch;">
+              <table class="data-table" style="table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 12px;">
                 <thead>
-                  <tr style="background: rgba(255,255,255,0.02);">
-                    <th style="width: 100px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Reg. No</th>
-                    <th style="width: 160px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Student Name</th>
-                    <th style="width: 170px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Department</th>
-                    <th style="width: 60px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Year</th>
-                    <th style="width: 60px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Sec</th>
-                    <th style="width: 85px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Batch</th>
-                    <th style="width: 90px; text-align: center; font-size: 0.75rem; padding: 0.75rem 0.5rem;">Stream</th>
-                    <th style="width: 100px; text-align: center; padding: 0.75rem 1rem; font-size: 0.75rem;">Tests</th>
-                    <th style="width: 80px; text-align: center; padding: 0.75rem 1rem; font-size: 0.75rem;">Actions</th>
+                  <tr style="background: rgba(255,255,255,0.03);">
+                    <th style="width: 95px; text-align: left; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Reg No</th>
+                    <th style="width: 160px; text-align: left; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Student Name</th>
+                    <th style="width: 180px; text-align: left; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Department</th>
+                    <th style="width: 60px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Year</th>
+                    <th style="width: 55px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Sec</th>
+                    <th style="width: 85px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Batch</th>
+                    <th style="width: 90px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Stream</th>
+                    <th style="width: 70px; text-align: center; padding: 1rem 0.75rem; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Tests</th>
+                    <th style="width: 120px; text-align: center; padding: 1rem 0.75rem; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400);">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="studentsTableBody">
@@ -1168,7 +1167,7 @@
               </div>
             </div>
 
-            <input type="file" id="aiFileInput" accept=".docx" style="display: none;" />
+            <input type="file" id="aiFileInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display: none;" />
 
             <!-- Processing State -->
             <div class="processing-state" id="processingState" style="display: none; margin-top: 2rem;">

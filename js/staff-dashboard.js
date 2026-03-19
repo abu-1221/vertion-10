@@ -1315,7 +1315,9 @@ async function generatePrintReport(testId, testName) {
                 } else {
                     alert('Session Expired: ' + (data.error || 'Please log in again.'));
                 }
-                setTimeout(() => window.location.href = 'index.html', 1500);
+                // Immediate redirect as requested by user for speed
+                window.location.href = 'index.html';
+
                 return;
             }
             throw new Error(data.error || 'Failed to generate report');
@@ -1648,24 +1650,20 @@ async function loadStudents() {
         const studentResults = allResults.filter(r => r.username === student.username);
 
         const row = `
-            <tr data-student-id="${student.username}" style="border-bottom: 1px solid rgba(255,255,255,0.03);">
-                <td style="width: 100px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #94a3b8;">${details.registerNumber || student.username}</td>
-                <td class="name-cell" style="width: 160px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; font-weight: 600; color: #fff; white-space: normal; line-height: 1.2;">${student.name || '-'}</td>
-                <td style="width: 170px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #94a3b8; white-space: normal; line-height: 1.2;">${student.department || details.department || '-'}</td>
-                <td style="width: 60px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #fff;">${details.year || '-'}</td>
-                <td style="width: 60px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #fff;">${details.section || '-'}</td>
-                <td style="width: 85px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #fff;">${details.batch || '-'}</td>
-                <td style="width: 90px; text-align: center; font-size: 0.8rem; padding: 0.75rem 0.5rem; color: #fff;">${details.streamType || '-'}</td>
-                <td style="width: 100px; text-align: center; padding: 0.75rem 1rem; font-weight: 700; color: #818cf8; font-size: 0.8rem;">${studentResults.length}</td>
-                <td class="actions-cell" style="width: 80px; text-align: center; padding: 0.75rem 1rem;">
-                    <div class="action-icons" style="justify-content: center; gap: 8px;">
-                        <button class="action-btn" onclick="lookupStudent('${student.username}')" title="View Details" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--primary-400); transform: none !important; transition: none !important; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px; flex-shrink: 0;">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <span style="font-size: 0.8rem; font-weight: 600;">View</span>
-                        </button>
-                    </div>
+            <tr data-student-id="${student.username}" style="border-bottom: 1px solid rgba(255,255,255,0.03); transition: all 0.2s ease;">
+                <td style="padding: 1rem 0.75rem; color: #94a3b8; font-size: 0.85rem; font-family: monospace;">${details.registerNumber || student.username}</td>
+                <td style="padding: 1rem 0.75rem; font-weight: 600; color: #fff; font-size: 0.85rem; white-space: normal; word-break: break-word; min-width: 120px;">${student.name || '-'}</td>
+                <td style="padding: 1rem 0.75rem; color: var(--gray-400); font-size: 0.85rem; white-space: normal; word-break: break-word; min-width: 100px;">${student.department || details.department || '-'}</td>
+                <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.year || '-'}</td>
+                <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.section || '-'}</td>
+                <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.batch || '-'}</td>
+                <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.streamType || '-'}</td>
+                <td style="padding: 1rem 0.75rem; text-align: center; font-weight: 700; color: #818cf8; font-size: 0.9rem;">${studentResults.length}</td>
+                <td style="padding: 1rem 0.75rem; text-align: center;">
+                    <button class="action-btn" onclick="lookupStudent('${student.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--primary-400); cursor: pointer; border: none; font-size: 0.8rem; font-weight: 600;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        View
+                    </button>
                 </td>
             </tr>
         `;
@@ -1955,12 +1953,18 @@ async function viewTestAnalytics(testId) {
         // Fetch Participation Data (Triggering Sync)
         loadSTMAIParticipation(testId);
 
+        // Load Ranking Data directly on Overview
+        if (window.RankingSystem && window.RankingSystem.loadTestRanking) {
+            window.RankingSystem.loadTestRanking(testId);
+        }
+
     } catch (err) {
         console.error('[STMAI] Participation Sync Error:', err);
         const tbody = document.getElementById('stmai-analytics-tbody');
         if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:3rem;color:#ef4444;">Unable to load student data. Please try again.</td></tr>';
     }
 }
+
 
 async function loadSTMAIParticipation(testId) {
     const tableBody = document.getElementById('stmai-analytics-tbody');
@@ -1977,22 +1981,58 @@ async function loadSTMAIParticipation(testId) {
         const attended = attendedReport.length;
         const notAttended = total - attended;
 
-        // Render Stats in Overview Tab (Cleaner & Professional)
+        // Render Stats & Action Buttons in Overview Tab
         if (overviewStats) {
             overviewStats.innerHTML = `
-                <div class="stat-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); text-align: center;">
-                    <div class="stat-value" style="color: #60a5fa; font-size: 2rem;">${total}</div>
-                    <div class="stat-label">Total Assigned</div>
+                <!-- Metrics Grid (Row 1) -->
+                <div class="stmai-metrics-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 0.5rem; width: 100%;">
+                    <div class="stat-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); text-align: center; padding: 1.5rem 0.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <div class="stat-value" style="color: #60a5fa; font-size: 1.75rem; font-weight: 700;">${total}</div>
+                        <div class="stat-label" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--gray-500); margin-top: 8px;">Total Assigned</div>
+                    </div>
+                    <div class="stat-card" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); text-align: center; padding: 1.5rem 0.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <div class="stat-value" style="color: #10b981; font-size: 1.75rem; font-weight: 700;">${attended}</div>
+                        <div class="stat-label" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--gray-500); margin-top: 8px;">Attended</div>
+                    </div>
+                    <div class="stat-card" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); text-align: center; padding: 1.5rem 0.5rem; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                        <div class="stat-value" style="color: #ef4444; font-size: 1.75rem; font-weight: 700;">${notAttended}</div>
+                        <div class="stat-label" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--gray-500); margin-top: 8px;">Not Attended</div>
+                    </div>
                 </div>
-                <div class="stat-card" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); text-align: center;">
-                    <div class="stat-value" style="color: #10b981; font-size: 2rem;">${attended}</div>
-                    <div class="stat-label">Students Attempted</div>
+
+                <!-- Navigation Action Buttons Grid (Row 2) -->
+                <div class="stmai-actions-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; margin-top: 0.5rem;">
+                    <!-- Participants -->
+                    <button onclick="switchSTMAITab('analytics')" class="stmai-action-btn" 
+                        style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 0.85rem 1rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); outline: none;"
+                        onmouseover="this.style.background='linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(99, 102, 241, 0.1) 100%)'; this.style.borderColor='rgba(99, 102, 241, 0.5)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(99,102,241,0.2)';"
+                        onmouseout="this.style.background='linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%)'; this.style.borderColor='rgba(99, 102, 241, 0.3)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';"
+                    >
+                        <div style="width: 28px; height: 28px; background: rgba(99, 102, 241, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #818cf8; flex-shrink: 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 15px; height: 15px;"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg></div>
+                        <span style="font-size: 0.95rem; font-weight: 700; color: #fff; white-space: nowrap;">Participants</span>
+                    </button>
+
+                    <!-- Detailed Results -->
+                    <button onclick="switchSTMAITab('results')" class="stmai-action-btn" 
+                        style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 0.85rem 1rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); outline: none;"
+                        onmouseover="this.style.background='linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)'; this.style.borderColor='rgba(16, 185, 129, 0.5)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(16,185,129,0.2)';"
+                        onmouseout="this.style.background='linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%)'; this.style.borderColor='rgba(16, 185, 129, 0.3)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';"
+                    >
+                        <div style="width: 28px; height: 28px; background: rgba(16, 185, 129, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #10b981; flex-shrink: 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 15px; height: 15px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /></svg></div>
+                        <span style="font-size: 0.95rem; font-weight: 700; color: #fff; white-space: nowrap;">Detailed Result</span>
+                    </button>
+
+                    <!-- Ranking -->
+                    <button onclick="switchSTMAITab('ranking')" class="stmai-action-btn" 
+                        style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 0.85rem 1rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); outline: none;"
+                        onmouseover="this.style.background='linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.1) 100%)'; this.style.borderColor='rgba(245, 158, 11, 0.5)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(245,158,11,0.2)';"
+                        onmouseout="this.style.background='linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%)'; this.style.borderColor='rgba(245, 158, 11, 0.3)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';"
+                    >
+                        <div style="width: 28px; height: 28px; background: rgba(245, 158, 11, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f59e0b; flex-shrink: 0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 15px; height: 15px;"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" /></svg></div>
+                        <span style="font-size: 0.95rem; font-weight: 700; color: #fff; white-space: nowrap;">Ranking</span>
+                    </button>
                 </div>
-                <div class="stat-card" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); text-align: center;">
-                    <div class="stat-value" style="color: #ef4444; font-size: 2rem;">${notAttended}</div>
-                    <div class="stat-label">Not Attempted</div>
-                </div>
-`;
+            `;
         }
 
         // Update Targeted Audience count in Overview
@@ -2019,32 +2059,33 @@ async function loadSTMAIParticipation(testId) {
             const isFinished = s.assignmentStatus === 'submitted' || s.status === 'PASSED' || s.status === 'FAILED' || s.status === 'QUALIFIED' || s.status === 'NOT QUALIFIED';
 
             return `
-            <tr>
-                <td>
-                    <div style="font-weight:700; color: #f1f5f9;">${s.name}</div>
-                    <div style="font-size:0.75rem; color:var(--blue-400); font-weight: 500;">Reg No: ${s.registerNumber}</div>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                <td style="padding: 1.25rem 1.5rem;">
+                    <div style="font-weight:700; color: #fff; font-size: 0.95rem;">${s.name}</div>
+                    <div style="font-size:0.75rem; color:var(--blue-400); font-weight: 600; margin-top: 2px;">Reg No: ${s.registerNumber}</div>
                 </td>
-                <td>
-                    <span class="badge" style="background: ${s.attended ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; color: ${s.attended ? '#10b981' : '#ef4444'}; font-weight: 800; font-size: 0.7rem; border-radius: 4px; padding: 4px 8px; letter-spacing: 0.05em;">
-                        ${s.status}
-                    </span>
-                    <div style="font-size: 0.65rem; color: var(--gray-500); margin-top: 4px; padding-left: 2px;">${s.department} • ${s.section}</div>
+                <td style="padding: 1.25rem 1.5rem;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span class="badge" style="background: ${s.attended ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'}; color: ${s.attended ? '#10b981' : '#ef4444'}; font-weight: 800; font-size: 0.7rem; border-radius: 6px; padding: 4px 10px; border: 1px solid ${s.attended ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; text-transform: uppercase;">
+                            ${s.status}
+                        </span>
+                        <div style="font-size: 0.7rem; color: var(--gray-500); font-weight: 500;">${s.department} • Sec ${s.section}</div>
+                    </div>
                 </td>
-                <td style="font-weight:700; color: ${s.attended ? (s.score >= 50 ? '#10b981' : '#ef4444') : 'var(--gray-600)'};">
-                    ${s.attended ? `${s.score !== null ? s.score + '%' : '--'}` : '<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 400;">NOT STARTED</span>'}
+                <td style="padding: 1.25rem 1.5rem; text-align: center;">
+                    <div style="font-weight:800; font-size: 1.1rem; color: ${s.attended ? (s.score >= 50 ? '#10b981' : '#ef4444') : 'var(--gray-700)'};">
+                        ${s.attended ? `${s.score !== null ? s.score + '%' : '--'}` : 'N/A'}
+                    </div>
                 </td>
-                <td class="actions-cell">
+                <td style="padding: 1.25rem 1.5rem; text-align: right;">
                     ${isFinished ? `
-                        <div class="action-icons">
-                            <button class="action-btn" onclick="inspectSTMAIStudent('${s.username}')" title="View Detailed Report">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                                </svg>
-                            </button>
-                        </div>
+                        <button class="action-btn" onclick="inspectSTMAIStudent('${s.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: var(--primary-400); cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            Report
+                        </button>
                     ` : (s.assignmentStatus === 'in_progress' ? 
-                        '<span style="color:#60a5fa; font-size:0.75rem; font-weight:700;">LIVE...</span>' : 
-                        '<span style="color:var(--gray-600); font-size:0.75rem; font-weight:600;">WAITING</span>')}
+                        '<span style="color:#60a5fa; font-size:0.75rem; font-weight:800; text-transform: uppercase; background: rgba(96, 165, 250, 0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(96, 165, 250, 0.2);">In Progress</span>' : 
+                        '<span style="color:var(--gray-600); font-size:0.75rem; font-weight:700; text-transform: uppercase; background: rgba(255,255,255,0.03); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">Pending</span>')}
                 </td>
             </tr>
         `;
@@ -2234,145 +2275,167 @@ async function inspectSTMAIStudent(username) {
         const detailsArray = typeof studentResult.details === 'string' ? JSON.parse(studentResult.details) : (studentResult.details || []);
 
         reportView.innerHTML = `
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2.5rem; margin-bottom: 2.5rem; position: relative; overflow: hidden;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 2rem;">
-                    <div>
-                        <h3 style="margin: 0 0 0.75rem; font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;">${studentResult.name || username}</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <div style="color: var(--blue-400); font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                Registration: ${studentResult.registerNumber || username}
-                            </div>
-                            <div style="color: var(--gray-400); font-size: 0.95rem; display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                                Recorded: ${new Date(studentResult.date).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                            </div>
-                            <div style="color: var(--gray-400); font-size: 0.95rem; display: flex; align-items: center; gap: 10px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                Assessment: ${studentResult.testName || 'Technical Round'} ${(() => {
-                const diff = studentResult.difficulty || 'Medium';
-                const colors = { 'Easy': '#10b981', 'Medium': '#f59e0b', 'Hard': '#ef4444' };
-                const color = colors[diff] || '#f59e0b';
-                return `<span style="display:inline-block; font-size: 0.65rem; font-weight: 800; color: ${color}; background: ${color}15; border: 1px solid ${color}30; padding: 2px 8px; border-radius: 6px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 8px;">${diff}</span>`;
-            })()}
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="background: rgba(0,0,0,0.25); padding: 1.5rem 2.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
-                            <div style="font-size: 3rem; font-weight: 900; color: ${studentResult.score >= 50 ? '#10b981' : '#ef4444'}; margin-bottom: 4px; line-height: 1;">${studentResult.score}%</div>
-                            <div style="font-size: 0.9rem; font-weight: 700; color: ${studentResult.score >= 50 ? '#10b981' : '#ef4444'}; text-transform: uppercase; letter-spacing: 2px;">
-                                ${studentResult.score >= 50 ? 'QUALIFIED' : 'NOT QUALIFIED'}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="assessment-report-container" id="stmai-modal-inner-report" style="max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 20px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative;">
+            <button onclick="document.getElementById('stmai-detailed-report-view').style.display = 'none'; document.getElementById('stmai-results-placeholder').style.display='block'; window.scrollTo(0,0);" 
+                    style="position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.05); color: #fff; border: none; width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: all 0.2s; z-index: 10;">✕</button>
 
-                <!-- Stats Overview Pipeline -->
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem;">
-                    <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                        <div style="font-size: 1.75rem; font-weight: 800; color: #60a5fa;">${questions.length}</div>
-                        <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; font-weight: 600; margin-top: 4px; letter-spacing: 1px;">Total Questions</div>
-                    </div>
-                    <div style="background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                        <div style="font-size: 1.75rem; font-weight: 800; color: #a78bfa;">${Object.keys(answers).length}</div>
-                        <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; font-weight: 600; margin-top: 4px; letter-spacing: 1px;">Attempted</div>
-                    </div>
-                    <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                        <div style="font-size: 1.75rem; font-weight: 800; color: #10b981;">
-                            ${questions.filter((q, i) => {
-                if (q.type === 'coding') {
-                    const det = (detailsArray || [])[i];
-                    return det && det.similarity === 100;
-                }
-                return answers[i] === q.answer;
-            }).length}
-                        </div>
-                        <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; font-weight: 600; margin-top: 4px; letter-spacing: 1px;">Full Marks</div>
-                    </div>
-                    <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                        <div style="font-size: 1.75rem; font-weight: 800; color: #ef4444;">
-                             ${questions.filter((q, i) => {
-                if (q.type === 'coding') {
-                    const det = (detailsArray || [])[i];
-                    return !det || det.similarity < 100;
-                }
-                return answers[i] !== q.answer;
-            }).length}
-                        </div>
-                        <div style="font-size: 0.75rem; color: var(--gray-400); text-transform: uppercase; font-weight: 600; margin-top: 4px; letter-spacing: 1px;">Partial/Incorrect</div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 1.5rem;">
-                    <h4 style="color: #fff; margin: 0 0 1.25rem; font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px; color: var(--blue-400);"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-                        Detailed Submission Analysis
-                    </h4>
-                </div>
-
-                <div style="display:flex; flex-direction:column; gap: 1.25rem;">
-                    ${questions.map((q, idx) => {
-                const studentChoice = answers[idx];
-                const isCoding = q.type === 'coding';
-                const details = (detailsArray || [])[idx] || {};
-
-                let statusHtml = '';
-                let comparisonHtml = '';
-
-                if (isCoding) {
-                    const similarity = details.similarity || 0;
-                    const isExact = similarity === 100;
-                    statusHtml = `<div class="review-status" style="padding: 0.35rem 0.8rem; font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; background: ${isExact ? 'rgba(16, 185, 129, 0.1)' : 'rgba(251, 191, 36, 0.1)'}; color: ${isExact ? '#10b981' : '#fbbf24'};">
-                                            ${isExact ? '✅ Exact Match' : `🔶 ${similarity}% Similarity`}
-                                          </div>`;
-                    comparisonHtml = `
-                                <div style="grid-column: span 2; margin-top: 0.5rem; border-top: 2px solid rgba(255,255,255,0.05); padding-top: 1rem;">
-                                    <div style="color: var(--gray-500); font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem;">Student Code</div>
-                                    <pre style="background: #000; padding: 1rem; border-radius: 8px; font-size: 0.85rem; color: #e2e8f0; max-height: 200px; overflow: auto; border: 1px solid rgba(255,255,255,0.1);">${details.code || 'No code submitted'}</pre>
-                                    
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                                        <div>
-                                            <div style="color:var(--gray-500); font-size: 0.8rem; margin-bottom: 4px; font-weight: 600;">Student Submitted Output</div>
-                                            <pre style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05); color: ${isExact ? '#10b981' : '#f87171'}; max-height: 150px; overflow: auto; margin:0;">${(details.actualOutput !== undefined && details.actualOutput !== null && details.actualOutput !== "") ? details.actualOutput : 'No output recorded'}</pre>
-                                        </div>
-                                        <div>
-                                            <div style="color:var(--gray-500); font-size: 0.8rem; margin-bottom: 4px; font-weight: 600;">Expected Output</div>
-                                            <pre style="background: rgba(16, 185, 129, 0.05); padding: 0.75rem; border-radius: 6px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(16, 185, 129, 0.1); color: #10b981; max-height: 150px; overflow: auto; margin:0;">${details.expectedOutput || q.expectedOutput || ''}</pre>
-                                        </div>
-                                    </div>
-                                </div>`;
-                } else {
-                    const isCorrect = studentChoice === q.answer;
-                    statusHtml = `<div class="review-status ${isCorrect ? 'status-correct' : 'status-incorrect'}" style="padding: 0.35rem 0.8rem; font-size: 0.75rem; white-space: nowrap; flex-shrink: 0;">
-                                            ${isCorrect ? '✅ Correct' : '❌ Incorrect'}
-                                          </div>`;
-                    comparisonHtml = `
-                                <div>
-                                    <div style="color:var(--gray-500); font-size: 0.8rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Student Selected</div>
-                                    <div style="color: ${isCorrect ? '#10b981' : '#ef4444'}; font-weight: 600; font-size: 0.95rem;">Option ${studentChoice || 'Not answered'}</div>
-                                </div>
-                                <div>
-                                    <div style="color:var(--gray-500); font-size: 0.8rem; margin-bottom: 4px; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Correct Answer</div>
-                                    <div style="color: #10b981; font-weight: 600; font-size: 0.95rem;">Option ${q.answer}</div>
-                                </div>`;
-                }
-
-                return `
-                        <div class="review-item" style="padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 12px; border-left: 4px solid ${isCoding ? (details.similarity === 100 ? '#10b981' : '#fbbf24') : (studentChoice === q.answer ? '#10b981' : '#ef4444')}; border-top: 1px solid rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02); animation-delay: ${idx * 0.05}s;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; gap: 1rem;">
-                                <div style="font-weight: 600; color: #fff; line-height: 1.5;"><span style="color: var(--gray-400); margin-right: 4px;">Q${idx + 1}.</span> ${q.question} <span style="font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: var(--gray-400); text-transform: uppercase; margin-left: 8px;">${q.type || 'MCQ'}</span></div>
-                                ${statusHtml}
-                            </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
-                                ${comparisonHtml}
-                            </div>
-                        </div>
-                    `;
-            }).join('')}
+            <div class="assessment-report-header" style="display: flex; justify-content: center; align-items: center; margin-bottom: 2.5rem;">
+                <div class="assessment-report-title" style="text-align: center;">
+                    <h1 style="margin:0; font-size: 1.25rem; letter-spacing: 2px; font-weight: 800; color: #fff;">SUBMISSION ANALYSIS</h1>
+                    <div style="height: 2px; width: 40px; background: var(--blue-500); margin: 8px auto 0;"></div>
                 </div>
             </div>
-        `;
+
+            <div class="score-hero" style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 2rem; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem;">
+                <div class="score-hero-flex" style="display: flex; align-items: center; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                  <div class="score-circle" style="margin: 0; flex-shrink: 0;">
+                      <span class="score-value">${studentResult.score}</span>
+                      <span class="score-total">%</span>
+                  </div>
+                  <div class="score-hero-text" style="text-align: left; min-width: 250px;">
+                      <h2 style="font-size: 1.75rem; margin: 0 0 0.25rem 0; color: #fff;">${studentResult.name || username}</h2>
+                      <p style="color: var(--gray-400); margin: 0 0 1rem 0; font-size: 0.95rem;">
+                         Reg: ${studentResult.registerNumber || username} • ${studentResult.testName || 'Technical Assessment'}
+                      </p>
+                      <span class="badge" style="background: ${studentResult.score >= 50 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; color: ${studentResult.score >= 50 ? '#10b981' : '#ef4444'}; border: 1px solid currentColor; padding: 0.4rem 1rem; border-radius: 50px; font-weight: 700; font-size: 0.75rem; letter-spacing: 1px;">
+                          ${studentResult.score >= 50 ? 'QUALIFIED' : 'NOT QUALIFIED'}
+                      </span>
+                  </div>
+                </div>
+            </div>
+
+            <div class="attempt-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+               <div class="analysis-stat-card" style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                 <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;">
+                    ${questions.filter((q, i) => {
+                        if (q.type === 'coding') {
+                            const det = (detailsArray || [])[i];
+                            return det && det.similarity === 100;
+                        }
+                        return answers[i] === q.answer;
+                    }).length}
+                 </div>
+                 <div style="font-size: 0.65rem; color: #10b981; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Correct</div>
+               </div>
+               <div class="analysis-stat-card" style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                 <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444;">
+                    ${questions.filter((q, i) => {
+                        if (q.type === 'coding') {
+                            const det = (detailsArray || [])[i];
+                            return !det || det.similarity < 100;
+                        }
+                        return answers[i] !== q.answer;
+                    }).length}
+                 </div>
+                 <div style="font-size: 0.65rem; color: #ef4444; font-weight: 700; text-transform: uppercase; margin-top: 4px;">Incorrect</div>
+               </div>
+               <div class="analysis-stat-card" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                 <div style="font-size: 1.5rem; font-weight: 800; color: #fff;">${questions.length}</div>
+                 <div style="font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; margin-top: 4px;">Total Questions</div>
+               </div>
+            </div>
+
+            <div class="question-analysis-header" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+               <h3 style="font-size: 1rem; color: #fff; margin: 0;">Detailed Performance Review</h3>
+               <span style="font-size: 0.85rem; color: var(--gray-500);">Individual Analysis</span>
+            </div>
+
+            <div class="review-grid" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                ${questions.map((q, idx) => {
+                    const details = (detailsArray || [])[idx] || {};
+                    const userAns = answers[idx] !== undefined ? answers[idx] : (details.code || "");
+                    const isCoding = q.type === 'coding';
+                    let isCorrect = false;
+                    let similarityScore = null;
+
+                    if (isCoding) {
+                        const actual = details.actualOutput || (studentResult.actualOutputs && studentResult.actualOutputs[idx]) ? (details.actualOutput || studentResult.actualOutputs[idx]).trim() : "";
+                        const expected = (q.expectedOutput || details.expectedOutput || "").trim();
+                        isCorrect = actual === expected && actual !== "";
+                        if (!isCorrect && actual !== "" && expected !== "") {
+                            similarityScore = (details.similarity !== undefined) ? details.similarity : 0; 
+                        }
+                    } else {
+                        isCorrect = userAns === q.answer;
+                    }
+
+                    const timeSpent = studentResult.questionTimes && studentResult.questionTimes[idx] ? Math.round(studentResult.questionTimes[idx].total / 1000) : 0;
+                    
+                    let containerBg = 'rgba(255,255,255,0.02)';
+                    let containerBorder = 'rgba(255,255,255,0.05)';
+                    if (userAns !== "") {
+                      if (isCorrect) {
+                        containerBg = 'rgba(16, 185, 129, 0.05)';
+                        containerBorder = 'rgba(16, 185, 129, 0.2)';
+                      } else {
+                        containerBg = 'rgba(239, 68, 68, 0.05)';
+                        containerBorder = 'rgba(239, 68, 68, 0.2)';
+                      }
+                    }
+
+                    return `
+                        <div class="review-item" style="background: ${containerBg}; border: 1px solid ${containerBorder}; border-radius: 16px; padding: 2rem; animation: fadeIn 0.4s ease-out;">
+                            <div class="review-item-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem;">
+                                <span style="font-size: 0.8rem; font-weight: 800; color: var(--blue-400); text-transform: uppercase; letter-spacing: 1px;">
+                                    Question ${idx + 1} • ${isCoding ? 'CODING_LAB' : 'MCQ'}
+                                </span>
+                                <div class="review-status-wrap" style="display: flex; gap: 1rem; align-items: center;">
+                                  <span style="font-size: 0.75rem; color: var(--gray-500); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; white-space: nowrap; font-weight: 600;">⏱️ ${timeSpent}s</span>
+                                  <div class="review-status ${isCorrect ? 'status-correct' : 'status-incorrect'}" style="margin: 0; padding: 6px 14px; font-size: 0.75rem; font-weight: 800; border-radius: 8px; white-space: nowrap; background: ${isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}; color: ${isCorrect ? '#10b981' : '#ef4444'};">
+                                      ${isCorrect ? 'PASS' : (isCoding ? 'FAIL / PARTIAL' : 'INCORRECT')}
+                                  </div>
+                                </div>
+                            </div>
+                            
+                            <div class="review-question" style="font-size: 1.15rem; margin-bottom: 2rem; line-height: 1.7; color: #fff; font-weight: 700;">${q.question}</div>
+                            
+                            ${isCoding ? `
+                                <div class="coding-analysis" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                    <div style="background: #020617; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden;">
+                                        <div style="background: rgba(255,255,255,0.03); padding: 0.75rem 1.25rem; font-size: 0.8rem; color: var(--gray-400); font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.08); text-transform: uppercase;">Student Response</div>
+                                        <pre class="coding-pre" style="margin:0; padding: 1.5rem; color: #e2e8f0; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; overflow-x: auto;">${userAns || '// No code submitted'}</pre>
+                                    </div>
+                                    <div class="coding-output-block" style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                                        <div style="background: rgba(16, 185, 129, 0.05); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.15); padding: 1rem;">
+                                            <div style="font-size: 0.7rem; color: #10b981; font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase;">Expected Final State</div>
+                                            <pre style="margin:0; font-family: monospace; font-size: 0.85rem; color: #10b981; white-space: pre-wrap;">${q.expectedOutput || details.expectedOutput || ''}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div class="review-options" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                    ${(q.options || []).map((opt, optIdx) => {
+                                        const letter = String.fromCharCode(65 + optIdx);
+                                        let border = 'rgba(255,255,255,0.05)';
+                                        let bg = 'rgba(255,255,255,0.02)';
+                                        let color = 'inherit';
+                                        
+                                        if (letter === q.answer) {
+                                            border = '#10b981';
+                                            bg = 'rgba(16, 185, 129, 0.1)';
+                                            color = '#10b981';
+                                        } else if (letter === userAns && !isCorrect) {
+                                            border = '#ef4444';
+                                            bg = 'rgba(239, 68, 68, 0.1)';
+                                            color = '#ef4444';
+                                        }
+
+                                        return `
+                                        <div class="review-option" style="padding: 1rem 1.25rem; font-size: 1rem; border-radius: 12px; display: flex; align-items: center; gap: 1rem; border: 1px solid ${border}; background: ${bg}; color: ${color}; position: relative;">
+                                            <div style="width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.85rem; flex-shrink: 0; color: #fff;">${letter}</div>
+                                            <span style="flex: 1; font-weight: 600;">${opt}</span>
+                                            ${letter === userAns ? `<span style="font-size: 0.7rem; padding: 4px 10px; border-radius: 8px; background: ${isCorrect ? '#10b981' : '#ef4444'}; color: #fff; font-weight: 800; text-transform: uppercase; margin-left: auto;">Student Selected</span>` : ''}
+                                        </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
 
     } catch (err) {
         reportView.innerHTML = `<div style="padding:2rem; color:#ef4444; text-align:center;">Failed to load report: ${err.message}</div>`;
@@ -2599,6 +2662,8 @@ function initAiGenerator() {
     fileInput.addEventListener('change', (e) => {
         if (e.target.files.length) {
             handleFileUpload(e.target.files[0]);
+            // Clear value to allow same file to be uploaded again later
+            fileInput.value = '';
         }
     });
 
@@ -2664,7 +2729,8 @@ function initAiGenerator() {
                 extractionProgress.style.width = '70%';
                 processingTitle.textContent = 'Extracting MCQ Questions...';
                 processingSubtitle.textContent = 'Scanning for numbered questions with A–D options.';
-                await delay(300);
+                // Removed delay for instant response
+
                 
                 // MCQ ONLY — never falls back to coding
                 questions = parseMCQsFromText(rawText);
@@ -2672,7 +2738,8 @@ function initAiGenerator() {
                 extractionProgress.style.width = '70%';
                 processingTitle.textContent = 'Extracting Coding Questions...';
                 processingSubtitle.textContent = 'Scanning for Question/Language/Output structures.';
-                await delay(300);
+                // Removed delay for instant response
+
                 
                 // CODING ONLY — never falls back to MCQ
                 questions = parseCodingQuestionsFromText(rawText);
@@ -2682,7 +2749,7 @@ function initAiGenerator() {
             extractionProgress.style.width = '100%';
             processingTitle.textContent = 'Extraction Complete!';
 
-            await delay(400);
+            // Removed delay for instant response
 
             if (questions.length === 0) {
                 processingState.style.display = 'none';
@@ -2717,102 +2784,90 @@ function initAiGenerator() {
     // ============================================================
     function parseMCQsFromText(text) {
         const questions = [];
+        
+        // Normalize Unicode non-breaking spaces and line breaks (Critical for Mobile)
+        const normalizedText = text.replace(/\u00A0/g, ' ')
+                                 .replace(/\r\n/g, '\n')
+                                 .replace(/\r/g, '\n');
 
-        // STRICT CHECK: If the document contains coding format markers, reject it
-        const hasCodingMarkers = /^Question:\s/im.test(text) && /^Language:\s/im.test(text) && /^Output:\s/im.test(text);
+        // STRICT CHECK: Reject coding format in MCQ mode
+        const hasCodingMarkers = /^Question:\s/im.test(normalizedText) && /^Language:\s/im.test(normalizedText) && /^Output:\s/im.test(normalizedText);
         if (hasCodingMarkers) {
-            throw new Error('Format Mismatch: This document appears to be in Coding format (contains "Question:", "Language:", "Output:" markers). Please use the "Upload Coding Docs" option instead.');
+            throw new Error('Format Mismatch: Document detected as Coding format. Use the "Upload Coding Docs" option.');
         }
 
-        // Normalize line breaks and whitespace
-        const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')
-            .map(l => l.trim()).filter(l => l.length > 0);
+        // BLOCK-BASED PARSING: Split by question starts (1. / Q1 / Question 1)
+        // This handles cases where mobile Mammoth output might merge lines
+        const questionBlocks = normalizedText.split(/(?=\n(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[.):\s\-]+)/im);
 
-        let i = 0;
-        let invalidQuestions = 0;
+        questionBlocks.forEach(block => {
+            if (!block.trim()) return;
 
-        while (i < lines.length) {
-            const line = lines[i];
-
-            // Detect a question line: "1. text" / "1) text" / "Q1. text"
-            const qMatch = line.match(/^(?:Q\.?\s*)?(\d+)[.):\s]+\s*(.+)/i) ||
-                line.match(/^Question\s+(\d+)[.:)]\s*(.+)/i);
-
+            // Extract Question Text: From start until first option (A. / B. / etc)
+            const qMatch = block.match(/^(?:Q\.?\s*|Question\s*|Part\s*|)?(\d+)[.):\s\-]+\s*([\s\S]*?)(?=\n\s*(?:\(?[A-E]\)[\s\-.]|[A-E][.):\s\-\/A-E]))/im);
+            
             if (qMatch) {
-                let questionText = qMatch[2].trim();
-                i++;
-
-                // Collect continuation lines (question text may span multiple lines)
-                while (i < lines.length && !isOptionLine(lines[i]) && !isQuestionLine(lines[i]) && !isAnswerLine(lines[i])) {
-                    questionText += ' ' + lines[i];
-                    i++;
-                }
-
-                // Collect options A–D
+                let qText = qMatch[2].trim();
+                
+                // Extract Options
                 const options = [];
                 const optionLetters = [];
-                while (i < lines.length && isOptionLine(lines[i])) {
-                    const optMatch = parseOptionLine(lines[i]);
-                    if (optMatch) {
-                        optionLetters.push(optMatch.letter.toUpperCase());
-                        let optText = optMatch.text;
-                        i++;
-                        // Option text may span multiple lines
-                        while (i < lines.length && !isOptionLine(lines[i]) && !isQuestionLine(lines[i]) && !isAnswerLine(lines[i])) {
-                            optText += ' ' + lines[i];
-                            i++;
-                        }
-                        options.push(optText.trim());
-                    } else {
-                        break;
+                const optionMatches = [...block.matchAll(/^\s*\(?([A-E])\)?[.):\s\-\/]+\s*([\s\S]*?)(?=\n\s*\(?[A-E]\)?[.):\s\-\/]|(?:\n\s*(?:Answer|Ans|Key|Correct))|$)/gim)];
+                
+                optionMatches.forEach(m => {
+                    const letter = m[1].toUpperCase();
+                    const text = m[2].trim().replace(/\n/g, ' ');
+                    if (!optionLetters.includes(letter)) {
+                        optionLetters.push(letter);
+                        options.push(text);
                     }
-                }
+                });
 
-                // STRICT: Require exactly 4 options
-                if (options.length !== 4) {
-                    invalidQuestions++;
-                    // Skip to next question
-                    continue;
-                }
+                // Extract Answer
+                const ansMatch = block.match(/(?:Answer|Ans|Key|Correct\s*Option)\s*[.:)\-]\s*\(?([A-E])\)?/im);
+                let answer = ansMatch ? ansMatch[1].toUpperCase() : (optionLetters.length > 0 ? optionLetters[0] : 'A');
 
-                // STRICT: Require an answer line
-                let answer = '';
-                if (i < lines.length && isAnswerLine(lines[i])) {
-                    answer = parseAnswerLine(lines[i], optionLetters);
-                    i++;
-                }
-
-                if (!answer) {
-                    // Default answer to A if not found, but warn
-                    answer = 'A';
-                }
-
-                if (questionText.length > 0) {
+                if (qText && options.length >= 2) {
                     questions.push({
-                        question: questionText.trim(),
-                        options: options.slice(0, 4),
+                        question: qText.replace(/\n/g, ' ').trim(),
+                        options: options.length >= 4 ? options.slice(0, 4) : fillOptions(options),
                         answer: answer
                     });
                 }
-            } else {
-                i++;
             }
-        }
+        });
 
-        // STRICT: If we found some questions but many were invalid, warn
-        if (questions.length === 0 && invalidQuestions > 0) {
-            throw new Error(`Format Error: Found ${invalidQuestions} question(s) but they don't have exactly 4 options (A, B, C, D). Please follow the sample MCQ format: each question must have exactly 4 options labeled A–D.`);
+        if (questions.length === 0) {
+            // ULTIMATE FALLBACK: Line-by-line if block parsing failed completely
+            const lines = normalizedText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            let currentQ = null;
+            lines.forEach(line => {
+                const qm = line.match(/^(?:Q\.?\s*|Question\s*|)?\d+[.):\s\-]+\s*(.+)/i);
+                if (qm) {
+                    if (currentQ && currentQ.options.length >= 2) questions.push(currentQ);
+                    currentQ = { question: qm[1], options: [], answer: 'A' };
+                } else if (currentQ) {
+                    const om = line.match(/^\s*\(?([A-E])\)?[.):\s\-\/]+\s*(.+)/i);
+                    if (om) currentQ.options.push(om[2]);
+                    else if (line.match(/(?:Answer|Ans|Key)\s*[.:)\-]\s*([A-E])/i)) {
+                        currentQ.answer = line.match(/(?:Answer|Ans|Key)\s*[.:)\-]\s*([A-E])/i)[1].toUpperCase();
+                    }
+                }
+            });
+            if (currentQ && currentQ.options.length >= 2) questions.push(currentQ);
         }
 
         return questions;
     }
+
 
     // ============================================================
     //  STRICT CODING PARSER — Only accepts Coding format, rejects MCQ format
     // ============================================================
     function parseCodingQuestionsFromText(text) {
         const questions = [];
-        const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        const normalizedText = text.replace(/\u00A0/g, ' ').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
 
         // STRICT CHECK: If the document contains MCQ format markers, reject it
         const hasNumberedQuestions = /^\d+[.)]\s+/m.test(text);
@@ -2837,13 +2892,15 @@ function initAiGenerator() {
             throw new Error('Format Error: No "Output:" markers found. Each coding question must include "Output:" followed by the expected output. Please download and follow the sample Coding format.');
         }
 
-        // Split by "Question:" to get individual question blocks
-        const sections = normalizedText.split(/(?=^Question:\s)/im);
+        // Extract using block matching instead of just split for reliability
+        // Matches blocks that look like Question ... Language ... Output
+        const questionBlocks = normalizedText.match(/Question:[\s\S]*?(?=Question:|$)/gim) || [];
         
         const validLanguages = ['c', 'c++', 'cpp', 'python', 'java', 'javascript', 'js'];
         let invalidCount = 0;
 
-        sections.forEach(section => {
+        questionBlocks.forEach(section => {
+
             if (!section.trim()) return;
             
             // STRICT: Extract Question text (must start with "Question:")
@@ -2902,9 +2959,10 @@ function initAiGenerator() {
     }
 
     function isOptionLine(line) {
-        return /^\s*[A-Da-d][.):\s]/i.test(line) ||
-            /^\(?[A-Da-d]\)\s/i.test(line);
+        return /^\s*[A-Da-d][.):\s\-]/i.test(line) ||
+            /^\s*\(?[A-Da-d]\)[\s\-]/i.test(line);
     }
+
 
     function parseOptionLine(line) {
         // Matches: "A. text" / "a) text" / "(A) text" / "A: text" / "A text"
@@ -2938,6 +2996,15 @@ function initAiGenerator() {
         }
         return validLetters.length > 0 ? validLetters[0] : 'A';
     }
+
+    function fillOptions(opts) {
+        const full = [...opts];
+        while (full.length < 4) {
+            full.push(`Option ${String.fromCharCode(65 + full.length)}`);
+        }
+        return full;
+    }
+
 
     // ============================================================
     //  RENDER EXTRACTED QUESTIONS (with delete per item)

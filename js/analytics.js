@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════
- *  JMC-Test — Student Analytics Engine
+ *  JMC TEST — Student Analytics Engine
  *  User-friendly performance insights & visual analytics
  * ═══════════════════════════════════════════════════════════
  */
