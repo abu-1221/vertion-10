@@ -1,6 +1,28 @@
 // Dashboard JavaScript
 // Shared logic for both Student and Staff dashboards
 
+// ===== PERFORMANCE: Global Debounce Utility =====
+// Used by search handlers, scroll listeners, and resize events
+// to reduce unnecessary function calls on mobile
+window.debounce = function(fn, delay = 150) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+};
+
+// ===== PERFORMANCE: Passive event listeners for scroll/touch =====
+// Boost scrolling performance on mobile by marking wheel/touch events passive
+document.addEventListener('DOMContentLoaded', () => {
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.addEventListener('wheel', () => {}, { passive: true });
+    mainContent.addEventListener('touchstart', () => {}, { passive: true });
+    mainContent.addEventListener('touchmove', () => {}, { passive: true });
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   checkAuth();
   initSidebar();
@@ -114,7 +136,7 @@ function initSidebar() {
 
 // Initialize navigation between sections
 function initNavigation() {
-  const navItems = document.querySelectorAll(".nav-item");
+  const navItems = document.querySelectorAll(".nav-item:not(.ai-buddy-btn)");
   const sectionTitle = document.getElementById("sectionTitle");
 
   navItems.forEach((item) => {
@@ -255,7 +277,7 @@ function performLogout() {
   // Immediate logout as requested by user for speed
   if (confirmBtn) {
     confirmBtn.disabled = true;
-    confirmBtn.textContent = "Logging out...";
+    confirmBtn.innerHTML = `<span class="spinner-sm"></span><span>Logging out...</span>`;
   }
 
   // 1. Clear ALL session data
@@ -2038,14 +2060,16 @@ async function showPassedTestsForCertificate() {
 
   let listHtml = passedTests.length > 0
     ? passedTests.map(test => `
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-            <div style="text-align: left;">
-                <h4 style="margin: 0; font-size: 1rem; color: #fff;">${test.testName}</h4>
-                <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--gray-400);">${test.company} • ${test.difficulty} Level</p>
-                <div style="margin-top: 8px; font-size: 0.75rem; color: #10b981; font-weight: 700;">Score: ${test.score}%</div>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; margin-bottom: 1rem; box-sizing: border-box;">
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 0.35rem; text-align: left;">
+                <span style="font-size: 0.7rem; color: var(--gray-400); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">${test.company}</span>
+                <h4 style="margin: 0; font-size: 1rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${test.testName}</h4>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-top: 0.25rem;">
+                    <span style="font-size: 0.75rem; color: var(--primary-300); background: rgba(99, 102, 241, 0.15); padding: 2px 8px; border-radius: 6px; font-weight: 500;">${test.difficulty} Level</span>
+                    <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 6px;">Score: ${test.score}%</span>
+                </div>
             </div>
-            <button class="btn btn-primary btn-sm" style="min-width: 180px;" onclick="generateMeritCertificate('${test.id}')">Issue Certificate</button>
-
+            <button class="btn btn-primary btn-sm" style="white-space: nowrap; padding: 0.5rem 1rem; min-width: unset; height: fit-content;" onclick="generateMeritCertificate('${test.id}')">Issue Certificate</button>
         </div>
       `).join('')
     : '<div style="padding: 2rem; color: var(--gray-500);">No specialized certificates available yet. Qualify a test to unlock!</div>';

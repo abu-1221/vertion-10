@@ -118,9 +118,9 @@
         [data-theme="light"] .nav-item.active svg { stroke: #4f46e5 !important; }
         [data-theme="light"] .logo-text { color: #000 !important; }
         [data-theme="light"] .sidebar-toggle-btn { background: #f1f5f9; border-color: #e2e8f0; }
-        [data-theme="light"] .logout-btn { background: #fef2f2 !important; color: #dc2626 !important; border-color: #fecaca !important; }
-        [data-theme="light"] .logout-btn span { color: #dc2626 !important; }
-        [data-theme="light"] .logout-btn svg { stroke: #dc2626 !important; }
+        [data-theme="light"] .logout-btn { background: #dc2626 !important; color: #ffffff !important; border-color: rgba(255, 255, 255, 0.1) !important; }
+        [data-theme="light"] .logout-btn span { color: #ffffff !important; }
+        [data-theme="light"] .logout-btn svg { stroke: #ffffff !important; }
         [data-theme="light"] .dashboard-header { background: #fff; border-color: #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
         [data-theme="light"] .header-left h1 { color: #000 !important; }
         [data-theme="light"] .user-name { color: #000 !important; }

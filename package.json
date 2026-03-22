@@ -25,7 +25,5 @@
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   },
-  "devDependencies": {
-    "vercel": "^50.25.4"
-  }
+  "devDependencies": {}
 }

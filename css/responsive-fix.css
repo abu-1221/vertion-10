@@ -16,6 +16,80 @@ body {
 }
 
 /* ──────────────────────────────────────────────
+   1b. MOBILE PERFORMANCE OPTIMIZATIONS
+   GPU-accelerated layout, reduced reflows/repaints
+   ────────────────────────────────────────────── */
+@media screen and (max-width: 768px) {
+    /* Enable hardware-accelerated scrolling and reduce paint costs */
+    .main-content {
+        -webkit-overflow-scrolling: touch !important;
+        will-change: scroll-position;
+        transform: translateZ(0);
+        contain: layout style;
+    }
+
+    /* Reduce layout thrashing on content sections */
+    .content-section {
+        contain: layout style;
+    }
+
+    /* Hardware-accelerate sidebar animation */
+    .sidebar, #sidebar {
+        will-change: transform;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    /* Smoother transitions on animated elements */
+    .nav-item,
+    .stat-card,
+    .form-card,
+    .glass-panel {
+        will-change: auto;
+        backface-visibility: hidden;
+    }
+
+    /* Instant tap response — remove 300ms delay on all interactive elements */
+    a, button, input, select, textarea, .nav-item, .logout-btn, .btn {
+        touch-action: manipulation;
+    }
+
+    /* Optimize table scroll containers */
+    .table-scroll {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+        will-change: scroll-position;
+    }
+
+    /* Prevent unnecessary repaints from hover effects on touch devices */
+    .nav-item:hover,
+    .stat-card:hover,
+    .profile-info-block:hover,
+    .qual-item:hover,
+    .meta-item:hover {
+        transform: none !important;
+    }
+
+    /* Reduce animation complexity on mobile */
+    .bounce-in {
+        animation-duration: 0.2s !important;
+    }
+
+    /* Optimize dropdown rendering */
+    .custom-multi-select .dropdown-body {
+        contain: layout style paint;
+        will-change: auto;
+    }
+
+    /* Font rendering optimization */
+    body {
+        text-rendering: optimizeSpeed;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ──────────────────────────────────────────────
    2. CREATE TEST — 2-Column Grid Scaling
    ────────────────────────────────────────────── */
 #create-test-section .form-grid {
@@ -1326,6 +1400,19 @@ a.download-sample {
         display: flex !important;
         flex-direction: column !important;
     }
+
+    /* Reset desktop sidebar right-shift for mobile */
+    .sidebar-header {
+        padding-left: 1.25rem !important;
+    }
+
+    .nav-item {
+        margin-left: 0.6rem !important;
+    }
+
+    .sidebar-footer {
+        padding-left: 1rem !important;
+    }
     
     /* Slide in when active */
     .sidebar.active, #sidebar.active {
@@ -1535,6 +1622,161 @@ a.download-sample {
 
     .options-grid {
         grid-template-columns: 1fr !important;
+    }
+
+    /* ===== MOBILE AI GEN - WORD UPLOAD WORKFLOW ===== */
+
+    /* Container adjustments */
+    .ai-gen-container {
+        padding: 1rem !important;
+        border-radius: 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    }
+
+    /* Header */
+    .ai-gen-header {
+        text-align: left !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .ai-gen-header h2 {
+        font-size: 1.25rem !important;
+    }
+
+    .ai-gen-header p {
+        font-size: 0.8rem !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+
+    /* Upload grid — single column for mobile */
+    .ai-upload-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* Workflow cards */
+    .ai-workflow-card {
+        padding: 1.15rem !important;
+        gap: 1rem !important;
+        border-radius: 14px !important;
+    }
+
+    .ai-workflow-card:hover {
+        transform: none !important; /* Disable hover lift on touch */
+    }
+
+    /* Card top — icon + text */
+    .card-top {
+        gap: 0.85rem !important;
+    }
+
+    .ai-card-icon {
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 12px !important;
+    }
+
+    .ai-card-icon svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .card-info h3 {
+        font-size: 0.95rem !important;
+    }
+
+    .card-info p {
+        font-size: 0.75rem !important;
+    }
+
+    /* Format sample box */
+    .format-sample-box {
+        padding: 1rem 1.15rem !important;
+        border-radius: 10px !important;
+        font-size: 0.72rem !important;
+        line-height: 1.6 !important;
+    }
+
+    .web-only-sample {
+        display: none !important;
+    }
+    .mobile-only-sample {
+        display: block !important;
+    }
+
+    .format-label {
+        font-size: 0.55rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* Action buttons — ensure touch-friendly */
+    .ai-button-actions {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    .ai-action-btn {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.82rem !important;
+        border-radius: 10px !important;
+        min-height: 44px !important; /* Touch target */
+        width: 100% !important;
+    }
+
+    .ai-action-btn.upload-primary:hover {
+        transform: none !important; /* No hover lift on touch */
+    }
+
+    /* Processing state */
+    .processing-state {
+        padding: 2rem 1rem !important;
+    }
+
+    .processing-state h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .progress-bar-container {
+        max-width: 100% !important;
+    }
+
+    /* Extraction results */
+    .extraction-results {
+        margin-top: 0.75rem !important;
+    }
+
+    .extracted-item .q-input {
+        font-size: 0.9rem !important;
+        padding: 0.6rem !important;
+    }
+
+    .extracted-item .options-grid {
+        margin-left: 0 !important;
+        gap: 0.5rem !important;
+    }
+
+    .extracted-item .answer-select-container {
+        margin-left: 0 !important;
+        flex-wrap: wrap !important;
+    }
+
+    .extracted-item .answer-select-container select {
+        width: 100% !important;
+        min-height: 40px !important;
+    }
+
+    /* Coding review fields */
+    .coding-review-fields {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+
+    /* Hidden file input — ensure iOS/Android can trigger it */
+    #aiFileInput {
+        position: absolute !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
 }
 
@@ -1790,6 +2032,7 @@ a.download-sample {
 /* Smart Assistant — mobile responsive */
 @media screen and (max-width: 768px) {
     .ai-panel {
+        top: 0 !important;
         bottom: 0 !important;
         right: 0 !important;
         left: 0 !important;
@@ -1840,24 +2083,25 @@ a.download-sample {
    LOGOUT BUTTON — ENSURE VISIBILITY & PROPER STYLING
    ========================================================== */
 
-/* Ensure the logout button is always red with white text + icon */
+/* Ensure the logout button is always solid red with white text + icon */
 .logout-btn {
-    background: rgba(239, 68, 68, 0.08) !important;
-    color: #ef4444 !important;
-    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2) !important;
 }
 
 .logout-btn svg {
-    color: #ef4444 !important;
-    stroke: #ef4444 !important;
-    width: 18px !important;
-    height: 18px !important;
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+    width: 20px !important;
+    height: 20px !important;
     flex-shrink: 0 !important;
 }
 
 .logout-btn span {
-    color: #ef4444 !important;
-    font-weight: 600 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
 }
 
 /* Ensure mobile sidebar is tall enough but leaves space for footer */
@@ -1865,20 +2109,21 @@ a.download-sample {
     .sidebar {
         display: flex !important;
         flex-direction: column !important;
-        padding-bottom: calc(2rem + env(safe-area-inset-bottom)) !important;
+        padding-bottom: calc(2.5rem + env(safe-area-inset-bottom)) !important;
     }
     
     .sidebar-footer {
         margin-top: auto !important;
-        padding-bottom: 2rem !important; /* Forces it up */
+        padding-bottom: 4.5rem !important; /* Forces it up by ~0.5 inch */
         z-index: 100 !important;
         background: var(--bg-sidebar) !important;
     }
 }
 
 .logout-btn:hover {
-    background: rgba(239, 68, 68, 0.18) !important;
-    border-color: rgba(239, 68, 68, 0.35) !important;
+    background: #b91c1c !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(185, 28, 28, 0.4) !important;
 }
 
 /* Logout modal — ensure it's responsive */

@@ -105,6 +105,11 @@ class AISmartBuddy {
             const btn = e.target.closest('.ai-buddy-btn');
             if (btn) {
                 this.togglePanel(!this.panel.classList.contains('active'));
+                
+                // Close mobile sidebar to ensure full visibility
+                document.getElementById('sidebar')?.classList.remove('active');
+                document.getElementById('menuToggle')?.classList.remove('active');
+                document.getElementById('sidebarOverlay')?.classList.remove('active');
             }
         });
 
@@ -201,7 +206,9 @@ class AISmartBuddy {
     togglePanel(show) {
         if (show) {
             this.panel.classList.add('active');
-            this.input.focus();
+            if (window.innerWidth > 768) {
+                this.input.focus();
+            }
         } else {
             this.panel.classList.remove('active');
         }

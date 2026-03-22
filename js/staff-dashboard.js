@@ -833,7 +833,7 @@ function initAddQuestion() {
       <!-- Decorative background glow -->
       <div style="position: absolute; top: 0; left: 0; right: 0; height: 100px; background: linear-gradient(180deg, rgba(102,126,234,0.03) 0%, rgba(255,255,255,0) 100%); pointer-events: none;"></div>
 
-      <div class="question-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; position: relative;">
+      <div class="question-header" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; position: relative;">
         <span class="question-number" style="font-weight: 800; color: var(--secondary-400); font-size: 1.15rem; display: flex; align-items: center; gap: 10px;">
           <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(102,126,234,0.15); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(102,126,234,0.3);">
              <span style="color: var(--secondary-400); font-size: 0.95rem;">${questionCount}</span>
@@ -847,7 +847,7 @@ function initAddQuestion() {
               <option value="coding" ${!isMcq ? 'selected' : ''}>Coding Challenge</option>
             </select>
           </div>
-          <button type="button" class="remove-question-btn" style="width: 36px; height: 36px; border-radius: 10px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); color: var(--error); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--error)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(239, 68, 68, 0.08)'; this.style.color='var(--error)';">
+          <button type="button" class="remove-question-btn" style="width: 36px; height: 36px; min-width: 36px; flex-shrink: 0; border-radius: 10px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.15); color: var(--error); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--error)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(239, 68, 68, 0.08)'; this.style.color='var(--error)';">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           </button>
         </div>
@@ -959,10 +959,10 @@ function initTestsTable() {
 
     if (searchInput) {
         // Live search as user types
-        searchInput.addEventListener('input', (e) => {
+        searchInput.addEventListener('input', window.debounce((e) => {
             if (clearBtn) clearBtn.classList.toggle('visible', e.target.value.length > 0);
             filterTests(e.target.value);
-        });
+        }));
 
         // Trigger on Enter key
         searchInput.addEventListener('keydown', (e) => {
@@ -1580,10 +1580,10 @@ function initStudentsManagement() {
     const searchInput = document.getElementById('studentSearch');
     const clearBtn = document.getElementById('clearStudentSearch');
     if (searchInput) {
-        searchInput.addEventListener('input', () => {
+        searchInput.addEventListener('input', window.debounce(() => {
             if (clearBtn) clearBtn.classList.toggle('visible', searchInput.value.length > 0);
             filterStudents();
-        });
+        }));
     }
 
     if (clearBtn) {
@@ -2613,7 +2613,11 @@ let currentUploadMode = 'mcq'; // 'mcq' or 'coding' — set by the upload card c
 
 function triggerAiUpload(mode) {
     currentUploadMode = mode;
-    document.getElementById('aiFileInput').click();
+    const fileInput = document.getElementById('aiFileInput');
+    if (!fileInput) return;
+    
+    // Immediate click trigger for mobile browser stack safety
+    fileInput.click();
 }
 
 function initAiGenerator() {
@@ -2658,13 +2662,25 @@ function initAiGenerator() {
         }
     });
 
-    // DOCX file input change
-    fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-            handleFileUpload(e.target.files[0]);
-            // Clear value to allow same file to be uploaded again later
-            fileInput.value = '';
+    // DOCX file input change handler with mobile-specific safety
+    fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files.length) {
+            handleFileUpload(this.files[0]);
+            // Reset to allow re-upload if needed
+            this.value = '';
         }
+    });
+
+    // Mirroring trigger to the cards themselves for easier mobile tapping
+    const cards = uploadZone.querySelectorAll('.ai-workflow-card');
+    cards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // If the user didn't click the primary button, trigger it anyway for better mobile UX
+            if (!e.target.closest('.ai-action-btn')) {
+                const isMcq = this.classList.contains('mcq-path');
+                triggerAiUpload(isMcq ? 'mcq' : 'coding');
+            }
+        });
     });
 
     // Re-upload button
@@ -2732,8 +2748,12 @@ function initAiGenerator() {
                 // Removed delay for instant response
 
                 
-                // MCQ ONLY — never falls back to coding
-                questions = parseMCQsFromText(rawText);
+                // MCQ ONLY — never falls back to coding (Web vs Mobile Strict Swappable)
+                if (window.innerWidth <= 768) {
+                    questions = parseMCQsFromTextStrictMobile(rawText);
+                } else {
+                    questions = parseMCQsFromText(rawText);
+                }
             } else if (currentUploadMode === 'coding') {
                 extractionProgress.style.width = '70%';
                 processingTitle.textContent = 'Extracting Coding Questions...';
@@ -2755,7 +2775,9 @@ function initAiGenerator() {
                 processingState.style.display = 'none';
                 uploadZone.style.display = 'block';
                 const errorMsg = currentUploadMode === 'mcq' 
-                    ? 'Could not find MCQ questions. Ensure your document has numbered questions (1. / Q1.) with options labeled A–D and optionally "Answer: X".'
+                    ? (window.innerWidth <= 768 
+                        ? 'Mobile strict extraction failed. Please ensure your document follows the A=, B=, Correct Answer= format exactly.' 
+                        : 'Could not find MCQ questions. Ensure your document has numbered questions (1. / Q1.) with options labeled A–D.')
                     : 'Could not find Coding questions. Ensure your document uses the format:\nQuestion: [text]\nLanguage: [C/C++/Python/Java/JavaScript]\nOutput: [expected output]';
                 showNotification('No Questions Found', errorMsg, 'error');
                 return;
@@ -2779,84 +2801,125 @@ function initAiGenerator() {
         }
     }
 
+    function parseMCQsFromTextStrictMobile(text) {
+        const questions = [];
+        // Enhanced Normalization for reliable mobile extraction (handling different line endings/encodings)
+        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\u00A0/g, ' ').replace(/[\u200B\u200C\u200D\uFEFF]/g, '').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/\t/g, ' ').replace(/ {2,}/g, ' ');
+
+        // 1. More aggressive Question Boundary Detection for mobile documents
+        const qStartRegex = /(?:\n|^)\s*(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-\:\s]\s*/gim;
+        const startIndices = [];
+        let m;
+        while ((m = qStartRegex.exec(normalized)) !== null) startIndices.push(m.index);
+        
+        if (startIndices.length === 0) return [];
+
+        const uniqueIndices = [...new Set(startIndices)].sort((a, b) => a - b);
+        
+        for (let i = 0; i < uniqueIndices.length; i++) {
+            const start = uniqueIndices[i];
+            const end = uniqueIndices[i + 1] || normalized.length;
+            const block = normalized.substring(start, end).trim();
+            if (!block) continue;
+
+            // 2. Specialized Mobile Extraction Layer
+            // Question detection prioritized before any option markers
+            const qMatch = block.match(/^(?:(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-\:\s]\s*)?([\s\S]*?)(?=\s*\b(?:\(?A[\.\)\-\/\:]+|\(?A\s*\=))\s*/im);
+            const qText = qMatch ? qMatch[1].trim() : block.split('\n')[0].trim();
+
+            const options = [];
+            const letters = ['A', 'B', 'C', 'D'];
+            
+            letters.forEach((letter, idx) => {
+                const nextMarker = letters[idx+1] || '(?:Correct\s*)?Answer';
+                // Pattern for 'Option = Text' and 'Option. Text' formats commonly found in mobile versions
+                const optRegex = new RegExp(`\\s*\\b\\(?${letter}\\)?\\s*(?:[=]|[\\.\\)\\-\\/\\:]+)\\s*([\\s\\S]*?)(?=\\s*\\b\\(?(?:${nextMarker})\\)?\\s*(?:[=]|[\\.\\)\\-\\/\\:]+)|$)`, 'im');
+                const match = block.match(optRegex);
+                
+                if (match) {
+                    options.push(match[1].trim().replace(/\n+/g, ' '));
+                }
+            });
+
+            // 3. Robust Answer Mapping (Handling all variants found in mobile docs)
+            const ansMatch = block.match(/(?:Correct\s*)?Answer\s*[=]\s*([A-E])/im) || 
+                             block.match(/(?:Answer|Ans|Key)\s*[\= \.\:\-]+\s*([A-E])/im) ||
+                             block.match(/(?:Answer|Ans)\s*is\s*([A-E])/im);
+            
+            const answer = ansMatch ? ansMatch[1].toUpperCase() : (options.length > 0 ? 'A' : '');
+
+            // Ensure valid structure for mapping
+            if (options.length === 0 && !qText) continue;
+            
+            while(options.length < 4) options.push(`Option ${String.fromCharCode(65 + options.length)}`);
+            
+            questions.push({
+                type: 'mcq',
+                question: (qText || 'System Generated Question').replace(/\n+/g, ' ').trim(),
+                options: options.slice(0, 4),
+                answer: answer || 'A'
+            });
+        }
+        return questions;
+    }
+
     // ============================================================
     //  STRICT MCQ PARSER — Only accepts MCQ format, rejects coding format
     // ============================================================
     function parseMCQsFromText(text) {
         const questions = [];
-        
-        // Normalize Unicode non-breaking spaces and line breaks (Critical for Mobile)
-        const normalizedText = text.replace(/\u00A0/g, ' ')
-                                 .replace(/\r\n/g, '\n')
-                                 .replace(/\r/g, '\n');
+        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\u00A0/g, ' ').replace(/[\u200B\u200C\u200D\uFEFF]/g, '').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\t/g, ' ').replace(/ {2,}/g, ' ');
 
-        // STRICT CHECK: Reject coding format in MCQ mode
-        const hasCodingMarkers = /^Question:\s/im.test(normalizedText) && /^Language:\s/im.test(normalizedText) && /^Output:\s/im.test(normalizedText);
-        if (hasCodingMarkers) {
-            throw new Error('Format Mismatch: Document detected as Coding format. Use the "Upload Coding Docs" option.');
-        }
+        // 1. Anchor Question Boundaries (Instruction-Based Strictness)
+        const qStartRegex = /(?:\n|^)\s*(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-]\s*/gim;
+        const startIndices = [];
+        let m;
+        while ((m = qStartRegex.exec(normalized)) !== null) startIndices.push(m.index);
+        if (startIndices.length === 0) return []; // Require strict markers to start
 
-        // BLOCK-BASED PARSING: Split by question starts (1. / Q1 / Question 1)
-        // This handles cases where mobile Mammoth output might merge lines
-        const questionBlocks = normalizedText.split(/(?=\n(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[.):\s\-]+)/im);
+        const uniqueIndices = [...new Set(startIndices)].sort((a, b) => a - b);
 
-        questionBlocks.forEach(block => {
-            if (!block.trim()) return;
+        for (let i = 0; i < uniqueIndices.length; i++) {
+            const start = uniqueIndices[i];
+            const end = uniqueIndices[i + 1] || normalized.length;
+            const raw = normalized.substring(start, end).trim();
+            if (!raw) continue;
 
-            // Extract Question Text: From start until first option (A. / B. / etc)
-            const qMatch = block.match(/^(?:Q\.?\s*|Question\s*|Part\s*|)?(\d+)[.):\s\-]+\s*([\s\S]*?)(?=\n\s*(?:\(?[A-E]\)[\s\-.]|[A-E][.):\s\-\/A-E]))/im);
+            // 2. Strict Field Extraction Layer
+            const qCoreMatch = raw.match(/^(?:(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-]\s*)?([\s\S]*?)(?=\s*\b[A-E]\s*(?:=|[\.\)\-]\s*))/im);
+            let qText = qCoreMatch ? qCoreMatch[1].trim() : raw.split('\n')[0].trim();
+
+            const options = [];
+            const letters = ['A', 'B', 'C', 'D'];
             
-            if (qMatch) {
-                let qText = qMatch[2].trim();
+            letters.forEach((letter, idx) => {
+                const nextMarker = letters[idx+1] || 'Correct Answer';
+                // Priority Check for Instruction Format: 'A ='
+                const strictOptRegex = new RegExp(`\\s*\\b\\(?${letter}\\)?[=]+\\s*([\\s\\S]*?)(?=\\s*\\b\\(?(?:${nextMarker})\\)?[= \\.\\)\\-\\:]+|$)`, 'im');
+                let match = raw.match(strictOptRegex);
                 
-                // Extract Options
-                const options = [];
-                const optionLetters = [];
-                const optionMatches = [...block.matchAll(/^\s*\(?([A-E])\)?[.):\s\-\/]+\s*([\s\S]*?)(?=\n\s*\(?[A-E]\)?[.):\s\-\/]|(?:\n\s*(?:Answer|Ans|Key|Correct))|$)/gim)];
+                // Fallback to general formatting if strict prefix not found
+                if (!match) {
+                    const fallbackOptRegex = new RegExp(`\\s*\\b\\(?${letter}\\)?[\\.\\)\\-]+\\s*([\\s\\S]*?)(?=\\s*\\b\\(?(?:${nextMarker})\\)?[= \\.\\)\\-\\:]+|$)`, 'im');
+                    match = raw.match(fallbackOptRegex);
+                }
                 
-                optionMatches.forEach(m => {
-                    const letter = m[1].toUpperCase();
-                    const text = m[2].trim().replace(/\n/g, ' ');
-                    if (!optionLetters.includes(letter)) {
-                        optionLetters.push(letter);
-                        options.push(text);
-                    }
-                });
-
-                // Extract Answer
-                const ansMatch = block.match(/(?:Answer|Ans|Key|Correct\s*Option)\s*[.:)\-]\s*\(?([A-E])\)?/im);
-                let answer = ansMatch ? ansMatch[1].toUpperCase() : (optionLetters.length > 0 ? optionLetters[0] : 'A');
-
-                if (qText && options.length >= 2) {
-                    questions.push({
-                        question: qText.replace(/\n/g, ' ').trim(),
-                        options: options.length >= 4 ? options.slice(0, 4) : fillOptions(options),
-                        answer: answer
-                    });
-                }
-            }
-        });
-
-        if (questions.length === 0) {
-            // ULTIMATE FALLBACK: Line-by-line if block parsing failed completely
-            const lines = normalizedText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            let currentQ = null;
-            lines.forEach(line => {
-                const qm = line.match(/^(?:Q\.?\s*|Question\s*|)?\d+[.):\s\-]+\s*(.+)/i);
-                if (qm) {
-                    if (currentQ && currentQ.options.length >= 2) questions.push(currentQ);
-                    currentQ = { question: qm[1], options: [], answer: 'A' };
-                } else if (currentQ) {
-                    const om = line.match(/^\s*\(?([A-E])\)?[.):\s\-\/]+\s*(.+)/i);
-                    if (om) currentQ.options.push(om[2]);
-                    else if (line.match(/(?:Answer|Ans|Key)\s*[.:)\-]\s*([A-E])/i)) {
-                        currentQ.answer = line.match(/(?:Answer|Ans|Key)\s*[.:)\-]\s*([A-E])/i)[1].toUpperCase();
-                    }
-                }
+                if (match) options.push(match[1].trim().replace(/\n/g, ' '));
             });
-            if (currentQ && currentQ.options.length >= 2) questions.push(currentQ);
-        }
 
+            // Correct Answer Mapping: Strictly prioritize instruction format
+            const ansMatch = raw.match(/(?:Correct\s*)?Answer\s*=\s*([A-E])/im) || raw.match(/(?:Answer|Ans|Key)\s*[\= \.\:\-]+\s*([A-E])/im);
+            const answer = ansMatch ? ansMatch[1].toUpperCase() : 'A';
+
+            while(options.length < 4) options.push(`Option ${String.fromCharCode(65 + options.length)}`);
+
+            questions.push({
+                type: 'mcq',
+                question: (qText || 'Empty Question').replace(/\n+/g, ' ').trim(),
+                options: options.slice(0, 4),
+                answer: answer
+            });
+        }
         return questions;
     }
 
@@ -2866,90 +2929,73 @@ function initAiGenerator() {
     // ============================================================
     function parseCodingQuestionsFromText(text) {
         const questions = [];
-        const normalizedText = text.replace(/\u00A0/g, ' ').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        // Preserve structure: only normalize line endings, do NOT collapse spaces or remove newlines
+        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+                                .replace(/\u00A0/g, ' ')
+                                .replace(/[\u200B\u200C\u200D\uFEFF]/g, '');
 
+        // 1. Structural Analysis: Identify markers sequentially
+        const markerDefs = [
+            { type: 'question', regex: /(?:\n|^)\s*(?:Question|Q\.?|Prob\.?|Problem|Part\s*)?\s*\d+[\.\)\-\:\s]+\s*/gim },
+            { type: 'question', regex: /(?:\n|^)\s*(?:Question|Q\.?|Prob\.?|Problem)\s*[\.\)\-\:\s]+\s*/gim },
+            { type: 'language', regex: /(?:\n|^|\s)\b(?:Language|Lang|Program|Coding)\s*[\.\)\-\:\s]+\s*/gim },
+            { type: 'output', regex: /(?:\n|^|\s)\b(?:Output|Out|Exec|Expected|Result)\s*[\.\)\-\:\s]+\s*/gim },
+            { type: 'answer', regex: /(?:\n|^|\s)\b(?:Answer|Ans|Solution|Key)\s*[\.\)\-\:\s]+\s*/gim }
+        ];
 
-        // STRICT CHECK: If the document contains MCQ format markers, reject it
-        const hasNumberedQuestions = /^\d+[.)]\s+/m.test(text);
-        const hasOptions = /^[A-D][.)]\s+/m.test(text);
-        const hasAnswerLine = /^Answer:\s*[A-D]/im.test(text);
-        if (hasNumberedQuestions && hasOptions && hasAnswerLine) {
-            throw new Error('Format Mismatch: This document appears to be in MCQ format (contains numbered questions with A–D options). Please use the "Upload MCQ Docs" option instead.');
-        }
-
-        // STRICT: Require "Question:" markers
-        const hasQuestionMarker = /^Question:\s/im.test(normalizedText);
-        const hasLanguageMarker = /^Language:\s/im.test(normalizedText);
-        const hasOutputMarker = /^Output:\s/im.test(normalizedText);
-
-        if (!hasQuestionMarker) {
-            throw new Error('Format Error: No "Question:" markers found. Each coding question must start with "Question:" followed by the problem statement. Please download and follow the sample Coding format.');
-        }
-        if (!hasLanguageMarker) {
-            throw new Error('Format Error: No "Language:" markers found. Each coding question must include "Language:" followed by the programming language (C, C++, Python, Java, or JavaScript). Please download and follow the sample Coding format.');
-        }
-        if (!hasOutputMarker) {
-            throw new Error('Format Error: No "Output:" markers found. Each coding question must include "Output:" followed by the expected output. Please download and follow the sample Coding format.');
-        }
-
-        // Extract using block matching instead of just split for reliability
-        // Matches blocks that look like Question ... Language ... Output
-        const questionBlocks = normalizedText.match(/Question:[\s\S]*?(?=Question:|$)/gim) || [];
-        
-        const validLanguages = ['c', 'c++', 'cpp', 'python', 'java', 'javascript', 'js'];
-        let invalidCount = 0;
-
-        questionBlocks.forEach(section => {
-
-            if (!section.trim()) return;
-            
-            // STRICT: Extract Question text (must start with "Question:")
-            const qMatch = section.match(/^Question:\s*([\s\S]*?)(?=^Language:\s)/im);
-            // STRICT: Extract Language (must start with "Language:")
-            const lMatch = section.match(/^Language:\s*(.*)/im);
-            // STRICT: Extract Output (must start with "Output:")
-            const oMatch = section.match(/^Output:\s*([\s\S]*?)$/im);
-            
-            if (!qMatch || !qMatch[1].trim()) return;
-            
-            // Validate Language field exists and is valid
-            if (!lMatch || !lMatch[1].trim()) {
-                invalidCount++;
-                return;
+        let rawMarkers = [];
+        markerDefs.forEach(mDef => {
+            let match;
+            while ((match = mDef.regex.exec(normalized)) !== null) {
+                rawMarkers.push({ type: mDef.type, index: match.index, length: match[0].length });
             }
-            
-            let lang = lMatch[1].trim().toLowerCase();
-            
-            // Normalize language
-            if (lang.includes('c++') || lang === 'cpp') lang = 'cpp';
-            else if (lang === 'c') lang = 'c';
-            else if (lang.includes('python')) lang = 'python';
-            else if (lang.includes('java') && !lang.includes('script')) lang = 'java';
-            else if (lang.includes('javascript') || lang.includes('js')) lang = 'javascript';
-            else {
-                invalidCount++;
-                return; // Invalid language — skip
-            }
-
-            // Validate Output field exists
-            if (!oMatch || !oMatch[1].trim()) {
-                invalidCount++;
-                return;
-            }
-
-            questions.push({
-                type: 'coding',
-                question: qMatch[1].trim(),
-                language: lang,
-                expectedOutput: oMatch[1].trim()
-            });
         });
 
-        // STRICT: If we found zero valid questions but had invalid ones, explain why
-        if (questions.length === 0 && invalidCount > 0) {
-            throw new Error(`Format Error: Found ${invalidCount} question block(s), but they are missing required fields. Each coding question must have all three: "Question:", "Language:" (C/C++/Python/Java/JavaScript), and "Output:". Please download and follow the sample Coding format.`);
-        }
+        // 2. Strict De-duplication
+        rawMarkers.sort((a, b) => a.index - b.index || b.length - a.length);
+        const markers = [];
+        let lastEnd = -1;
+        rawMarkers.forEach(m => {
+            if (m.index >= lastEnd) {
+                markers.push(m);
+                lastEnd = m.index + m.length;
+            }
+        });
 
+        if (markers.length === 0) return [];
+
+        // 3. Full Content Extraction (Zero Loss)
+        let currentQ = null;
+        for (let i = 0; i < markers.length; i++) {
+            const current = markers[i];
+            const next = markers[i + 1];
+            const start = current.index + current.length;
+            const end = next ? next.index : normalized.length;
+            const rawContent = normalized.substring(start, end).trim();
+
+            if (current.type === 'question') {
+                if (currentQ && (currentQ.question || currentQ.expectedOutput)) questions.push(currentQ);
+                currentQ = { type: 'coding', question: rawContent, language: 'python', expectedOutput: '', answer: '' };
+            } else if (currentQ) {
+                if (current.type === 'language') {
+                    let langValue = rawContent.split(/[\s\n,]/)[0].toLowerCase();
+                    if (langValue.includes('c++') || langValue === 'cpp') currentQ.language = 'cpp';
+                    else if (langValue === 'c') currentQ.language = 'c';
+                    else if (langValue.includes('python')) currentQ.language = 'python';
+                    else if (langValue.includes('java')) currentQ.language = 'java';
+                    else if (langValue.includes('js') || langValue.includes('script')) currentQ.language = 'javascript';
+                    else currentQ.language = 'python';
+                } else if (current.type === 'output') {
+                    currentQ.expectedOutput = rawContent;
+                } else if (current.type === 'answer') {
+                    currentQ.answer = rawContent;
+                }
+            } else {
+                currentQ = { type: 'coding', question: 'Recovered Problem', language: 'python', expectedOutput: '', answer: '' };
+                if (current.type === 'output') currentQ.expectedOutput = rawContent;
+            }
+        }
+        if (currentQ && (currentQ.question || currentQ.expectedOutput)) questions.push(currentQ);
         return questions;
     }
 
@@ -3057,7 +3103,7 @@ function initAiGenerator() {
                     <div class="extracted-q-header">
                         <span class="q-number">${i + 1}</span>
                         <div style="flex: 1;">
-                            <input type="text" class="q-input" value="${escQ}" placeholder="Problem Statement">
+                            <textarea class="q-input" style="min-height: 100px; resize: vertical; line-height: 1.5; padding: 12px;" placeholder="Problem Statement">${escQ}</textarea>
                         </div>
                         <button class="btn-icon delete-extracted-btn" title="Remove this question" style="border: none; background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 10px; border-radius: 12px; cursor: pointer;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;">
