@@ -42,8 +42,6 @@ function initLoginForm() {
 
         // Show loading
         btn.disabled = true;
-        if (btnText) btnText.textContent = 'Authenticating...';
-        if (spinner) spinner.style.display = 'block';
 
         if (alertBox) alertBox.style.display = 'none';
 
@@ -72,10 +70,8 @@ function initLoginForm() {
                 }
 
                 // Redirect
-                setTimeout(() => {
-                    const target = safeUser.type === 'student' ? 'student-dashboard.html' : 'staff-dashboard.html';
-                    window.location.replace(target);
-                }, 1000);
+                const target = safeUser.type === 'student' ? 'student-dashboard.html' : 'staff-dashboard.html';
+                window.location.replace(target);
             } else {
                 throw new Error('Invalid credentials. Please check your ID and password.');
             }
@@ -116,12 +112,6 @@ function initRegisterWorkflow() {
         const field = document.getElementById(id);
         if (field && field.disabled) {
             field.disabled = false;
-            const group = field.closest('.form-group');
-            if (group) {
-                group.classList.remove('field-unlocked');
-                void group.offsetWidth; // Trigger reflow
-                group.classList.add('field-unlocked');
-            }
         }
     };
 
@@ -130,9 +120,49 @@ function initRegisterWorkflow() {
         if (e.target.value.trim().length > 2) enableField('email');
     });
 
-    // 2. Email -> Register Number
+    // 2. Email -> Phone
     document.getElementById('email').addEventListener('input', (e) => {
-        if (e.target.value.includes('@') && e.target.value.includes('.')) enableField('registerNumber');
+        if (e.target.value.includes('@') && e.target.value.includes('.')) enableField('mobile');
+    });
+
+    // 2.1 Phone -> Send OTP
+    document.getElementById('mobile').addEventListener('input', (e) => {
+        const btn = document.getElementById('sendOtpBtn');
+        if (e.target.value.length >= 10) {
+            btn.disabled = false;
+        } else {
+            btn.disabled = true;
+        }
+    });
+
+    // 2.2 Send OTP Behavior
+    document.getElementById('sendOtpBtn').addEventListener('click', () => {
+        const btn = document.getElementById('sendOtpBtn');
+        const otpInput = document.getElementById('otp');
+        const verifyBtn = document.getElementById('verifyOtpBtn');
+        
+        btn.textContent = 'Resend';
+        otpInput.disabled = false;
+        verifyBtn.disabled = false;
+        otpInput.focus();
+        
+        // Mock alert
+        alert('A mock OTP "123456" has been sent to your phone number.');
+    });
+
+    // 2.3 Verify OTP -> Register Number
+    document.getElementById('verifyOtpBtn').addEventListener('click', () => {
+        const otpVal = document.getElementById('otp').value;
+        if (otpVal === '123456') {
+            alert('Phone verified successfully!');
+            document.getElementById('mobile').disabled = true;
+            document.getElementById('otp').disabled = true;
+            document.getElementById('verifyOtpBtn').disabled = true;
+            document.getElementById('sendOtpBtn').disabled = true;
+            enableField('registerNumber');
+        } else {
+            alert('Invalid OTP. Please try "123456".');
+        }
     });
 
     // 3. Register Number -> Stream + Auto-Batch
@@ -322,8 +352,6 @@ function initRegisterForm() {
 
         // Show loading
         btn.disabled = true;
-        if (btnText) btnText.textContent = 'Creating account...';
-        if (spinner) spinner.style.display = 'block';
 
         try {
             const result = await window.DB.addUser({
@@ -336,7 +364,7 @@ function initRegisterForm() {
                     alertBox.style.display = 'block';
                     alertBox.textContent = 'Account created successfully! Preparing your access...';
                 }
-                setTimeout(() => { window.location.href = `login.html?type=${userType}`; }, 1500);
+                window.location.href = `login.html?type=${userType}`;
             } else {
                 throw new Error(result.error || 'Registration failed. Please check your details.');
             }
@@ -403,9 +431,12 @@ function initAuthTabs() {
 
             // Register Page Logic
             if (studentFields && staffFields) {
+                const container = document.querySelector('.auth-container');
                 if (typeValue === 'student') {
                     studentFields.style.display = 'block';
                     staffFields.style.display = 'none';
+                    if (container) container.classList.add('student-mode');
+                    document.body.classList.add('student-mode');
                     studentFields.querySelectorAll('input, select').forEach(i => {
                         if (i.id !== 'batch') i.setAttribute('required', '');
                     });
@@ -413,6 +444,8 @@ function initAuthTabs() {
                 } else {
                     studentFields.style.display = 'none';
                     staffFields.style.display = 'block';
+                    if (container) container.classList.remove('student-mode');
+                    document.body.classList.remove('student-mode');
                     studentFields.querySelectorAll('input, select').forEach(i => i.removeAttribute('required'));
                     staffFields.querySelectorAll('input, select').forEach(i => i.setAttribute('required', ''));
                 }

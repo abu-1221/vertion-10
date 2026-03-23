@@ -32,60 +32,16 @@
 </head>
 
 <body>
-  <!-- Startup Splash Screen -->
-  <div id="app-splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0f1e; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;">
-    <div style="position: absolute; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(99, 102, 241, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
-    
-    <div style="position: relative; margin-bottom: 2.5rem; animation: splashLogoPulse 2s infinite ease-in-out;">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 160px; height: 160px; background: rgba(99, 102, 241, 0.15); filter: blur(40px); border-radius: 50%;"></div>
-      <img src="logo.png" alt="College Logo" style="width: 120px; height: 120px; object-fit: contain; position: relative; filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));" />
-    </div>
 
-    <div style="width: 240px; height: 3px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; overflow: hidden; position: relative;">
-      <div id="splash-progress-bar" style="position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #6366f1, #a855f7); box-shadow: 0 0 15px rgba(99, 102, 241, 0.6); animation: splashLoadingLine 2.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;"></div>
-    </div>
-    
-    <div id="splash-status-text" style="margin-top: 1.5rem; color: #e2e8f0; font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;">
-      JMC - Test
-    </div>
-
-    <style>
-      @keyframes splashLogoPulse {
-        0%, 100% { transform: scale(1); opacity: 0.9; }
-        50% { transform: scale(1.05); opacity: 1; }
-      }
-      @keyframes splashLoadingLine {
-        0% { width: 0%; left: 0; }
-        100% { width: 100%; left: 0; }
-      }
-      .splash-fade-out {
-        opacity: 0 !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-      }
-    </style>
-
-    <script>
-      (function() {
-        const splash = document.getElementById('app-splash-screen');
-        setTimeout(() => {
-          splash.classList.add('splash-fade-out');
-          setTimeout(() => {
-            splash.remove();
-          }, 800);
-        }, 2200);
-      })();
-    </script>
-  </div>
 
   <!-- Main Container -->
   <div class="auth-container">
     <div class="auth-card wide">
       <!-- Header -->
       <div class="auth-header">
-        <a href="index.html" class="auth-logo">
+        <div class="auth-logo">
           <img src="logo.png" class="brand-logo" alt="JMC TEST Logo" />
-        </a>
+        </div>
         <h1>Create Account</h1>
       </div>
 
@@ -113,7 +69,7 @@
 
         <!-- Student Fields Section -->
         <div id="studentFields">
-          <div class="form-row three-col">
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="fullName">Full Name</label>
               <div class="input-wrapper">
@@ -135,7 +91,33 @@
                 <input type="email" id="email" class="form-input" placeholder="Email address" disabled required />
               </div>
             </div>
+          </div>
 
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="mobile">Phone Number</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                <input type="tel" id="mobile" class="form-input" placeholder="Phone Number" disabled required />
+                <button type="button" id="sendOtpBtn" class="inner-btn" disabled>OTP</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="otp">OTP Code</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                <input type="text" id="otp" class="form-input" placeholder="6-digit code" disabled required />
+                <button type="button" id="verifyOtpBtn" class="inner-btn" disabled>Verify</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="registerNumber">Register No</label>
               <div class="input-wrapper">
@@ -146,14 +128,12 @@
                 <input type="text" id="registerNumber" class="form-input" placeholder="e.g., 23UCS001" disabled required />
               </div>
             </div>
-          </div>
 
-          <div class="form-row three-col">
             <div class="form-group">
               <label class="form-label" for="stream">Stream</label>
               <div class="input-wrapper">
                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 10l-10-5-10 5 10 5 10-5z" />
+                  <path d="M22 10l-10-5-10 5 10 5-10-5z" />
                 </svg>
                 <select id="stream" class="form-input" disabled required>
                   <option value="">Select Stream</option>
@@ -170,7 +150,9 @@
                 </select>
               </div>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="department">Department</label>
               <div class="input-wrapper">
@@ -200,7 +182,7 @@
             </div>
           </div>
 
-          <div class="form-row three-col">
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="semester">Semester</label>
               <div class="input-wrapper">
@@ -227,7 +209,9 @@
                 </select>
               </div>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="streamType">Class Type</label>
               <div class="input-wrapper">
@@ -241,9 +225,7 @@
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="form-row three-col">
             <div class="form-group">
               <label class="form-label" for="section">Section</label>
               <div class="input-wrapper">
@@ -256,7 +238,9 @@
                 </select>
               </div>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="batch">Admitted Batch</label>
               <div class="input-wrapper">
@@ -284,7 +268,7 @@
 
         <!-- Staff Fields Section -->
         <div id="staffFields" style="display: none">
-          <div class="form-row three-col">
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="staffCode">Staff Code</label>
               <div class="input-wrapper">
@@ -333,7 +317,9 @@
                 </select>
               </div>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="designation">Designation</label>
               <div class="input-wrapper">
@@ -350,9 +336,7 @@
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="form-row" style="grid-template-columns: 1fr; margin: 0;">
             <div class="form-group">
               <label class="form-label" for="staffPassword">Password</label>
               <div class="input-wrapper">
@@ -376,10 +360,14 @@
           </div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; margin: 0.75rem 0;">
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 0.75rem 0;">
           <label class="checkbox-wrapper">
             <input type="checkbox" id="agreeTerms" />
             <span>I agree to the terms and policies.</span>
+          </label>
+          <label class="checkbox-wrapper">
+            <input type="checkbox" id="enableGps" />
+            <span>Enable GPS Location (Optional)</span>
           </label>
         </div>
 

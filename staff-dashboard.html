@@ -224,7 +224,7 @@
                     </svg>
                     Test Information
                   </h3>
-                  <div class="details-grid">
+                  <div class="details-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
                     <div class="form-group">
                       <label class="form-label">Test Name *</label>
                       <input type="text" class="form-input" id="testName" placeholder="e.g., Technical Round 1"
@@ -256,11 +256,11 @@
                       <label class="form-label">Pass Percentage (%) *</label>
                       <input type="number" class="form-input" id="testPassPercentage" placeholder="e.g., 35" min="0" max="100" required />
                     </div>
-                    <div class="form-group full-width" style="grid-column: span 3;">
+                    <div class="form-group full-width" style="grid-column: span 2;">
                       <label class="form-label">Description</label>
                       <textarea class="form-input" id="testDescription" rows="2" placeholder="Brief description of the test context"></textarea>
                     </div>
-                    <div class="form-group full-width" style="grid-column: span 3;">
+                    <div class="form-group full-width" style="grid-column: span 2;">
                       <label class="form-label">Syllabus / Reference Material (Optional)</label>
                       <input type="file" id="testSyllabus" class="form-input" accept=".pdf,.doc,.docx" style="padding: 10px;" />
                     </div>
@@ -278,7 +278,7 @@
                   </h3>
                   <p style="color: var(--gray-400); font-size: 0.9rem; margin-bottom: 2rem;">Apply selective filters to shortlist your candidates.</p>
 
-                  <div class="targeting-filter-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                  <div class="targeting-filter-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
                     <!-- Departments -->
                     <div class="filter-item">
                       <label class="form-label">Department</label>
@@ -428,7 +428,7 @@
                     </div>
 
                     <!-- Reg Numbers -->
-                    <div class="filter-item span-full" style="grid-column: span 3;">
+                    <div class="filter-item span-full" style="grid-column: span 2;">
                       <label class="form-label">Target Specific Students (Enter Reg Numbers)</label>
                       <div class="reg-input-group" style="display: flex; gap: 0.75rem;">
                         <input type="text" id="targetRegInput" placeholder="e.g., 21UCS001, 21UCS002" style="flex: 1; height: 42px;" class="form-input">
