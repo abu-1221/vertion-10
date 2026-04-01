@@ -137,10 +137,37 @@ app.get('/api/staff/download-coding-template', async (req, res) => {
     ];
 
     codingQuestions.forEach((item, i) => {
-      questions.push(new Paragraph({ text: `Question Number ${i + 1}`, bold: true }));
-      questions.push(new Paragraph({ text: `Question: ${item.q}` }));
-      questions.push(new Paragraph({ text: `Language: ${item.lang}` }));
-      questions.push(new Paragraph({ text: `Output: ${item.out}` }));
+      questions.push(new Paragraph({ 
+        text: `Question ${i + 1}`, 
+        heading: HeadingLevel.HEADING_2,
+        alignment: AlignmentType.LEFT,
+        spacing: { before: 400, after: 200 }
+      }));
+      
+      const table = new Table({
+        width: { size: 100, type: "percentage" },
+        rows: [
+          new TableRow({
+            children: [
+              new TableCell({ children: [new Paragraph({ text: "Question", bold: true })] }),
+              new TableCell({ children: [new Paragraph({ text: "Language", bold: true })] }),
+              new TableCell({ children: [new Paragraph({ text: "Input", bold: true })] }),
+              new TableCell({ children: [new Paragraph({ text: "Output", bold: true })] }),
+              new TableCell({ children: [new Paragraph({ text: "Expected Output", bold: true })] }),
+            ],
+          }),
+          new TableRow({
+            children: [
+              new TableCell({ children: [new Paragraph({ text: item.q })] }),
+              new TableCell({ children: [new Paragraph({ text: item.lang })] }),
+              new TableCell({ children: [new Paragraph({ text: "N/A" })] }),
+              new TableCell({ children: [new Paragraph({ text: item.out })] }),
+              new TableCell({ children: [new Paragraph({ text: item.out })] }),
+            ],
+          }),
+        ],
+      });
+      questions.push(table);
       questions.push(new Paragraph({ text: "" }));
     });
 
@@ -208,6 +235,11 @@ app.post('/api/auth/register', async (req, res) => {
     console.log('[AUTH] Registration attempt:', req.body.username);
     const { username, password, type, name, details, email } = req.body;
     
+    // Validate email: only @gmail.com allowed
+    if (email && !email.toLowerCase().endsWith('@gmail.com')) {
+      return res.status(400).json({ error: 'Only @gmail.com email addresses are allowed.' });
+    }
+
     const existing = await User.findOne({ where: { username } });
     if (existing) {
       console.warn('[AUTH] Registration failed: Username taken:', username);
@@ -338,6 +370,11 @@ app.put('/api/users/:username', async (req, res) => {
 
     const user = await User.findOne({ where: { username } });
     if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // Validate email: only @gmail.com allowed
+    if (email && !email.toLowerCase().endsWith('@gmail.com')) {
+      return res.status(400).json({ error: 'Only @gmail.com email addresses are allowed.' });
+    }
 
     const updates = {};
     if (name) updates.name = name;
@@ -598,7 +635,7 @@ app.get('/api/staff/test-participation/:testId', async (req, res) => {
         status: displayStatus,
         section: studentDetails.section || 'N/A',
         department: studentDetails.department || 'N/A',
-        year: `DEBUG:${studentDetails.year || 'NULL'}`,
+        year: studentDetails.year || 'N/A',
         batch: studentDetails.batch || 'N/A'
       };
     });

@@ -188,9 +188,16 @@ async function runPDFGeneration() {
         doc.setFont(undefined, 'bold');
         doc.text("Head of the Department", pw - 55, ph - 28, { align: 'center' });
 
-        // Score Highlight Badge
+        // Score Highlight Badge - Strict Difficulty Alignment
         let badgeY = brandingY + 30;
-        doc.setFillColor(37, 99, 235);
+        const diffColors = {
+            'Easy': [16, 185, 129],   // Green
+            'Medium': [37, 99, 235], // Blue
+            'Hard': [239, 68, 68]    // Red
+        };
+        const badgeColor = diffColors[difficulty] || [100, 116, 139]; // Default Gray if mismatch
+        
+        doc.setFillColor(...badgeColor);
         doc.rect(pw/2 - 40, badgeY, 80, 10, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(9);

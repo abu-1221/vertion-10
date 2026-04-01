@@ -410,7 +410,10 @@ function initUserInfo() {
     if (profAvatar) profAvatar.textContent = initials.substring(0, 2);
     if (profUsername) profUsername.textContent = user.name || user.username;
     if (profFullName) profFullName.textContent = user.name || user.username;
-    if (profEmail) profEmail.textContent = user.email || (user.type === 'student' ? 'student@jmc.edu' : 'staff@jmc.edu');
+    
+    // Strict Data Integrity: Always display the raw, user-entered email exactly as it is 
+    // without any automated domain modification or appending.
+    if (profEmail) profEmail.textContent = user.email || '---';
 
     // Register Date (Joined)
     if (profJoined) {
@@ -456,18 +459,29 @@ function initUserInfo() {
   }
 }
 
-// Handle Profile Photo Upload
+// Handle Profile Photo Upload — ONE-TIME ONLY
 window.handleProfilePhotoUpload = function (event) {
   const file = event.target.files[0];
   if (!file) return;
 
+  const user = JSON.parse(sessionStorage.getItem("user") || localStorage.getItem("user") || "{}");
+
+  // Block if already uploaded
+  if (user.username && localStorage.getItem(`profile_photo_${user.username}`)) {
+    if (typeof showNotification === 'function') {
+      showNotification('Upload Locked', 'Profile image has already been set and cannot be changed.', 'error');
+    }
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = function (e) {
     const base64Image = e.target.result;
-    const user = JSON.parse(sessionStorage.getItem("user") || localStorage.getItem("user") || "{}");
 
     if (user.username) {
       localStorage.setItem(`profile_photo_${user.username}`, base64Image);
+      // Mark as locked
+      localStorage.setItem(`profile_photo_locked_${user.username}`, 'true');
 
       // Update UI
       const displayImg = document.getElementById("profilePictureDisplay");
@@ -477,10 +491,39 @@ window.handleProfilePhotoUpload = function (event) {
         displayImg.style.display = "block";
       }
       if (initials) initials.style.display = "none";
+
+      // Disable upload button after successful upload
+      lockProfilePhotoUI();
+
+      if (typeof showNotification === 'function') {
+        showNotification('Photo Saved', 'Profile image uploaded successfully. This cannot be changed.', 'success');
+      }
     }
   };
   reader.readAsDataURL(file);
 };
+
+// Lock the profile photo upload UI
+function lockProfilePhotoUI() {
+  const uploadLabel = document.querySelector('label[for="profilePhotoInput"]');
+  const fileInput = document.getElementById('profilePhotoInput');
+  if (uploadLabel) {
+    uploadLabel.style.display = 'none';
+  }
+  if (fileInput) {
+    fileInput.disabled = true;
+  }
+}
+
+// Check on page load if photo is already locked
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const user = JSON.parse(sessionStorage.getItem("user") || localStorage.getItem("user") || "{}");
+    if (user.username && localStorage.getItem(`profile_photo_locked_${user.username}`)) {
+      lockProfilePhotoUI();
+    }
+  }, 500);
+});
 
 // Helper: Get ordinal suffix
 function getOrdinal(n) {

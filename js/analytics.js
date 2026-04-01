@@ -162,7 +162,7 @@ const AnalyticsEngine = {
       const date = t.date ? new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : `Test ${i + 1}`;
       const passed = t.status === 'passed';
       return `
-        <div class="timeline-item" title="${t.testName || 'Test'} — ${t.company || ''}" style="flex-shrink: 0; min-width: 140px;">
+        <div class="timeline-item" title="${t.testName || 'Test'} — ${t.company || ''}" style="flex-shrink: 0; min-width: 140px; animation-delay: ${i * 0.06}s;">
           <span class="timeline-score ${passed ? 'passed' : 'failed'}">${Math.round(t.score)}%</span>
           <span class="timeline-date">${date}</span>
           <span class="timeline-test">${(t.company || t.testName || 'Test').substring(0, 12)}</span>
@@ -179,6 +179,24 @@ const AnalyticsEngine = {
         behavior: 'smooth'
       });
     }, { passive: false });
+
+    // Drag-to-scroll for mouse users
+    let isDown = false, startX, scrollLeft;
+    container.addEventListener('mousedown', (e) => {
+      isDown = true;
+      container.style.cursor = 'grabbing';
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+    container.addEventListener('mouseleave', () => { isDown = false; container.style.cursor = 'grab'; });
+    container.addEventListener('mouseup', () => { isDown = false; container.style.cursor = 'grab'; });
+    container.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    });
   },
 
   // ═══════════════ TEST HISTORY BREAKDOWN ═══════════════

@@ -1162,28 +1162,15 @@ async function loadTests() {
                         <span class="status-badge ${test.status}" style="padding: 6px 16px; font-weight: 700; letter-spacing: 1px;">${test.status.toUpperCase()}</span>
                     </div>
                 </td>
-                <td class="actions-cell">
-                    <div class="action-icons" style="display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; white-space: nowrap; width: 100%;">
-                        <button class="action-btn" onclick="viewTestAnalytics(${test.id})" title="View Details" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--primary-400); font-size: 0.8rem; font-weight: 600; white-space: nowrap; transform: none !important; transition: none !important; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;flex-shrink:0;">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <span>View</span>
+                <td class="actions-cell" style="padding: 1.25rem 0.75rem;">
+                    <div class="action-icons" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <button class="action-btn" onclick="viewTestAnalytics(${test.id})" title="View Details" style="padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; border-radius: 10px; background: rgba(99, 102, 241, 0.22); border: 1px solid rgba(99, 102, 241, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            View
                         </button>
-                        <button class="action-btn" onclick="openPrintReportModal(${test.id}, '${test.name.replace(/'/g, "\\\\'")}')" title="Print Report" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; font-size: 0.8rem; font-weight: 600; white-space: nowrap; transform: none !important; transition: none !important; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;flex-shrink:0;">
-                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                                <rect x="6" y="14" width="12" height="8"></rect>
-                            </svg>
-                            <span>Report</span>
-                        </button>
-                        <button class="action-btn delete" onclick="triggerSTMAIDelete(${test.id}, '${test.name.replace(/'/g, "\\\\'")}')" title="Delete Test" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 0.8rem; font-weight: 600; white-space: nowrap; transform: none !important; transition: none !important; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0;">
-                                <polyline points="3,6 5,6 21,6"/>
-                                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                            <span>Delete</span>
+                        <button class="action-btn" onclick="openPrintReportModal(${test.id}, '${test.name.replace(/'/g, "\\\\'")}')" title="Print Report" style="padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; border-radius: 10px; background: rgba(16, 185, 129, 0.22); border: 1px solid rgba(16, 185, 129, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                            Report
                         </button>
                     </div>
                 </td>
@@ -1622,6 +1609,17 @@ async function loadStudents() {
     document.getElementById('activeStudents').textContent = students.length;
 
     tbody.innerHTML = '';
+    
+    // Logic: Enable scroll only if > 10 rows
+    const scrollContainer = document.getElementById('studentTableScrollContainer');
+    if (scrollContainer) {
+        if (students.length > 10) {
+            scrollContainer.style.overflowY = 'auto';
+        } else {
+            scrollContainer.style.overflowY = 'hidden';
+            scrollContainer.style.maxHeight = 'none'; // Allow it to shrink to content
+        }
+    }
 
     if (students.length === 0) {
         tbody.innerHTML = `
@@ -1660,8 +1658,8 @@ async function loadStudents() {
                 <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.streamType || '-'}</td>
                 <td style="padding: 1rem 0.75rem; text-align: center; font-weight: 700; color: #818cf8; font-size: 0.9rem;">${studentResults.length}</td>
                 <td style="padding: 1rem 0.75rem; text-align: center;">
-                    <button class="action-btn" onclick="lookupStudent('${student.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--primary-400); cursor: pointer; border: none; font-size: 0.8rem; font-weight: 600;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <button class="action-btn" onclick="lookupStudent('${student.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 18px; min-height: 38px; border-radius: 10px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: var(--primary-300); cursor: pointer; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         View
                     </button>
                 </td>
@@ -2756,14 +2754,17 @@ function initAiGenerator() {
                 }
             } else if (currentUploadMode === 'coding') {
                 extractionProgress.style.width = '70%';
-                processingTitle.textContent = 'Extracting Coding Questions...';
-                processingSubtitle.textContent = 'Scanning for Question/Language/Output structures.';
-                // Removed delay for instant response
-
-                
-                // CODING ONLY — never falls back to MCQ
-                questions = parseCodingQuestionsFromText(rawText);
+                processingTitle.textContent = 'Extracting Coding Tables...';
+                processingSubtitle.textContent = 'Scanning for table-based structures.';
+                const resultHtml = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                questions = parseCodingQuestionsFromHtml(resultHtml.value);
             }
+
+        // ============================================================
+        //  NEW: AUTO-FILL TEST DETAILS FROM DOCUMENT
+        // ============================================================
+        const extractedDetails = extractTestDetailsFromText(rawText);
+        autoFillTestForm(extractedDetails);
 
             // Step 4: Show results
             extractionProgress.style.width = '100%';
@@ -2868,54 +2869,69 @@ function initAiGenerator() {
     // ============================================================
     function parseMCQsFromText(text) {
         const questions = [];
-        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\u00A0/g, ' ').replace(/[\u200B\u200C\u200D\uFEFF]/g, '').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\t/g, ' ').replace(/ {2,}/g, ' ');
+        // Enhanced normalization: Remove Unicode variants and normalize spaces, while preserving structure
+        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+                               .replace(/\u00A0/g, ' ')
+                               .replace(/[\u200B\u200C\u200D\uFEFF]/g, '')
+                               .replace(/[\u2018\u2019]/g, "'")
+                               .replace(/[\u201C\u201D]/g, '"')
+                               .replace(/[\u2013\u2014]/g, '-')
+                               .replace(/\t/g, ' ')
+                               .replace(/ {2,}/g, ' ');
 
-        // 1. Anchor Question Boundaries (Instruction-Based Strictness)
-        const qStartRegex = /(?:\n|^)\s*(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-]\s*/gim;
+        // 1. Identify start of questions more robustly
+        const qStartRegex = /(?:\n|^)\s*(?:Q\.?|Question|Part)?\s*\d+[\.\)\-\:]\s*/gim;
         const startIndices = [];
         let m;
         while ((m = qStartRegex.exec(normalized)) !== null) startIndices.push(m.index);
-        if (startIndices.length === 0) return []; // Require strict markers to start
+        
+        if (startIndices.length === 0) {
+            // Fallback: search for blocks starting with '1.' if the first pass failed
+            const fallbackRegex = /(?:\n|^)\s*1[\.\)\-]\s*/gim;
+            if ((m = fallbackRegex.exec(normalized)) !== null) startIndices.push(m.index);
+        }
+
+        if (startIndices.length === 0) return []; 
 
         const uniqueIndices = [...new Set(startIndices)].sort((a, b) => a - b);
 
         for (let i = 0; i < uniqueIndices.length; i++) {
             const start = uniqueIndices[i];
             const end = uniqueIndices[i + 1] || normalized.length;
-            const raw = normalized.substring(start, end).trim();
-            if (!raw) continue;
+            const block = normalized.substring(start, end).trim();
+            if (!block) continue;
 
-            // 2. Strict Field Extraction Layer
-            const qCoreMatch = raw.match(/^(?:(?:Q\.?\s*|Question\s*|Part\s*|)?\d+[\.\)\-]\s*)?([\s\S]*?)(?=\s*\b[A-E]\s*(?:=|[\.\)\-]\s*))/im);
-            let qText = qCoreMatch ? qCoreMatch[1].trim() : raw.split('\n')[0].trim();
+            // 2. Extract Question Body (Search for the first option marker starting on a new line or with significant space)
+            // Stricter lookahead: must be start of line or preceded by spaces, A-E, followed by punctuation
+            const qMatch = block.match(/^(?:(?:Q\.?|Question|Part)?\s*\d+[\.\)\-\:]\s*)?([\s\S]*?)(?=\s*\b[A-E]\s*[=\.\)\-\:]+\s+)/im);
+            const qText = qMatch ? qMatch[1].trim() : block.split('\n')[0].trim();
 
             const options = [];
             const letters = ['A', 'B', 'C', 'D'];
             
             letters.forEach((letter, idx) => {
-                const nextMarker = letters[idx+1] || 'Correct Answer';
-                // Priority Check for Instruction Format: 'A ='
-                const strictOptRegex = new RegExp(`\\s*\\b\\(?${letter}\\)?[=]+\\s*([\\s\\S]*?)(?=\\s*\\b\\(?(?:${nextMarker})\\)?[= \\.\\)\\-\\:]+|$)`, 'im');
-                let match = raw.match(strictOptRegex);
+                const nextMarker = letters[idx+1] || '(?:Correct\s*)?Answer|Ans|Key';
+                // Regex: Search for 'A. ', 'A) ', 'A = ', 'A: '
+                const optRegex = new RegExp(`\\s*\\b${letter}\\s*[=\\.\\)\\-\\:]+\\s*([\\s\\S]*?)(?=\\s*\\b(?:${nextMarker})\\s*[=\\.\\)\\-\\:]+|$)`, 'im');
+                const match = block.match(optRegex);
                 
-                // Fallback to general formatting if strict prefix not found
-                if (!match) {
-                    const fallbackOptRegex = new RegExp(`\\s*\\b\\(?${letter}\\)?[\\.\\)\\-]+\\s*([\\s\\S]*?)(?=\\s*\\b\\(?(?:${nextMarker})\\)?[= \\.\\)\\-\\:]+|$)`, 'im');
-                    match = raw.match(fallbackOptRegex);
-                }
-                
-                if (match) options.push(match[1].trim().replace(/\n/g, ' '));
+                if (match) options.push(match[1].trim().replace(/\n+/g, ' '));
             });
 
-            // Correct Answer Mapping: Strictly prioritize instruction format
-            const ansMatch = raw.match(/(?:Correct\s*)?Answer\s*=\s*([A-E])/im) || raw.match(/(?:Answer|Ans|Key)\s*[\= \.\:\-]+\s*([A-E])/im);
+            // 3. Mapping the Correct Answer
+            const ansMatch = block.match(/(?:Correct\s*)?Answer\s*[=]\s*([A-E])/im) || 
+                             block.match(/(?:Answer|Ans|Key)\s*[\= \.\:\-]+\s*([A-E])/im) ||
+                             block.match(/(?:Answer|Ans|Key)\s*is\s*([A-E])/im);
+            
             const answer = ansMatch ? ansMatch[1].toUpperCase() : 'A';
 
+            if (options.length === 0 && !qText) continue;
+            
             while(options.length < 4) options.push(`Option ${String.fromCharCode(65 + options.length)}`);
-
+            
             questions.push({
                 type: 'mcq',
-                question: (qText || 'Empty Question').replace(/\n+/g, ' ').trim(),
+                question: (qText || 'System Generated Question').replace(/\n+/g, ' ').trim(),
                 options: options.slice(0, 4),
                 answer: answer
             });
@@ -2927,75 +2943,63 @@ function initAiGenerator() {
     // ============================================================
     //  STRICT CODING PARSER — Only accepts Coding format, rejects MCQ format
     // ============================================================
-    function parseCodingQuestionsFromText(text) {
+    function parseCodingQuestionsFromHtml(html) {
         const questions = [];
-        // Preserve structure: only normalize line endings, do NOT collapse spaces or remove newlines
-        const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
-                                .replace(/\u00A0/g, ' ')
-                                .replace(/[\u200B\u200C\u200D\uFEFF]/g, '');
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const tables = doc.querySelectorAll('table');
 
-        // 1. Structural Analysis: Identify markers sequentially
-        const markerDefs = [
-            { type: 'question', regex: /(?:\n|^)\s*(?:Question|Q\.?|Prob\.?|Problem|Part\s*)?\s*\d+[\.\)\-\:\s]+\s*/gim },
-            { type: 'question', regex: /(?:\n|^)\s*(?:Question|Q\.?|Prob\.?|Problem)\s*[\.\)\-\:\s]+\s*/gim },
-            { type: 'language', regex: /(?:\n|^|\s)\b(?:Language|Lang|Program|Coding)\s*[\.\)\-\:\s]+\s*/gim },
-            { type: 'output', regex: /(?:\n|^|\s)\b(?:Output|Out|Exec|Expected|Result)\s*[\.\)\-\:\s]+\s*/gim },
-            { type: 'answer', regex: /(?:\n|^|\s)\b(?:Answer|Ans|Solution|Key)\s*[\.\)\-\:\s]+\s*/gim }
-        ];
+        tables.forEach((table, tableIdx) => {
+            const rows = table.querySelectorAll('tr');
+            if (rows.length < 2) return; // Skip empty tables
 
-        let rawMarkers = [];
-        markerDefs.forEach(mDef => {
-            let match;
-            while ((match = mDef.regex.exec(normalized)) !== null) {
-                rawMarkers.push({ type: mDef.type, index: match.index, length: match[0].length });
+            // Column Mapping identified by header text or index
+            // Goal: Question | Language | Input | Output | Expected Output
+            const headers = Array.from(rows[0].querySelectorAll('td')).map(td => td.innerText.trim().toLowerCase());
+            
+            const colIndices = {
+                question: headers.indexOf('question'),
+                language: headers.indexOf('language'),
+                input: headers.indexOf('input'),
+                output: headers.indexOf('output'),
+                expected: headers.indexOf('expected output')
+            };
+
+            // Fallback for missing headers
+            if (colIndices.question === -1) colIndices.question = 0;
+            if (colIndices.language === -1) colIndices.language = 1;
+            if (colIndices.input === -1) colIndices.input = 2;
+            if (colIndices.output === -1) colIndices.output = 3;
+            if (colIndices.expected === -1) colIndices.expected = 4;
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].querySelectorAll('td');
+                if (cells.length < 2) continue;
+
+                const qText = cells[colIndices.question]?.innerText.trim() || '';
+                if (!qText) continue;
+
+                const langText = cells[colIndices.language]?.innerText.trim().toLowerCase() || 'python';
+                let language = 'python';
+                if (langText.includes('c++') || langText === 'cpp') language = 'cpp';
+                else if (langText === 'c') language = 'c';
+                else if (langText.includes('java')) language = 'java';
+                else if (langText.includes('js') || langText.includes('javascript')) language = 'javascript';
+
+                questions.push({
+                    type: 'coding',
+                    question: qText,
+                    language: language,
+                    input: cells[colIndices.input]?.innerText.trim() || '',
+                    output: cells[colIndices.output]?.innerText.trim() || '',
+                    expectedOutput: cells[colIndices.expected]?.innerText.trim() || cells[colIndices.output]?.innerText.trim() || '',
+                    answer: ''
+                });
             }
         });
 
-        // 2. Strict De-duplication
-        rawMarkers.sort((a, b) => a.index - b.index || b.length - a.length);
-        const markers = [];
-        let lastEnd = -1;
-        rawMarkers.forEach(m => {
-            if (m.index >= lastEnd) {
-                markers.push(m);
-                lastEnd = m.index + m.length;
-            }
-        });
-
-        if (markers.length === 0) return [];
-
-        // 3. Full Content Extraction (Zero Loss)
-        let currentQ = null;
-        for (let i = 0; i < markers.length; i++) {
-            const current = markers[i];
-            const next = markers[i + 1];
-            const start = current.index + current.length;
-            const end = next ? next.index : normalized.length;
-            const rawContent = normalized.substring(start, end).trim();
-
-            if (current.type === 'question') {
-                if (currentQ && (currentQ.question || currentQ.expectedOutput)) questions.push(currentQ);
-                currentQ = { type: 'coding', question: rawContent, language: 'python', expectedOutput: '', answer: '' };
-            } else if (currentQ) {
-                if (current.type === 'language') {
-                    let langValue = rawContent.split(/[\s\n,]/)[0].toLowerCase();
-                    if (langValue.includes('c++') || langValue === 'cpp') currentQ.language = 'cpp';
-                    else if (langValue === 'c') currentQ.language = 'c';
-                    else if (langValue.includes('python')) currentQ.language = 'python';
-                    else if (langValue.includes('java')) currentQ.language = 'java';
-                    else if (langValue.includes('js') || langValue.includes('script')) currentQ.language = 'javascript';
-                    else currentQ.language = 'python';
-                } else if (current.type === 'output') {
-                    currentQ.expectedOutput = rawContent;
-                } else if (current.type === 'answer') {
-                    currentQ.answer = rawContent;
-                }
-            } else {
-                currentQ = { type: 'coding', question: 'Recovered Problem', language: 'python', expectedOutput: '', answer: '' };
-                if (current.type === 'output') currentQ.expectedOutput = rawContent;
-            }
-        }
-        if (currentQ && (currentQ.question || currentQ.expectedOutput)) questions.push(currentQ);
+        // Ensure serial numbering consistency if available in serial numbers (Question 1, etc)
+        // or just return the mapped results 1:1 as requested.
         return questions;
     }
 
@@ -3348,5 +3352,64 @@ function initAiGenerator() {
 
     function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // ============================================================
+    //  TEST DETAILS EXTRACTION UTILITIES
+    // ============================================================
+    function extractTestDetailsFromText(text) {
+        const details = {
+            name: '',
+            company: '',
+            date: '',
+            duration: '',
+            difficulty: '',
+            passPercentage: '',
+            description: ''
+        };
+
+        // Regex patterns for header fields
+        const patterns = {
+            name: /(?:Test Name|Subject|Title|Topic|Assessment)\s*[:=-]\s*(.*)/i,
+            company: /(?:Company|Organization|Recruiter|Firm)\s*[:=-]\s*(.*)/i,
+            date: /(?:Date|Schedule|Scheduled Date)\s*[:=-]\s*(.*)/i,
+            duration: /(?:Duration|Time|Time Limit|Mins|Minutes)\s*[:=-]\s*(\d+)/i,
+            difficulty: /(?:Difficulty|Level|Grade)\s*[:=-]\s*(Easy|Medium|Hard)/i,
+            passPercentage: /(?:Pass|Passing|Pass %|Percentage)\s*[:=-]\s*(\d+)/i,
+            description: /(?:Description|Notes|Summary|Intro)\s*[:=-]\s*(.*)/i
+        };
+
+        for (const key in patterns) {
+            const match = text.match(patterns[key]);
+            if (match && match[1]) {
+                details[key] = match[1].trim();
+            }
+        }
+
+        return details;
+    }
+
+    function autoFillTestForm(details) {
+        if (details.name) document.getElementById('testName').value = details.name;
+        if (details.company) document.getElementById('testCompany').value = details.company;
+        if (details.duration) document.getElementById('testDuration').value = details.duration;
+        if (details.difficulty) {
+            const select = document.getElementById('testDifficulty');
+            // Capitalize first letter to match <option> values "Easy", "Medium", "Hard"
+            const formattedDiff = details.difficulty.charAt(0).toUpperCase() + details.difficulty.slice(1).toLowerCase();
+            select.value = formattedDiff;
+        }
+        if (details.passPercentage) document.getElementById('testPassPercentage').value = details.passPercentage;
+        if (details.description) document.getElementById('testDescription').value = details.description;
+        
+        // Handle date if extracted (attempt to parse to YYYY-MM-DD)
+        if (details.date) {
+            try {
+                const d = new Date(details.date);
+                if (!isNaN(d.getTime())) {
+                    document.getElementById('testDate').value = d.toISOString().split('T')[0];
+                }
+            } catch(e) {}
+        }
     }
 }

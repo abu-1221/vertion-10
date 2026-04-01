@@ -1,486 +1,303 @@
 <style>
 /* 
- * Professional Settings UI (Balanced Bento Layout)
- * Refined SaaS aesthetic, moderate colors, subtle animations, readable spacing
+ * Compact Single View Settings UI
  */
 .settings-container {
-  max-width: 1200px; /* Optimal readability width */
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  animation: smoothFadeIn 0.5s ease-out;
-  box-sizing: border-box;
+  padding: 0 1.5rem 1.5rem !important; /* Force zero top margin/padding */
+  animation: fadeIn 0.3s ease-out;
 }
 
-/* Header Area */
 .settings-header {
+  margin-top: 0; /* Ensures no top gap */
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 2rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.settings-header-text h2 {
-  font-size: 1.85rem;
-  font-weight: 700;
-  color: #f8fafc;
-  margin: 0 0 0.4rem 0;
-  letter-spacing: -0.01em;
-}
-
-.settings-header-text p {
-  font-size: 0.95rem;
-  color: #94a3b8;
-  margin: 0;
-}
-
-/* Header Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 1rem;
   align-items: center;
 }
 
-.btn-reset {
-  background: transparent;
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  padding: 0.65rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.settings-header h2 {
+  font-size: 1.25rem; /* Smaller header */
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.015em;
 }
 
-.btn-reset:hover {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.5);
-}
-
-.btn-apply {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.65rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-apply:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.btn-save {
-  background: #4f46e5;
-  color: #ffffff;
-  border: none;
-  padding: 0.65rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
-}
-
-.btn-save:hover {
-  background: #6366f1;
-  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
-  transform: translateY(-1px);
-}
-
-/* Bento Grid Container - Permits natural flowing height */
-.settings-bento-grid {
+.settings-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-@media (max-width: 900px) {
-  .settings-bento-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Card Container */
 .settings-group {
-  background: rgba(30, 31, 50, 0.65); /* Moderate dark shade */
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 1.5rem;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Soft, non-intrusive shadow */
-  backdrop-filter: blur(10px);
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  min-height: 280px; /* Equalized height for Typography and Alert grids */
 }
 
-.settings-group:hover {
-  border-color: rgba(99, 102, 241, 0.25);
-  transform: translateY(-2px); /* Very subtle animation */
-}
-
-/* Group Headers */
 .group-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 10px;
+  margin-bottom: 1rem;
 }
 
-.group-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.icon-blue { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
-.icon-green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-.icon-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-.icon-pink { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
-
-.group-title-wrapper h3 {
-  font-size: 1.15rem;
+.group-header h3 {
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #f8fafc;
-  margin: 0 0 0.2rem 0;
-}
-
-.group-title-wrapper p {
-  font-size: 0.85rem;
-  color: #94a3b8;
+  color: #fff;
   margin: 0;
-  line-height: 1.4;
 }
 
-/* Theme Selection Grid */
-.theme-selector-grid {
+.theme-selector-grid, .layout-options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  margin-top: auto;
 }
 
-.theme-card {
-  position: relative;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Common Option Card */
+.settings-option-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  padding: 1rem;
+  padding: 1rem 0.5rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
 }
 
-.theme-card:hover {
-  background: rgba(255, 255, 255, 0.03);
+.settings-option-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.theme-card.selected {
-  border-color: #6366f1;
-  background: rgba(99, 102, 241, 0.08);
+.settings-option-card.selected {
+  border-color: var(--primary-500);
+  background: rgba(99, 102, 241, 0.1);
 }
 
-.theme-preview-box {
-  width: 100%;
-  height: 48px;
-  border-radius: 6px;
-  margin-bottom: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-light-box { background: #f8fafc; border: 1px solid #e2e8f0; }
-.theme-dark-box { background: #0f172a; border: 1px solid #1e293b; }
-.theme-system-box { background: linear-gradient(135deg, #f8fafc 50%, #0f172a 50%); border: 1px solid #475569; }
-
-.theme-preview-box svg { width: 20px; height: 20px; z-index: 2; }
-.theme-light-box svg { stroke: #64748b; }
-.theme-dark-box svg { stroke: #94a3b8; }
-.theme-system-box svg { stroke: #cbd5e1; }
-
-.theme-card h4 {
-  color: #f1f5f9;
+.settings-option-card h4 {
+  margin: 0.5rem 0 0.1rem;
   font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0 0.2rem 0;
+  font-weight: 700;
+  color: #fff;
 }
 
-.theme-card p {
-  color: #64748b;
-  font-size: 0.75rem;
+.settings-option-card p {
   margin: 0;
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  line-height: 1.2;
 }
 
 .selected-indicator {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 6px;
+  right: 6px;
   width: 18px;
   height: 18px;
-  background: #6366f1;
-  color: white;
+  background: var(--primary-500);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
   opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.2s;
-}
-
-.theme-card.selected .selected-indicator {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Layout Options List */
-.layout-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.layout-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.25rem;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  cursor: pointer;
+  transform: scale(0.5);
   transition: all 0.2s ease;
 }
 
-.layout-item:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.layout-item.selected {
-  border-color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
-}
-
-.layout-radio {
-  margin-right: 1.25rem;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.layout-item.selected .layout-radio {
-  border-color: #10b981;
-}
-
-.layout-radio-inner {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #10b981;
-  opacity: 0;
-  transform: scale(0.5);
-  transition: all 0.2s;
-}
-
-.layout-item.selected .layout-radio-inner {
+.settings-option-card.selected .selected-indicator {
   opacity: 1;
   transform: scale(1);
 }
 
-.layout-content {
-  flex: 1;
-}
-
-.layout-content h4 {
-  color: #f1f5f9;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: 0 0 0.2rem 0;
-}
-
-.layout-content p {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin: 0;
-  line-height: 1.4;
-}
-
-/* Typography Grid */
-.typo-container {
+.theme-preview-box {
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin: 0 auto 0.5rem;
+  width: 80%;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  font-size: 0.75rem;
 }
 
+.theme-light-box { background: #ffffff; color: #1a1b2e; }
+.theme-dark-box { background: #1a1b2e; color: #fff; }
+.theme-system-box { background: linear-gradient(to right, #fff 50%, #1a1b2e 50%); color: #6366f1; }
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-save, .btn-apply, .btn-reset {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-save {
+  background: var(--primary-600);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.btn-save:hover {
+  background: var(--primary-500);
+  transform: translateY(-1px);
+}
+
+.btn-apply {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-reset {
+  background: transparent;
+  color: var(--gray-400);
+}
+
+.btn-reset:hover {
+  color: var(--danger);
+}
+
+/* Typography Controls */
 .typo-controls-wrap {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 1.25rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .control-label {
   display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #cbd5e1;
-  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-400);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
 }
 
-.select-wrapper {
-  position: relative;
-}
-
-.stylish-select {
-  appearance: none;
+.select-wrapper select {
   width: 100%;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.6rem 0.75rem;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 8px;
-  padding: 0.75rem 1rem;
-  color: #f8fafc;
-  font-size: 0.95rem;
-  font-weight: 500;
-  font-family: inherit;
+  color: #fff;
+  font-size: 0.9rem;
   cursor: pointer;
-  outline: none;
-  transition: all 0.2s;
+  appearance: none;
 }
 
-.stylish-select:focus, .stylish-select:hover {
-  border-color: #fbbf24;
-  background: rgba(245, 158, 11, 0.05);
-}
-
-.stylish-select option {
-  background: #1e293b;
-  color: #f8fafc;
-}
-
-.select-wrapper svg {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
-  pointer-events: none;
-}
-
-/* Segmented Control */
-.segmented-control {
+.font-size-group {
   display: flex;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 0.25rem;
+  background: rgba(0,0,0,0.2);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  overflow: hidden;
 }
 
-.seg-btn {
+.font-size-btn {
   flex: 1;
+  padding: 0.6rem;
   background: transparent;
   border: none;
-  color: #94a3b8;
-  padding: 0.5rem 0;
+  color: var(--gray-400);
+  font-weight: 700;
   font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  border-right: 1px solid rgba(255,255,255,0.1);
 }
 
-.seg-btn:hover {
-  color: #f8fafc;
+.font-size-btn:last-child {
+  border-right: none;
 }
 
-.seg-btn.active {
-  background: rgba(245, 158, 11, 0.9);
-  color: #ffffff;
-  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25);
+.font-size-btn.active {
+  background: rgba(99,102,241,0.2);
+  color: var(--primary-400);
 }
 
 .live-preview-box {
-  background: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  border: 1px dashed rgba(255,255,255,0.2);
+  margin-top: auto;
 }
 
 .preview-text {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #e2e8f0;
-  text-align: center;
-  font-weight: 400;
+  color: #fff;
+  line-height: 1.4;
+  font-size: 0.9rem;
 }
 
-/* Notifications Settings */
+/* Notifications List */
 .notif-rows {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.75rem;
+  margin-top: auto;
 }
 
 .notif-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  transition: all 0.2s;
+  padding: 0.75rem 1rem;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .notif-row:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.notif-text {
-  flex: 1;
-  padding-right: 1.5rem;
+  background: rgba(255,255,255,0.03);
 }
 
 .notif-text h4 {
-  color: #f1f5f9;
-  font-size: 0.95rem;
+  margin: 0 0 0.15rem 0;
+  font-size: 0.9rem;
   font-weight: 600;
-  margin: 0 0 0.2rem 0;
+  color: #fff;
 }
 
 .notif-text p {
-  color: #94a3b8;
-  font-size: 0.85rem;
   margin: 0;
-  line-height: 1.4;
+  font-size: 0.75rem;
+  color: var(--gray-400);
 }
 
-/* iOS Style Toggle Switch */
 .toggle-switch {
   position: relative;
-  width: 44px;
-  height: 24px;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
 }
 
 .toggle-switch input {
@@ -492,300 +309,180 @@
 .toggle-slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(255, 255, 255, 0.15);
-  transition: 0.3s ease-in-out;
-  border-radius: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255,255,255,0.1);
+  transition: .4s;
+  border-radius: 22px;
 }
 
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: 0.3s ease-in-out;
+  transition: .4s;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 input:checked + .toggle-slider {
-  background-color: #ec4899;
+  background-color: var(--primary-500);
 }
 
 input:checked + .toggle-slider:before {
-  transform: translateX(20px);
+  transform: translateX(18px);
 }
 
-/* Light Mode Overrides */
-[data-theme="light"] .settings-group { background: #ffffff; border-color: #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-[data-theme="light"] .settings-header-text h2, [data-theme="light"] .group-title-wrapper h3, [data-theme="light"] .theme-card h4, [data-theme="light"] .layout-content h4, [data-theme="light"] .notif-text h4, [data-theme="light"] .control-label, [data-theme="light"] .preview-text { color: #0f172a; }
-[data-theme="light"] .settings-header-text p, [data-theme="light"] .group-title-wrapper p, [data-theme="light"] .theme-card p, [data-theme="light"] .layout-content p, [data-theme="light"] .notif-text p { color: #64748b; }
-[data-theme="light"] .settings-header { border-bottom-color: #e2e8f0; }
-
-[data-theme="light"] .theme-card, [data-theme="light"] .layout-item, [data-theme="light"] .stylish-select, [data-theme="light"] .segmented-control, [data-theme="light"] .notif-row { background: #f8fafc; border-color: #e2e8f0; }
-[data-theme="light"] .theme-card:hover, [data-theme="light"] .layout-item:hover, [data-theme="light"] .notif-row:hover { background: #f1f5f9; border-color: #cbd5e1; }
-[data-theme="light"] .stylish-select { color: #0f172a; }
-[data-theme="light"] .seg-btn { color: #64748b; }
-[data-theme="light"] .seg-btn:hover { color: #0f172a; }
-[data-theme="light"] .seg-btn.active { background: #f59e0b; color: #fff; }
-
-[data-theme="light"] .live-preview-box { background: #f8fafc; border-color: #cbd5e1; }
-[data-theme="light"] .btn-apply { background: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
-[data-theme="light"] .btn-apply:hover { background: #f1f5f9; border-color: #94a3b8; }
-[data-theme="light"] .toggle-slider { background-color: #cbd5e1; }
-
-@keyframes smoothFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+@media (max-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* ── Settings Mobile Responsiveness ── */
 @media (max-width: 768px) {
-  .settings-container {
-    padding: 1rem !important;
-    padding-bottom: 4rem !important;
-  }
-
-  .settings-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 1rem;
-  }
-
-  .action-buttons {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .action-buttons button {
-    flex: 1;
-    min-width: 80px;
-    font-size: 0.8rem !important;
-    padding: 0.5rem 0.75rem !important;
-  }
-
-  .settings-bento-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
-  }
-
-  .settings-group {
-    padding: 1rem !important;
-  }
-
-  .settings-group:last-child {
-    margin-bottom: 3rem !important;
-  }
-
-  .theme-selector-grid {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 0.75rem !important;
-  }
-
-  .typo-controls-wrap {
-    grid-template-columns: 1fr !important;
-  }
-
-  .notif-row {
-    padding: 0.75rem !important;
-  }
-
-  .layout-item {
-    padding: 0.875rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .settings-header-text h2 {
-    font-size: 1.3rem !important;
-  }
-
-  .theme-selector-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .action-buttons button {
-    width: 100%;
+  .theme-selector-grid, .layout-options, .typo-controls-wrap {
+    grid-template-columns: 1fr;
   }
 }
 </style>
 
-
-
 <div class="settings-container">
   <div class="settings-header">
     <div class="settings-header-text">
-      <h2>Dashboard Settings</h2>
+      <h2>General Settings</h2>
+      <p style="color: var(--gray-400); margin-top: 4px; font-size: 0.85rem;">Manage your workspace preferences and appearance.</p>
     </div>
     <div class="action-buttons">
-      <button type="button" class="btn-reset settings-reset-btn" id="settingsResetBtn">Reset</button>
-      <button type="button" class="btn-apply btn-secondary" id="settingsApplyBtn">Apply</button>
-      <button type="button" class="btn-save btn-primary" id="settingsSaveBtn">Save Settings</button>
+      <button type="button" class="btn-reset" id="settingsResetBtn">Reset</button>
+      <button type="button" class="btn-apply" id="settingsApplyBtn">Apply</button>
+      <button type="button" class="btn-save" id="settingsSaveBtn">Save Changes</button>
     </div>
   </div>
 
-  <!-- Bento Grid Architecture (Auto-Height, Permits Mild Scrolling) -->
-  <div class="settings-bento-grid">
-    
-    <!-- Theme Settings -->
+  <div class="settings-grid">
+    <!-- Theme Group -->
     <div class="settings-group">
       <div class="group-header">
-        <div class="group-icon icon-blue">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <div style="color: var(--primary-400);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         </div>
-        <div class="group-title-wrapper">
-          <h3>Theme Appearance</h3>
-          <p>Select your global interface color scheme.</p>
-        </div>
+        <h3>Appearance Theme</h3>
       </div>
       
       <div class="theme-selector-grid">
-        <div class="theme-card settings-option-card" data-theme-value="light">
-          <div class="selected-indicator">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
-          <div class="theme-preview-box theme-light-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          </div>
-          <h4>Light</h4>
-          <p>Bright mode</p>
+        <div class="settings-option-card" data-theme-value="light">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="theme-preview-box theme-light-box">Light</div>
+          <h4>Light Mode</h4>
+          <p>Bright contrast</p>
         </div>
 
-        <div class="theme-card settings-option-card selected" data-theme-value="dark">
-          <div class="selected-indicator">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
-          <div class="theme-preview-box theme-dark-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-          </div>
-          <h4>Dark</h4>
-          <p>Sleek mode</p>
+        <div class="settings-option-card selected" data-theme-value="dark">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="theme-preview-box theme-dark-box">Dark</div>
+          <h4>Dark Mode</h4>
+          <p>Sleek interface</p>
         </div>
 
-        <div class="theme-card settings-option-card" data-theme-value="system">
-          <div class="selected-indicator">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </div>
-          <div class="theme-preview-box theme-system-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-          </div>
-          <h4>System</h4>
-          <p>Auto Match</p>
+        <div class="settings-option-card" data-theme-value="system">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="theme-preview-box theme-system-box">Auto</div>
+          <h4>System Match</h4>
+          <p>Adapts to OS</p>
         </div>
       </div>
     </div>
 
-    <!-- UI Layout Settings -->
+    <!-- Density Group -->
     <div class="settings-group">
       <div class="group-header">
-        <div class="group-icon icon-green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="21"></line></svg>
+        <div style="color: var(--emerald-400);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="21"></line></svg>
         </div>
-        <div class="group-title-wrapper">
-          <h3>Layout Density</h3>
-          <p>Choose the spacing architecture of your interface.</p>
-        </div>
+        <h3>Interface Density</h3>
       </div>
       
       <div class="layout-options">
-        <div class="layout-item settings-option-card selected" data-style-value="comfortable">
-          <div class="layout-radio"><div class="layout-radio-inner"></div></div>
-          <div class="layout-content">
-            <h4>Comfortable</h4>
-            <p>Balanced spacing, ideal for most desktop displays.</p>
-          </div>
+        <div class="settings-option-card selected" data-style-value="comfortable">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <h4>Comfortable</h4>
+          <p>Default spacing</p>
         </div>
         
-        <div class="layout-item settings-option-card" data-style-value="compact">
-          <div class="layout-radio"><div class="layout-radio-inner"></div></div>
-          <div class="layout-content">
-            <h4>Compact</h4>
-            <p>Tighter spacing to maximize information density.</p>
-          </div>
+        <div class="settings-option-card" data-style-value="compact">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <h4>Compact</h4>
+          <p>High data density</p>
         </div>
 
-        <div class="layout-item settings-option-card" data-style-value="modern">
-          <div class="layout-radio"><div class="layout-radio-inner"></div></div>
-          <div class="layout-content">
-            <h4>Modern</h4>
-            <p>Airy layout with larger rounded corners and margins.</p>
-          </div>
+        <div class="settings-option-card" data-style-value="modern">
+          <div class="selected-indicator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 12px; height: 12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <h4>Modern</h4>
+          <p>Maximum padding</p>
         </div>
       </div>
     </div>
 
-    <!-- Typography Settings -->
+    <!-- Typography Group -->
     <div class="settings-group">
       <div class="group-header">
-        <div class="group-icon icon-amber">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+        <div style="color: var(--amber-400);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
         </div>
-        <div class="group-title-wrapper">
-          <h3>Typography Options</h3>
-          <p>Refine dashboard font rendering and scale.</p>
-        </div>
+        <h3>Typography</h3>
       </div>
 
-      <div class="typo-container">
-        <div class="typo-controls-wrap">
-          <div>
-            <label class="control-label">Font Family</label>
-            <div class="select-wrapper">
-              <select id="settingsFontFamily" class="stylish-select form-input">
-                <option value="Inter">Inter (Default)</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Space Grotesk">Space Grotesk</option>
-                <option value="Montserrat">Montserrat</option>
-                <option value="Poppins">Poppins</option>
-                <option value="Fira Code">Fira Code (Iso)</option>
-              </select>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-          </div>
-
-          <div>
-            <label class="control-label">Base Font Scale</label>
-            <div class="segmented-control font-size-group">
-              <button type="button" class="seg-btn font-size-btn" data-size="small">A-</button>
-              <button type="button" class="seg-btn font-size-btn active" data-size="medium">A</button>
-              <button type="button" class="seg-btn font-size-btn" data-size="large">A+</button>
-            </div>
+      <div class="typo-controls-wrap">
+        <div>
+          <label class="control-label">Font Family</label>
+          <div class="select-wrapper">
+            <select id="settingsFontFamily">
+              <option value="Inter">Inter (Default)</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Space Grotesk">Space Grotesk</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Poppins">Poppins</option>
+              <option value="Fira Code">Fira Code (Iso)</option>
+            </select>
           </div>
         </div>
-        
-        <div class="live-preview-box">
-          <div id="fontPreviewText" class="preview-text">
-            "Design is not just what it looks like and feels like. Design is how it works."
+
+        <div>
+          <label class="control-label">Base Scale</label>
+          <div class="font-size-group">
+            <button class="font-size-btn" data-size="small">A-</button>
+            <button class="font-size-btn active" data-size="medium">A</button>
+            <button class="font-size-btn" data-size="large">A+</button>
           </div>
+        </div>
+      </div>
+      
+      <div class="live-preview-box">
+        <div id="fontPreviewText" class="preview-text">
+          "Design is not just what it looks like and feels like. Design is how it works."
         </div>
       </div>
     </div>
 
-    <!-- Notifications -->
+    <!-- Interface Alerts Group -->
     <div class="settings-group">
       <div class="group-header">
-        <div class="group-icon icon-pink">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 20px; height: 20px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <div style="color: var(--pink-400);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </div>
-        <div class="group-title-wrapper">
-          <h3>Alert Preferences</h3>
-          <p>Manage event broadcasts and visual popups.</p>
-        </div>
+        <h3>Alert Preferences</h3>
       </div>
 
       <div class="notif-rows">
         <label class="notif-row">
           <div class="notif-text">
-            <h4>Interface Alerts</h4>
-            <p>Receive visual badges for new core events.</p>
+            <h4>Dashboard Indicators</h4>
+            <p>Show visual UI notifications and badges.</p>
           </div>
           <div class="toggle-switch">
             <input type="checkbox" id="notifDashboard" checked>
@@ -796,7 +493,7 @@ input:checked + .toggle-slider:before {
         <label class="notif-row">
           <div class="notif-text">
             <h4>Acoustic Chimes</h4>
-            <p>Play a system tone for critical alerts.</p>
+            <p>Play audio for important events.</p>
           </div>
           <div class="toggle-switch">
             <input type="checkbox" id="notifSound">
@@ -806,8 +503,8 @@ input:checked + .toggle-slider:before {
 
         <label class="notif-row">
           <div class="notif-text">
-            <h4>Toasted Feedback</h4>
-            <p>Temporary brief popups for background tasks.</p>
+            <h4>Toast Messages</h4>
+            <p>Show corner popups for status details.</p>
           </div>
           <div class="toggle-switch">
             <input type="checkbox" id="notifPopup" checked>
@@ -815,5 +512,6 @@ input:checked + .toggle-slider:before {
           </div>
         </label>
       </div>
+    </div>
   </div>
 </div>

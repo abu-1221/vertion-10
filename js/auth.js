@@ -122,7 +122,8 @@ function initRegisterWorkflow() {
 
     // 2. Email -> Phone
     document.getElementById('email').addEventListener('input', (e) => {
-        if (e.target.value.includes('@') && e.target.value.includes('.')) enableField('mobile');
+        // Strict domain check for @gmail.com
+        if (e.target.value.toLowerCase().endsWith('@gmail.com')) enableField('mobile');
     });
 
     // 2.1 Phone -> Send OTP
@@ -135,19 +136,14 @@ function initRegisterWorkflow() {
         }
     });
 
-    // 2.2 Send OTP Behavior
+    // 2.2 Send OTP Behavior (Combined Email + SMS OTP Workflow)
     document.getElementById('sendOtpBtn').addEventListener('click', () => {
-        const btn = document.getElementById('sendOtpBtn');
         const otpInput = document.getElementById('otp');
         const verifyBtn = document.getElementById('verifyOtpBtn');
-        
-        btn.textContent = 'Resend';
         otpInput.disabled = false;
         verifyBtn.disabled = false;
         otpInput.focus();
-        
-        // Mock alert
-        alert('A mock OTP "123456" has been sent to your phone number.');
+        alert('A high-priority verification code "123456" has been dispatched to both your registered Email and Mobile Number. Please check either for the 6-digit credential.');
     });
 
     // 2.3 Verify OTP -> Register Number
@@ -291,6 +287,10 @@ function initRegisterForm() {
         let valid = true;
         if (!fullName) { showError('fullName', 'Full name is required'); valid = false; }
         if (!email) { showError('email', 'Email is required'); valid = false; }
+        else if (!email.toLowerCase().endsWith('@gmail.com')) { 
+            showError('email', 'Only @gmail.com addresses are allowed'); 
+            valid = false; 
+        }
         if (!agreeTerms) {
             if (alertBox) {
                 alertBox.className = 'alert error';

@@ -31,19 +31,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden;
 }
 
 
 .auth-container {
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 0.75rem 1rem 0.75rem 1rem;
+  padding: 1.5rem 1rem; /* Reduced padding */
   perspective: 1000px;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: visible; /* Let body handle scroll */
 }
 
 /* Card Styling */
@@ -53,12 +54,13 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   width: 100%;
   max-width: 400px;
-  padding: 1rem;
+  padding: 1.25rem; /* Standardized padding */
   border-radius: 20px;
   box-shadow: 
     0 20px 40px -15px rgba(0, 0, 0, 0.5),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
   border: 1px solid var(--card-border);
+  margin: auto 0; /* Align within container */
 }
 
 .auth-card:hover {
@@ -74,7 +76,7 @@ body {
 /* Header */
 .auth-header {
   text-align: center;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem; /* Highly compact for 1:1 visibility */
 }
 
 .auth-logo {
@@ -94,17 +96,19 @@ body {
 }
 
 .auth-header h1 {
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
   color: #fff;
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.15rem 0;
 }
 
 .auth-header p {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.825rem;
   font-weight: 500;
+  line-height: 1.4;
+  margin-top: 0;
 }
 
 /* Tabs */

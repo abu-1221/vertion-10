@@ -1606,9 +1606,9 @@ a.download-sample {
     }
 
     .extraction-results .results-list {
-        max-height: 60vh !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
     }
 
     .extracted-item {

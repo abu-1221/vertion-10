@@ -60,8 +60,6 @@ class AISmartBuddy {
                     <div class="ai-chat-area" id="aiChatArea"></div>
                     
                     <div class="ai-quick-topics" id="aiQuickTopics" style="padding: 0 1.25rem 0.75rem; display: flex; gap: 0.5rem; overflow-x: auto; scrollbar-width: none;">
-                        <button class="topic-pill" data-q="What's a balanced technical round like?">Tech Round</button>
-
                     </div>
 
                     <div class="ai-input-area">
