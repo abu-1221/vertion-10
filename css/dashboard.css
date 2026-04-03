@@ -1082,6 +1082,11 @@ body.sidebar-minimized .main-content {
     display: block !important;
 }
 
+#ranking-section,
+#settings-section {
+    margin-top: -1.5rem;
+}
+
 /* Create Test Section - FULL WIDTH - NO EMPTY SPACE */
 #create-test-section {
     padding: 0 !important;

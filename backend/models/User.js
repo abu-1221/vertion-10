@@ -11,7 +11,12 @@ const User = sequelize.define('User', {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: 'DOB (DDMMYYYY) for students, custom password for staff'
+    comment: 'Hashed password for all users'
+  },
+  salt: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: 'Unique salt for each user password'
   },
   type: {
     type: DataTypes.STRING,

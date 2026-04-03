@@ -23,6 +23,20 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
+  
+  <!-- Tailwind CSS Core -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { '50': '#f5f3ff', '100': '#ede9fe', '200': '#ddd6fe', '300': '#c4b5fd', '400': '#a78bfa', '500': '#8b5cf6', '600': '#7c3aed', '700': '#6d28d9', '800': '#5b21b6', '900': '#4c1d95', '950': '#2e1065' },
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/responsive-fix.css" />
@@ -40,10 +54,10 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="logo" id="sidebarLogoTop"
-          style="cursor: pointer; display: flex; align-items: center; gap: 0.85rem;">
+          style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem; margin-left: -4px;">
           <img src="logo.png" class="brand-logo" alt="JMC TEST Logo"
             style="width: 52px; height: 52px; object-fit: contain; background: transparent; border: none; padding: 0; box-shadow: none; transition: all 0.3s ease;" />
-          <span class="logo-text">JMC TEST</span>
+          <span class="logo-text" style="white-space: nowrap;">JMC TEST</span>
         </div>
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -673,11 +687,7 @@
           </div>
         </section>
       </div>
->
-      </section>
 
-
-  </div>
   </main>
 
   <!-- Overlay for mobile -->

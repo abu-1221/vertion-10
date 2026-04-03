@@ -1162,14 +1162,14 @@ async function loadTests() {
                         <span class="status-badge ${test.status}" style="padding: 6px 16px; font-weight: 700; letter-spacing: 1px;">${test.status.toUpperCase()}</span>
                     </div>
                 </td>
-                <td class="actions-cell" style="padding: 1.25rem 0.75rem;">
-                    <div class="action-icons" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <button class="action-btn" onclick="viewTestAnalytics(${test.id})" title="View Details" style="padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; border-radius: 10px; background: rgba(99, 102, 241, 0.22); border: 1px solid rgba(99, 102, 241, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <td class="actions-cell" style="padding: 0.4rem 0.75rem;">
+                    <div class="action-icons" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <button class="action-btn" onclick="viewTestAnalytics(${test.id})" title="View Details" style="white-space: nowrap; padding: 0 14px; display: flex; align-items: center; justify-content: center; gap: 5px; height: 28px; border-radius: 6px; background: rgba(99, 102, 241, 0.22); border: 1px solid rgba(99, 102, 241, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                             View
                         </button>
-                        <button class="action-btn" onclick="openPrintReportModal(${test.id}, '${test.name.replace(/'/g, "\\\\'")}')" title="Print Report" style="padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; border-radius: 10px; background: rgba(16, 185, 129, 0.22); border: 1px solid rgba(16, 185, 129, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,0,0,0.25);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <button class="action-btn" onclick="openPrintReportModal(${test.id}, '${test.name.replace(/'/g, "\\\\'")}')" title="Print Report" style="white-space: nowrap; padding: 0 14px; display: flex; align-items: center; justify-content: center; gap: 5px; height: 28px; border-radius: 6px; background: rgba(16, 185, 129, 0.22); border: 1px solid rgba(16, 185, 129, 0.45); color: #fff; transition: all 0.3s ease; cursor: pointer; font-weight: 700; font-size: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                             Report
                         </button>
                     </div>
@@ -1242,8 +1242,8 @@ function openPrintReportModal(testId, testName) {
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 1rem;">
-                <button onclick="this.closest('.modal-overlay').remove()" class="action-btn" style="padding: 0.75rem 1.5rem; border-radius: 10px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: 600; cursor: pointer;">Cancel</button>
-                <button onclick="generatePrintReport(${testId}, '${testName.replace(/'/g, "\\'")}')" class="action-btn" id="generate-report-btn" style="padding: 0.75rem 1.5rem; border-radius: 10px; background: linear-gradient(135deg, var(--primary-600), var(--primary-500)); color: #fff; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">
+                <button onclick="this.closest('.modal-overlay').remove()" class="btn" style="padding: 0.75rem 1.5rem; border-radius: 10px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); font-weight: 600; cursor: pointer;">Cancel</button>
+                <button onclick="generatePrintReport(${testId}, '${testName.replace(/'/g, "\\'")}')" class="btn" id="generate-report-btn" style="padding: 0.75rem 1.5rem; border-radius: 10px; background: var(--primary-500); color: #fff; border: none; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                     Generate Report
                 </button>
             </div>
@@ -1657,9 +1657,9 @@ async function loadStudents() {
                 <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.batch || '-'}</td>
                 <td style="padding: 1rem 0.75rem; color: #fff; text-align: center; font-size: 0.85rem;">${details.streamType || '-'}</td>
                 <td style="padding: 1rem 0.75rem; text-align: center; font-weight: 700; color: #818cf8; font-size: 0.9rem;">${studentResults.length}</td>
-                <td style="padding: 1rem 0.75rem; text-align: center;">
-                    <button class="action-btn" onclick="lookupStudent('${student.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 18px; min-height: 38px; border-radius: 10px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: var(--primary-300); cursor: pointer; font-size: 0.95rem; font-weight: 700; transition: all 0.2s; white-space: nowrap;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <td style="padding: 0.4rem 0.75rem; text-align: center;">
+                    <button class="action-btn" onclick="lookupStudent('${student.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 0 14px; height: 28px; border-radius: 6px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #fff; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; white-space: nowrap;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 12px; height: 12px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         View
                     </button>
                 </td>
@@ -2077,8 +2077,8 @@ async function loadSTMAIParticipation(testId) {
                 </td>
                 <td style="padding: 1.25rem 1.5rem; text-align: right;">
                     ${isFinished ? `
-                        <button class="action-btn" onclick="inspectSTMAIStudent('${s.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 14px; height: 32px; border-radius: 8px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: var(--primary-400); cursor: pointer; font-size: 0.8rem; font-weight: 600;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <button class="action-btn" onclick="inspectSTMAIStudent('${s.username}')" style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 0 14px; height: 28px; border-radius: 6px; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #fff; cursor: pointer; font-size: 0.75rem; font-weight: 700;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                             Report
                         </button>
                     ` : (s.assignmentStatus === 'in_progress' ? 
@@ -2200,7 +2200,7 @@ function openTargetedAudienceModal() {
                                 <th style="padding: 1.25rem 1.25rem; font-size: 0.8rem; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; text-align: center; width: 100px;">S.NO</th>
                                 <th style="padding: 1.25rem 1.25rem; font-size: 0.8rem; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; text-align: left;">Student Name</th>
                                 <th style="padding: 1.25rem 1.25rem; font-size: 0.8rem; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">Register Number</th>
-                                <th style="padding: 1.25rem 1.25rem; font-size: 0.8rem; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">Dept</th>
+                                <th style="padding: 1.25rem 1.25rem; font-size: 0.8rem; font-weight: 800; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; text-align: center;">Department</th>
                             </tr>
                         </thead>
                         <tbody>

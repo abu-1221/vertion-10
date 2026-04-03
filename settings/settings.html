@@ -6,13 +6,13 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem 1.5rem !important; /* Force zero top margin/padding */
+  padding: 0.5rem 1.5rem 1.5rem !important; /* Extremely tight top spacing */
   animation: fadeIn 0.3s ease-out;
 }
 
 .settings-header {
   margin-top: 0; /* Ensures no top gap */
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   padding: 0.25rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
@@ -38,11 +38,11 @@
   background: rgba(30, 41, 59, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 1.25rem;
+  padding: 1rem; /* More compact padding */
   backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  min-height: 280px; /* Equalized height for Typography and Alert grids */
+  height: 100%; /* Ensures grid elements stretch to identical height */
 }
 
 .group-header {
@@ -186,8 +186,8 @@
 .typo-controls-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .control-label {
@@ -247,7 +247,7 @@
   background: rgba(0,0,0,0.3);
   border-radius: 8px;
   border: 1px dashed rgba(255,255,255,0.2);
-  margin-top: auto;
+  margin-top: 0.5rem;
 }
 
 .preview-text {
@@ -354,8 +354,8 @@ input:checked + .toggle-slider:before {
 <div class="settings-container">
   <div class="settings-header">
     <div class="settings-header-text">
-      <h2>General Settings</h2>
-      <p style="color: var(--gray-400); margin-top: 4px; font-size: 0.85rem;">Manage your workspace preferences and appearance.</p>
+      <h2>Workspace Settings</h2>
+      <p style="color: var(--gray-400); margin-top: 4px; font-size: 0.85rem;">Configure your preferences and visual appearance.</p>
     </div>
     <div class="action-buttons">
       <button type="button" class="btn-reset" id="settingsResetBtn">Reset</button>
@@ -469,20 +469,20 @@ input:checked + .toggle-slider:before {
       </div>
     </div>
 
-    <!-- Interface Alerts Group -->
+    <!-- Accessibility Preferences Group -->
     <div class="settings-group">
       <div class="group-header">
         <div style="color: var(--pink-400);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
         </div>
-        <h3>Alert Preferences</h3>
+        <h3>Accessibility Preferences</h3>
       </div>
 
       <div class="notif-rows">
         <label class="notif-row">
           <div class="notif-text">
-            <h4>Dashboard Indicators</h4>
-            <p>Show visual UI notifications and badges.</p>
+            <h4>Interface Animations</h4>
+            <p>Show smooth UI transitions.</p>
           </div>
           <div class="toggle-switch">
             <input type="checkbox" id="notifDashboard" checked>
@@ -492,22 +492,22 @@ input:checked + .toggle-slider:before {
 
         <label class="notif-row">
           <div class="notif-text">
-            <h4>Acoustic Chimes</h4>
-            <p>Play audio for important events.</p>
+            <h4>Reduced Motion</h4>
+            <p>Minimize non-essential animations.</p>
           </div>
           <div class="toggle-switch">
-            <input type="checkbox" id="notifSound">
+            <input type="checkbox" id="reducedMotion">
             <span class="toggle-slider"></span>
           </div>
         </label>
 
         <label class="notif-row">
           <div class="notif-text">
-            <h4>Toast Messages</h4>
-            <p>Show corner popups for status details.</p>
+            <h4>High Contrast Mode</h4>
+            <p>Enhance visual visibility.</p>
           </div>
           <div class="toggle-switch">
-            <input type="checkbox" id="notifPopup" checked>
+            <input type="checkbox" id="notifPopup">
             <span class="toggle-slider"></span>
           </div>
         </label>

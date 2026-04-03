@@ -22,6 +22,20 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
+  
+  <!-- Tailwind CSS Core -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { '50': '#f5f3ff', '100': '#ede9fe', '200': '#ddd6fe', '300': '#c4b5fd', '400': '#a78bfa', '500': '#8b5cf6', '600': '#7c3aed', '700': '#6d28d9', '800': '#5b21b6', '900': '#4c1d95', '950': '#2e1065' },
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
   <link rel="stylesheet" href="css/responsive-fix.css" />
@@ -49,10 +63,10 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="logo" id="sidebarLogoTop"
-          style="cursor: pointer; display: flex; align-items: center; gap: 0.85rem;">
+          style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem; margin-left: -4px;">
           <img src="logo.png" class="brand-logo" alt="JMC TEST Logo"
             style="width: 52px; height: 52px; object-fit: contain; background: transparent; border: none; padding: 0; box-shadow: none; transition: all 0.3s ease;" />
-          <span class="logo-text">JMC TEST</span>
+          <span class="logo-text" style="white-space: nowrap;">JMC TEST</span>
         </div>
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -646,7 +660,7 @@
                   </button>
                 </div>
               </div>
-              <div class="table-scroll">
+              <div class="table-scroll" style="overflow-x: hidden;">
                 <table class="data-table stmai-tests-table" style="table-layout: fixed;">
                   <thead>
                     <tr>
@@ -655,7 +669,7 @@
                       <th style="text-align: center; width: 120px;">Date</th>
                       <th style="text-align: center; width: 120px;">Participants</th>
                       <th style="text-align: center; width: 120px;">Status</th>
-                      <th style="text-align: center; width: 150px; padding-right: 25px;">Actions</th>
+                      <th style="text-align: center; width: 180px;">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="testsTableBody">
@@ -706,7 +720,7 @@
                     <span id="stmai-ov-date" style="font-weight: 700; color: #fff;">--</span>
                   </div>
                   <div class="info-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.1);"></div>
-                  <button onclick="openTargetedAudienceModal()" class="btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.15); color: #f59e0b; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15); outline: none;" onmouseover="this.style.background='rgba(245, 158, 11, 0.25)'; this.style.boxShadow='0 6px 16px rgba(245, 158, 11, 0.25)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.15)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.15)'; this.style.transform='translateY(0)';">
+                  <button onclick="openTargetedAudienceModal()" class="btn" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.15); color: #f59e0b; cursor: pointer; transition: background 0.2s; outline: none;" onmouseover="this.style.background='rgba(245, 158, 11, 0.25)';" onmouseout="this.style.background='rgba(245, 158, 11, 0.15)';">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 16px; height: 16px;"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
                     Targeted Audience (<span id="stmai-targeted-count">--</span>)
                   </button>
@@ -720,7 +734,7 @@
               <div id="stmai-tab-analytics" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
                 <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
                   <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                         Back to Overview
                     </button>
@@ -757,7 +771,7 @@
               <div id="stmai-tab-results" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
                 <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
                   <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                         Back to Overview
                     </button>
@@ -790,7 +804,7 @@
               <div id="stmai-tab-ranking" class="stmai-tab-content" style="padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 1.5rem;">
                 <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);">
                   <div class="stmai-tab-header-controls" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
+                    <button onclick="switchSTMAITab('overview')" class="btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.25)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.15)'">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; height: 16px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                         Back to Overview
                     </button>
@@ -923,7 +937,7 @@
                 <option value="2025-2028">Batch 2025-28</option>
               </select>
             </div>
-            <div class="table-scroll" id="studentTableScrollContainer" style="background: rgba(13, 14, 28, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); overflow-x: auto; overflow-y: auto; max-height: 620px; -webkit-overflow-scrolling: touch;">
+            <div class="table-scroll" id="studentTableScrollContainer" style="background: rgba(13, 14, 28, 0.4); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); overflow-x: auto; overflow-y: auto; max-height: 420px; -webkit-overflow-scrolling: touch;">
               <table class="data-table" style="table-layout: fixed; width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border-radius: 12px;">
                 <thead>
                   <tr style="background: #1a1b2e;">
@@ -935,7 +949,7 @@
                     <th style="width: 85px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400); position: sticky; top: 0; background: #1a1b2e; z-index: 11;">Batch</th>
                     <th style="width: 90px; text-align: center; font-size: 0.8rem; padding: 1rem 0.75rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400); position: sticky; top: 0; background: #1a1b2e; z-index: 11;">Stream</th>
                     <th style="width: 70px; text-align: center; padding: 1rem 0.75rem; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400); position: sticky; top: 0; background: #1a1b2e; z-index: 11;">Tests</th>
-                    <th style="width: 120px; text-align: center; padding: 1rem 0.75rem; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400); position: sticky; top: 0; background: #1a1b2e; z-index: 11;">Actions</th>
+                    <th style="width: 180px; text-align: center; padding: 1rem 0.75rem; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.05); color: var(--gray-400); position: sticky; top: 0; background: #1a1b2e; z-index: 11;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="studentsTableBody">
@@ -1083,10 +1097,9 @@
 
         <!-- AI Question Generator Section -->
         <section class="content-section" id="ai-generator-section">
-          <div class="ai-gen-container">
-
-
-            <div id="uploadZone" class="ai-gen-layout" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+          <div class="ai-gen-container" style="height: calc(100vh - 80px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 2rem;">
+            <div style="width: 100%; max-width: 1200px;">
+            <div id="uploadZone" class="ai-gen-layout" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; width: 100%;">
               <!-- MCQ Documentation Grid -->
               <div class="glass-panel" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; background: rgba(30, 31, 50, 0.45); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
@@ -1113,12 +1126,12 @@
 <b>Answer:</b> B</pre>
                 </div>
 
-                <div style="margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                   <button class="btn btn-secondary" style="width: 100%; padding: 0.75rem; font-weight: 700; font-size: 0.85rem; border: 1px dashed rgba(129, 140, 248, 0.4); background: rgba(99, 102, 241, 0.05); display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #818cf8; transition: all 0.3s;" onclick="downloadSampleMCQ()">
+                <div style="margin-top: auto; display: flex; gap: 0.75rem;">
+                   <button class="btn btn-secondary" style="flex: 1; padding: 0.75rem; font-weight: 700; font-size: 0.85rem; border: 1px dashed rgba(129, 140, 248, 0.4); background: rgba(99, 102, 241, 0.05); display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #818cf8; transition: all 0.3s;" onclick="downloadSampleMCQ()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download MCQ
+                    Download
                   </button>
-                  <button class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);" onclick="triggerAiUpload('mcq')">
+                  <button class="btn btn-primary" style="flex: 1; padding: 0.9rem; font-weight: 700; font-size: 1rem; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);" onclick="triggerAiUpload('mcq')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     Upload MCQ
                   </button>
@@ -1146,12 +1159,12 @@
 <b>Output:</b> Expected result</pre>
                 </div>
 
-                <div style="margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-                   <button class="btn btn-secondary" style="width: 100%; padding: 0.75rem; font-weight: 700; font-size: 0.85rem; border: 1px dashed rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05); display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #10b981; transition: all 0.3s;" onclick="downloadSampleCoding()">
+                <div style="margin-top: auto; display: flex; gap: 0.75rem;">
+                   <button class="btn btn-secondary" style="flex: 1; padding: 0.75rem; font-weight: 700; font-size: 0.85rem; border: 1px dashed rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05); display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #10b981; transition: all 0.3s;" onclick="downloadSampleCoding()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download Coding
+                    Download
                   </button>
-                  <button class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-weight: 700; font-size: 1rem; background: #10b981 !important; border: 1px solid #10b981 !important; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);" onclick="triggerAiUpload('coding')">
+                  <button class="btn btn-primary" style="flex: 1; padding: 0.9rem; font-weight: 700; font-size: 1rem; background: #10b981 !important; border: 1px solid #10b981 !important; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);" onclick="triggerAiUpload('coding')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     Upload Coding
                   </button>
@@ -1205,6 +1218,7 @@
                 <!-- Extracted items will be injected here -->
               </div>
             </div>
+            </div>
           </div>
         </section><!-- End AI Generator -->
 
@@ -1242,49 +1256,52 @@
 
             <!-- Details Grid -->
             <div class="profile-details-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
-              <!-- ID Card -->
+              <!-- Field 1: Name -->
               <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
                 <div style="color: var(--primary-400); margin-bottom: 1.25rem;">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
                 <label style="display: block; font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Full Name</label>
-                <div id="profileFullName" style="font-size: 1.15rem; color: #fff; font-weight: 700; line-height: 1.4;">---</div>
+                <div id="profileFullName" style="font-size: 1.15rem; color: #fff; font-weight: 700;">---</div>
               </div>
 
-              <!-- Staff ID -->
+              <!-- Field 2: Staff ID -->
               <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
                 <div style="color: var(--success); margin-bottom: 1.25rem;">
-                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 </div>
                 <label style="display: block; font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Staff ID / Code</label>
                 <div id="profileRegNo" style="font-size: 1.15rem; color: #fff; font-weight: 700;">---</div>
               </div>
 
-              <!-- Role -->
+              <!-- Field 3: Dept -->
               <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
                 <div style="color: var(--amber-400); margin-bottom: 1.25rem;">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                </div>
-                <label style="display: block; font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Designation</label>
-                <div id="profileStaffRole" style="font-size: 1.15rem; color: #fff; font-weight: 700;">---</div>
-              </div>
-
-              <!-- Department -->
-              <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
-                <div style="color: var(--secondary-400); margin-bottom: 1.25rem;">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                 </div>
                 <label style="display: block; font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Department</label>
-                <div id="profileStaffDeptFull" style="font-size: 1.1rem; color: #fff; font-weight: 700;">---</div>
+                <div id="profileStaffDeptFull" style="font-size: 1rem; color: #fff; font-weight: 700; line-height: 1.4;">---</div>
               </div>
 
-              <!-- Email -->
-              <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%; grid-column: span 2;">
-                <div style="color: var(--accent-500); margin-bottom: 1.25rem;">
+              <!-- Row 2 -->
+              <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
+                <label style="display: block; font-size: 0.6rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Designation</label>
+                <div id="profileStaffRole" style="font-size: 1.1rem; color: #fff; font-weight: 700;">---</div>
+                <div id="profileStaffRoleSub" style="font-size: 0.85rem; color: var(--primary-400); margin-top: 4px;">Faculty Member</div>
+              </div>
+
+              <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
+                <label style="display: block; font-size: 0.6rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Account Status</label>
+                <div id="profileAccountStatus" style="font-size: 1.1rem; color: #fff; font-weight: 700;">Active</div>
+                <div id="profileSystemAccess" style="font-size: 0.85rem; color: var(--success); margin-top: 4px;">Verified Staff</div>
+              </div>
+
+              <div class="glass-panel profile-detail-card" style="padding: 1.75rem; border-radius: 20px; background: rgba(30, 41, 59, 0.3); border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; height: 100%;">
+                <div style="color: var(--secondary-400); margin-bottom: 1.25rem;">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 </div>
-                <label style="display: block; font-size: 0.7rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Official Email Address</label>
-                <div id="profileEmail" style="font-size: 1.2rem; color: #fff; font-weight: 700; word-break: break-all;">---</div>
+                <label style="display: block; font-size: 0.6rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 0.5rem;">Official Email Address</label>
+                <div id="profileEmail" style="font-size: 0.95rem; color: #fff; font-weight: 700; word-break: break-all;">---</div>
               </div>
             </div>
             

@@ -9,6 +9,19 @@ const {
   Table, TableRow, TableCell, AlignmentType, Spacing 
 } = require("docx");
 const fs = require('fs');
+const crypto = require('crypto');
+
+// --- SECURE HASHING UTILITY ---
+function hashPassword(password, salt = null) {
+  if (!salt) salt = crypto.randomBytes(32).toString('hex');
+  const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+  return { hash, salt };
+}
+
+function verifyPassword(password, salt, storedHash) {
+  const { hash } = hashPassword(password, salt);
+  return hash === storedHash;
+}
 const sequelize = require('./database');
 const User = require('./models/User');
 const Student = require('./models/Student');
@@ -50,6 +63,51 @@ Certificate.belongsTo(User, { foreignKey: 'studentUsername', targetKey: 'usernam
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ============================================
+// SECURITY HARDENING (PENETRATION TEST READY)
+// ============================================
+// 1. Security Headers Middleware
+app.use((req, res, next) => {
+  // Prevent Clickjacking
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  // XSS Protection
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  // Prevent MIME type sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Content Security Policy (Basic)
+  res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' https: wss: data: blob:; object-src 'none'");
+  // HSTS (HTTP Strict Transport Security)
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+
+// 2. Simple In-Memory Rate Limiter to prevent DoS/Bruteforce on APIs
+const rateLimitDict = new Map();
+app.use('/api/', (req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  const windowMs = 60 * 1000; // 1 minute
+  const maxReqs = 200; // max 200 requests per minute per IP
+
+  if (!rateLimitDict.has(ip)) {
+    rateLimitDict.set(ip, { count: 1, resetTime: now + windowMs });
+    return next();
+  }
+
+  const limitData = rateLimitDict.get(ip);
+  if (now > limitData.resetTime) {
+    limitData.count = 1;
+    limitData.resetTime = now + windowMs;
+    return next();
+  }
+
+  limitData.count++;
+  if (limitData.count > maxReqs) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later. Security Rate Limit active.' });
+  }
+  next();
+});
 
 // === TEMPLATE DOWNLOAD ROUTES (DOCX) - TOP PRIORITY ===
 app.get('/api/staff/download-mcq-template', async (req, res) => {
@@ -246,9 +304,17 @@ app.post('/api/auth/register', async (req, res) => {
       return res.status(400).json({ error: 'Username already taken' });
     }
 
-    // 1. Create primary User record
-    const user = await User.create({ username, password, type, name, email });
-    console.log('[AUTH] User record created:', user.id);
+    // 1. Create primary User record with Secure Hashing
+    const { hash, salt } = hashPassword(password);
+    const user = await User.create({ 
+      username, 
+      password: hash, 
+      salt,
+      type, 
+      name, 
+      email 
+    });
+    console.log('[AUTH] User record created with secure hash:', user.id);
 
     // 2. Create profile in specialized table
     if (type === 'student') {
@@ -259,7 +325,7 @@ app.post('/api/auth/register', async (req, res) => {
       console.log('[AUTH] Staff profile created');
     }
 
-    // 3. Record in dedicated Registration Table (New Requirement)
+    // 3. Record in dedicated Registration Table
     await Registration.create({
       username,
       userType: type,
@@ -285,18 +351,37 @@ app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
     console.log('[AUTH] Login attempt:', username);
     
-    const user = await User.findOne({ where: { username, password } });
+    const user = await User.findOne({ where: { username } });
     
     if (!user) {
-      console.warn('[AUTH] Login failed: Invalid credentials for', username);
-      // Log failed attempt
+      console.warn('[AUTH] Login failed: User not found', username);
       await LoginLog.create({
-        username,
-        status: 'failed',
+        username, status: 'failed',
         ipAddress: req.headers['x-forwarded-for'] || req.connection?.remoteAddress || req.ip,
         userAgent: req.headers['user-agent']
       });
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Verify hashed password
+    const isMatch = verifyPassword(password, user.salt, user.password);
+    
+    if (!isMatch) {
+      // FEAUTRE: Check for legacy plain-text password to ensure ZERO-SYSTEM-BREAKAGE
+      // We only do this if salt is null (indicating old user)
+      if (!user.salt && user.password === password) {
+        console.log('[AUTH] Legacy plain-text login detected. Migrating to secure hash...');
+        const { hash: newHash, salt: newSalt } = hashPassword(password);
+        await user.update({ password: newHash, salt: newSalt });
+      } else {
+        console.warn('[AUTH] Login failed: Invalid password for', username);
+        await LoginLog.create({
+          username, status: 'failed',
+          ipAddress: req.headers['x-forwarded-for'] || req.connection?.remoteAddress || req.ip,
+          userAgent: req.headers['user-agent']
+        });
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
     }
 
     // Track last login in user table

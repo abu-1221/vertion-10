@@ -1,108 +1,22 @@
 {
-  "name": "JMC Test - Career Development Centre",
-  "short_name": "JMC Test",
-  "description": "JMC Career Development Centre - Student Placement Portal for seamless campus recruitment and career success",
-  "start_url": "/index.html",
+  "name": "JMC Placement Portal",
+  "short_name": "JMC Portal",
+  "description": "Full-Stack Placement Portal for Jamal Mohamed College",
+  "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#0a0f1e",
-  "theme_color": "#6366f1",
-  "scope": "/",
-  "lang": "en",
-  "dir": "ltr",
-  "categories": ["education", "productivity"],
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "/icons/icon-72x72.svg",
-      "sizes": "72x72",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-96x96.svg",
-      "sizes": "96x96",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-128x128.svg",
-      "sizes": "128x128",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-144x144.svg",
-      "sizes": "144x144",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-152x152.svg",
-      "sizes": "152x152",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-192x192.svg",
+      "src": "assets/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "/icons/icon-384x384.svg",
-      "sizes": "384x384",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-512x512.svg",
+      "src": "assets/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "screenshots": [
-    {
-      "src": "/icons/screenshot-wide.svg",
-      "sizes": "1280x720",
-      "type": "image/svg+xml",
-      "form_factor": "wide",
-      "label": "JMC Test Dashboard"
-    },
-    {
-      "src": "/icons/screenshot-narrow.svg",
-      "sizes": "720x1280",
-      "type": "image/svg+xml",
-      "form_factor": "narrow",
-      "label": "JMC Test Mobile View"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Login",
-      "short_name": "Login",
-      "description": "Sign in to your account",
-      "url": "/login.html",
-      "icons": [
-        {
-          "src": "/icons/icon-96x96.svg",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Register",
-      "short_name": "Register",
-      "description": "Create a new account",
-      "url": "/register.html",
-      "icons": [
-        {
-          "src": "/icons/icon-96x96.svg",
-          "sizes": "96x96"
-        }
-      ]
-    }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  ]
 }

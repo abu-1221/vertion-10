@@ -615,6 +615,10 @@ async function loadAvailableTests() {
             day: "numeric",
           })
           : "Recently";
+        
+        // Clean fragments like '>' or code symbols from names
+        const cleanName = (test.name || '').replace(/^[>#\s\-*!@]+/, '').trim();
+        const cleanCompany = (test.company || '').replace(/^[>#\s\-*!@]+/, '').trim();
 
         const staffName = test.createdBy || "Staff";
         const qCount = Array.isArray(test.questions) ? test.questions.length :
@@ -627,14 +631,14 @@ async function loadAvailableTests() {
         return `
                 <div class="drive-item" style="animation: fadeInUp 0.4s ease-out both;">
                     <div class="drive-logo" style="background: var(--gradient-primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">
-                         ${test.company ? test.company.charAt(0).toUpperCase() : 'T'}
+                         ${cleanCompany ? cleanCompany.charAt(0).toUpperCase() : 'T'}
                     </div>
                     <div class="drive-info">
-                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem;">${test.name}
-                            <span style="display:inline-block; font-size: 0.65rem; font-weight: 800; color: ${diffColor}; background: ${diffColor}15; border: 1px solid ${diffColor}30; padding: 2px 8px; border-radius: 6px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px;">${diff}</span>
+                        <h4 style="margin: 0 0 4px 0; font-size: 1.1rem;">${cleanName}
+                             <span style="display:inline-block; font-size: 0.65rem; font-weight: 800; color: ${diffColor}; background: ${diffColor}15; border: 1px solid ${diffColor}30; padding: 2px 8px; border-radius: 6px; margin-left: 8px; vertical-align: middle; text-transform: uppercase; letter-spacing: 0.5px;">${diff}</span>
                         </h4>
                         <p style="margin: 0; font-size: 0.85rem; color: var(--gray-400);">
-                            <span style="color: var(--blue-400); font-weight: 500;">${test.company}</span> • 
+                            <span style="color: var(--blue-400); font-weight: 500;">${cleanCompany}</span> • 
                             ${staffName} • 
                             ${formattedDate} • 
                             ${test.duration}m • 
@@ -1626,10 +1630,13 @@ function renderCompletedTests(results) {
       const statusClass = test.status || "pending";
       const isRecordViewable = !test.isIncomplete && test.status !== 'incomplete';
 
+      const cleanName = (test.testName || '').replace(/^[>#\s\-*!@]+/, '').trim();
+      const cleanCompany = (test.company || '').replace(/^[>#\s\-*!@]+/, '').trim();
+
       return `
             <tr>
-                <td>${test.testName}</td>
-                <td>${test.company}</td>
+                <td>${cleanName}</td>
+                <td>${cleanCompany}</td>
                 <td>${formattedDate}</td>
                 <td>${test.isIncomplete ? 'N/A' : test.score + '%'}</td>
                 <td><span class="status-badge ${statusClass}">${statusClass.toUpperCase()}</span></td>
