@@ -109,6 +109,45 @@ app.use('/api/', (req, res, next) => {
   next();
 });
 
+// 3. SERVERLESS DB SYNC & AUTO-SEEDING (Optimized for Vercel)
+let dbInitialized = false;
+app.use(async (req, res, next) => {
+  if (dbInitialized) return next();
+  try {
+    console.log('[INIT] Ensuring cloud database tables exist...');
+    await sequelize.sync();
+    
+    // Auto-seed if empty (Essential for first login on cloud)
+    const userCount = await User.count();
+    if (userCount === 0) {
+      console.log('[INIT] Empty database detected. Seeding accounts...');
+      const { hash, salt } = hashPassword('password123');
+      const u = await User.create({ 
+        username: 'STF001', 
+        password: hash, 
+        salt, 
+        name: 'Dr. Iqbal Ahmed', 
+        type: 'staff', 
+        email: 'iqbal.ahmed@jmc.edu' 
+      });
+      await Staff.create({ 
+        userId: u.id, 
+        staffCode: 'STF001', 
+        department: 'Computer Science', 
+        designation: 'HOD & Associate Professor' 
+      });
+      console.log('[INIT] Staff STF001 seeded.');
+    }
+    
+    dbInitialized = true;
+    console.log('[INIT] Database ready for production.');
+    next();
+  } catch (err) {
+    console.error('[INIT] Setup Error:', err.message);
+    next(); 
+  }
+});
+
 // === TEMPLATE DOWNLOAD ROUTES (DOCX) - TOP PRIORITY ===
 app.get('/api/staff/download-mcq-template', async (req, res) => {
   console.log('[API] MCQ Template request received');
@@ -253,10 +292,14 @@ app.use(express.static(path.join(__dirname, '..')));
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-// Multler configuration for syllabus uploads
+// Multer configuration for syllabus uploads (Production Hardened)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = path.join(__dirname, '..', 'uploads', 'syllabus');
+    // ON Vercel, we MUST use /tmp for all write operations
+    const isVercel = process.env.VERCEL || process.env.NOW_BUILDER;
+    const baseDir = isVercel ? '/tmp' : path.join(__dirname, '..');
+    const dir = path.join(baseDir, 'uploads', 'syllabus');
+    
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);
   },
