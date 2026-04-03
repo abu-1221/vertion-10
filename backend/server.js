@@ -64,6 +64,25 @@ Certificate.belongsTo(User, { foreignKey: 'studentUsername', targetKey: 'usernam
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS and JSON parsing
+app.use(cors());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ═══════════════ RENDER STATIC FILE SERVING ═══════════════
+// Serve frontend static files from the root directory
+app.use(express.static(path.join(__dirname, '..')));
+
+// Explicitly handle the root route as per Render requirements
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "index.html"));
+});
+
+// Serve uploaded files securely
+const uploadDirParent = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDirParent)) fs.mkdirSync(uploadDirParent, { recursive: true });
+app.use('/uploads', express.static(uploadDirParent));
+
 // ============================================
 // SECURITY HARDENING (PENETRATION TEST READY)
 // ============================================
@@ -283,14 +302,7 @@ app.get('/api/staff/download-coding-template', async (req, res) => {
   }
 });
 
-app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve static files from the parent directory (root of the app)
-app.use(express.static(path.join(__dirname, '..')));
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+// Serving logic moved to top for better organization and Render compliance
 
 // Multer configuration for syllabus uploads (Production Hardened)
 const storage = multer.diskStorage({
